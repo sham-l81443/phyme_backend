@@ -6,6 +6,7 @@ import prisma from '../lib/prisma'
 import bcrypt from 'bcrypt'
 import OTPService from '../services/OTPService'
 import { createSuccessResponse } from '../utils/createResponse';
+import { PrismaClient } from '@prisma/client';
 
 
 
@@ -35,13 +36,13 @@ export const registerUser = async (req: Request, res: Response) => {
         }
 
 
-        const transaction = await prisma.$transaction(async (prisma) => {
+        const transaction = await prisma.$transaction(async (tx:  Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>) => {
 
 
             const hashedPassword = await bcrypt.hash(validatedData.password, 8); // hash password
 
 
-            const user = await prisma.user.create({
+            const user = await tx.user.create({
                 data: {
                     email: validatedData.email,
                     phoneNumber: validatedData.phoneNumber,
@@ -49,7 +50,7 @@ export const registerUser = async (req: Request, res: Response) => {
                 },
             });
 
-            const otp = await prisma.oTP.create({
+            const otp = await tx.oTP.create({
                 data: {
                     expiry: new Date(),
                     otp: otpResponse.otp,

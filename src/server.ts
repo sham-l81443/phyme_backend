@@ -6,14 +6,12 @@ import rateLimitMiddleware from './middleware/ratelimit';
 import cookieParser from 'cookie-parser';
 import errorHandler from './middleware/errorHandler';
 import authRoutes from './routes/authRoutes';
-import initializeSupabase from './lib/supabase';
 
 dotenv.config();
 
 
 const app = express();
 
-app.set('trust proxy', 1);
 // Security middleware
 app.use(helmet());
 app.use(corsMiddleware);
