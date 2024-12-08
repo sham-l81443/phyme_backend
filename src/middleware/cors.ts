@@ -1,7 +1,7 @@
 import cors from "cors";
 
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["http://localhost:5173,https://quizaalam.netlify.app"];
 
 const corsMiddleware = cors({
     origin: function (origin, callback) {
