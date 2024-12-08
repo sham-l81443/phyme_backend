@@ -10,8 +10,10 @@ import initializeSupabase from './lib/supabase';
 
 dotenv.config();
 
+
 const app = express();
 
+app.set('trust proxy', 1);
 // Security middleware
 app.use(helmet());
 app.use(corsMiddleware);
@@ -24,8 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.get('/', (_req, res, _next) => {
-  res.send('Hello World!')
-});
+  res.send('Hello World!')});
 
 app.use('/api', authRoutes)
 
@@ -34,28 +35,29 @@ app.use('/api', authRoutes)
 app.use(errorHandler);
 
 // initializeSupabase()
+const PORT = process.env.PORT || "3000";
 
-const server = app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
-});
-
-
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-    process.exit(0);
-  });
-});
+// const server = app.listen(PORT, () => {
+//   console.log(`Server is running on port ${process.env.PORT}`);
+// });
 
 
-process.on('SIGINT', () => {
-  console.log('SIGINT signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-    process.exit(0);
-  });
-});
+// process.on('SIGTERM', () => {
+//   console.log('SIGTERM signal received: closing HTTP server');
+//   server.close(() => {
+//     console.log('HTTP server closed');
+//     process.exit(0);
+//   });
+// });
+
+
+// process.on('SIGINT', () => {
+//   console.log('SIGINT signal received: closing HTTP server');
+//   server.close(() => {
+//     console.log('HTTP server closed');
+//     process.exit(0);
+//   });
+// });
 
 
 // Unhandled error and rejection handlers
@@ -68,3 +70,5 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
+
+export default app
