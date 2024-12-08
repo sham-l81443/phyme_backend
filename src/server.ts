@@ -23,6 +23,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
+app.get('/', (_req, res, _next) => {
+  res.send('Hello World!')
+});
+
 app.use('/api', authRoutes)
 
 
