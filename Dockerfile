@@ -14,6 +14,10 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Run Prisma generate
+RUN npx prisma generate
+
+
 # Build TypeScript to JavaScript
 RUN npm run build
 
