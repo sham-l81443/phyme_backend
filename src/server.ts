@@ -6,27 +6,36 @@ import rateLimitMiddleware from './middleware/ratelimit';
 import cookieParser from 'cookie-parser';
 import errorHandler from './middleware/errorHandler';
 import authRoutes from './routes/authRoutes';
+import passport from 'passport'
+import googleConfig from './config/googleConfig';
 
 dotenv.config();
 
 
+
 const app = express();
+
+
 
 // Security middleware
 app.use(helmet());
 app.use(corsMiddleware);
 app.use(rateLimitMiddleware);
 
+
 // Parsinf Middleware
 app.use(cookieParser());
+app.use(passport.initialize())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+googleConfig()
 
 // routes
 app.get('/', (_req, res, _next) => {
   res.send('Hello World!')});
 
-app.use('/api', authRoutes)
+app.use('/api/auth', authRoutes)
 
 
 // Error handling middleware

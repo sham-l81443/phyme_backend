@@ -8,9 +8,9 @@ CREATE TYPE "OTPTYPE" AS ENUM ('EMAIL_VERIFICATION', 'PASSWORD_RESET');
 CREATE TABLE "User" (
     "id" UUID NOT NULL,
     "email" TEXT NOT NULL,
-    "phoneNumber" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "name" TEXT,
+    "phone" TEXT,
+    "password" TEXT,
+    "name" TEXT NOT NULL,
     "role" "ROLE" NOT NULL DEFAULT 'USER',
     "isVerified" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
