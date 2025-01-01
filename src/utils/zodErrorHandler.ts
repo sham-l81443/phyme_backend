@@ -9,16 +9,16 @@ interface ZodErrorIssue {
     message: string;
 }
 
-interface ZodErrorResponse {
-    issues: ZodErrorIssue[];
-    name: string;
-}
-
 const handleZodError = (error: ZodError) => {
 
-    const { issues } = error as ZodErrorResponse
-    
-        return issues[0].message
+
+    const message: string[] = [];
+
+    error.issues.filter((item) => {
+        message.push(item.message)
+    })
+
+    return message
 }
- 
+
 export default handleZodError

@@ -1,0 +1,29 @@
+export enum statusCode {
+    // 4XX Client Errors
+    BAD_REQUEST = 400,
+    UNAUTHORIZED = 401,
+    PAYMENT_REQUIRED = 402,
+    FORBIDDEN = 403,
+    NOT_FOUND = 404,
+    METHOD_NOT_ALLOWED = 405,
+    CONFLICT = 409,
+
+    // Authentication Specific Errors
+    EMAIL_ALREADY_EXISTS = 409,
+    INVALID_CREDENTIALS = 401,
+    OTP_SEND_FAILURE = 500,
+    OTP_VERIFICATION_FAILED = 400,
+
+    // Validation Errors
+    VALIDATION_ERROR = 400,
+    REQUIRED_FIELD_MISSING = 400,
+
+    // 5XX Server Errors
+    INTERNAL_SERVER_ERROR = 500,
+    NOT_IMPLEMENTED = 501,
+    BAD_GATEWAY = 502,
+    SERVICE_UNAVAILABLE = 503,
+
+    // Generic Error
+    UNKNOWN_ERROR = 500
+}

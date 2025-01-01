@@ -1,7 +1,7 @@
 import passport from "passport";
-import { registerUser } from "../controllers/authController";
+import { registerUser, verifyUser } from "../controllers/authController";
+import loginUser from "../controllers/auth-controller/loginController";
 import { Router } from "express";
-import googleConfig from "../config/googleConfig";
 
 
 const router = Router();
@@ -10,18 +10,22 @@ const router = Router();
 router.post('/register', registerUser)
 
 
-router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }) )
+router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
 
 
-router.get('/auth/google/callback', 
-    passport.authenticate('google', {
-      failureRedirect: '/login',
-      session: false
-    }),
-    (req, res) => {
-      // Handle successful authentication (e.g., generate JWT)
-      res.redirect('http://localhost:3000/login'); // Adjust as necessary
-    }
+router.get('/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/login',
+    session: false
+  }),
+  (req, res) => {
+    // Handle successful authentication (e.g., generate JWT)
+    res.redirect('http://localhost:3000/signup'); // Adjust as necessary
+  }
 );
-  
+
+router.post('/verify', verifyUser)
+
+router.post('/login', loginUser)
+
 export default router

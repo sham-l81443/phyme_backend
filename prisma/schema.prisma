@@ -18,19 +18,29 @@ enum OTPTYPE {
   PASSWORD_RESET
 }
 
-// MODELS______________
+enum USERTYPE {
+  DEFAULT
+  TUTION
+}
+
+enum REGISTRATIONTYPE {
+  SSO
+  DEFAULT
+}
 
 model User {
-  id          String   @id @default(uuid()) @db.Uuid
-  email       String   @unique
-  phone String?
-  password    String?
-  name        String
-  role        ROLE     @default(USER)
-  isVerified  Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  otp         OTP[]
+  id               String           @id @default(uuid()) @db.Uuid
+  email            String           @unique
+  phone            String?
+  password         String?
+  name             String
+  role             ROLE             @default(USER)
+  isVerified       Boolean          @default(false)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  userType         USERTYPE         @default(DEFAULT)
+  registrationType REGISTRATIONTYPE
+  otp              OTP[]
 }
 
 model OTP {
@@ -48,4 +58,99 @@ model OTP {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, type])
+}
+
+enum STATUSTYPE {
+  COMPLETED
+  ONGOING
+  NOT_STARTED
+}
+
+model Admin {
+  id         String   @id @default(uuid()) @db.Uuid
+  email      String
+  password   String
+  isVerified Boolean
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// model Quiz {
+//   id          String          @id @default(uuid()) @db.Uuid
+//   title       String
+//   description String?
+//   status      STATUSTYPE      @default(NOT_STARTED)
+//   isPublished Boolean         @default(false)
+//   createdAt   DateTime        @default(now())
+//   updatedAt   DateTime        @updatedAt
+//   admin       Admin           @relation(fields: [adminId], references: [id])
+//   adminId     String          @db.Uuid
+//   questions   Question[]
+//   responses   QuizSubmition[]
+//   User        User?           @relation(fields: [userId], references: [id])
+//   userId      String?         @db.Uuid
+// }
+
+// model Question {
+//   id              String           @id @default(uuid()) @db.Uuid
+//   quiz            Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+//   quizId          String           @db.Uuid
+//   question        String
+//   options         QuestionOption[]
+//   correctOptionId String
+//   explanation     String
+// }
+
+// model QuestionOption {
+//   id         String   @id @default(uuid()) @db.Uuid
+//   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+//   questionId String   @map("question_id") @db.Uuid
+//   option     String
+//   isCorrect  Boolean  @map("is_correct")
+// }
+
+// model QuizSubmition {
+//   id             String           @id @default(uuid()) @db.Uuid
+//   quiz           Quiz             @relation(fields: [quizId], references: [id])
+//   quizId         String           @db.Uuid
+//   userId         String           @db.Uuid
+//   email          String?
+//   score          Int
+//   totalQuestions Int              @map("total_questions")
+//   startedAt      DateTime
+//   submittedAt    DateTime
+//   answers        QuestionAnswer[]
+// }
+
+// model QuestionAnswer {
+//   id               String        @id @default(uuid()) @db.Uuid
+//   quizResponse     QuizSubmition @relation(fields: [quizSubmissionId], references: [id], onDelete: Cascade)
+//   quizSubmissionId String
+//   questionId       String
+//   selectedOptionId String
+//   isCorrect        Boolean
+// }
+
+model Quiz {
+  id          String     @id @default(uuid()) @db.Uuid
+  title       String
+  description String?
+  questions   Question[]
+}
+
+model Question {
+  id              String           @id @default(uuid()) @db.Uuid
+  question        String
+  options         QuestionOption[]
+  correctOptionId String
+  quiz            Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId          String           @map("quiz_id") @db.Uuid
+}
+
+model QuestionOption {
+  id         String   @id @default(uuid()) @db.Uuid
+  option     String
+  isCorrect  Boolean
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String   @map("question_id") @db.Uuid
 }
