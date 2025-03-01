@@ -1,34 +1,41 @@
-import { ErrorCode } from "./errorCodes";
+const STATUS_CODES = {
+    "Bad Request": 400,
+    "Unauthorized": 401,
+    "Forbidden": 403,
+    "Not Found": 404,
+    "Internal Server Error": 500
+} as const;
+
+const ERROR_MESSAGES: Record<AppError["errorType"], string> = {
+    "Bad Request": "The request is malformed or contains invalid parameters",
+    "Unauthorized": "Authentication is required, or credentials are invalid",
+    "Forbidden": "The user is authenticated but does not have permission to access the resource",
+    "Not Found": "The requested resource does not exist",
+    "Internal Server Error": "An unexpected error occurred"
+};
 
 export class AppError extends Error {
-    errorType: "Bad Request" | "Unauthorized" | "Forbidden" | "Not Found" | "Internal Server Error";
+    errorType: keyof typeof STATUS_CODES;
     success: boolean;
     error: boolean;
     data: unknown;
-    statusCode: 400 | 401 | 404 | 403 | 500;
-    constructor(
-        {
-            message,
-            statusCode,
-            errorType,
-            data
-        }: {
+    statusCode: (typeof STATUS_CODES)[keyof typeof STATUS_CODES];
 
-            message: string,
-            statusCode: 400 | 401 | 404 | 403 | 500,
-            errorType: "Bad Request" | "Unauthorized" | "Forbidden" | "Not Found" | "Internal Server Error",
-            data?: unknown,
-        }
-
-    ) {
-
-        super(message)
-        this.statusCode = statusCode;
+    constructor({
+        message,
+        errorType,
+        data
+    }: {
+        message?: string;
+        errorType: keyof typeof STATUS_CODES;
+        data?: unknown;
+    }) {
+        super(message || ERROR_MESSAGES[errorType]);
+        this.statusCode = STATUS_CODES[errorType];
         this.error = true;
         this.success = false;
         this.errorType = errorType;
         this.data = data;
-        this.message = message;
 
         Error.captureStackTrace(this, this.constructor);
     }

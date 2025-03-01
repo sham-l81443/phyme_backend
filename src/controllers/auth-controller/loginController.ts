@@ -7,7 +7,8 @@ import { loginSchema } from "@/validators/authSchema";
 import { NextFunction, Response, Request } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import createErrorObject from "@/errors/createError";
+import createErrorObject from "@/utils/createError";
+import createSuccessResponse from "@/utils/responseCreator";
 
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -19,13 +20,13 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
 
         if (!user) {
 
-            const error = createErrorObject({ errorType: "Not Found", data: { email: validatedData.email }, message: ErrorMessages.USER_NOT_FOUND });
+            // const error = createErrorObject({ errorType: "Not Found", data: { email: validatedData.email }, message: 'User doest not exist' });
 
-            throw new AppError(error)
+            throw new AppError({ errorType: "Not Found", message: 'User doest not exist' })
 
         }
 
-        const isPasswordValid = user.password ? await bcrypt.compare(validatedData.password, user.password) : false;
+        const isPasswordValid = user?.password ? await bcrypt.compare(validatedData.password, user.password) : false;
 
         if (!isPasswordValid) {
 
@@ -33,6 +34,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
         }
 
         const SECRET = process.env.JWT_SECRET;
+
 
         if (!SECRET) {
             throw new AppError(createErrorObject({ errorType: "Internal Server Error", data: null, message: 'jwt token creation failed' }))
@@ -43,7 +45,8 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
             { expiresIn: '1h' },
         );
 
-        // Set cookie
+
+
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -51,13 +54,10 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
             maxAge: 60 * 60 * 1000,
         });
 
-        res.status(200).json({
-            message: 'Login successful',
-            user: {
-                name: user.name,
-                email: user.email,
-            },
-        });
+        const responseObj = createSuccessResponse({ data: { name: user.name, email: user.email }, message: 'Login successful' });
+
+        res.status(200).json(responseObj);
+
     } catch (error) {
         next(error)
     }

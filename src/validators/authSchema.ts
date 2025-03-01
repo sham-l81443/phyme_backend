@@ -16,11 +16,7 @@ export const registerSchema = z.object({
       message: "Invalid phone number format",
     }),
 
-  role: z
-    .enum(["USER", "ADMIN"], {
-      message: "role must be either 'user' or 'admin'",
-    })
-    .default("USER"),
+  registrationType: z.enum(["SSO", "DEFAULT"])
 });
 
 export type RegisterSchema = z.infer<typeof registerSchema>;

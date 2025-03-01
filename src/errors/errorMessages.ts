@@ -13,10 +13,6 @@ export const ErrorMessages = {
     INTERNAL_SERVER_ERROR: 'Internal server error occurred.',
     UNKNOWN_ERROR: 'An unexpected error occurred.',
     INVALID_TOKEN: 'Your authentication token has expired. Please log in again.',
-
-
     USER_NOT_FOUND: "User with this email not found",
     INVALID_CREDENTIALS: 'Invalid credentials.',
-
-
 };

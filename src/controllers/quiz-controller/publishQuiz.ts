@@ -1,5 +1,5 @@
 import { AppError } from "@/errors/AppError"
-import createErrorObject from "@/errors/createError"
+import createErrorObject from "@/utils/createError"
 import prisma from "@/lib/prisma"
 import logger from "@/utils/logger"
 import { publishQuizSchema } from "@/validators/quizSchema"
