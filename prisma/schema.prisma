@@ -19,13 +19,19 @@ enum OTPTYPE {
 }
 
 enum USERTYPE {
-  DEFAULT
-  TUTION
+  FREE
+  PAID
 }
 
 enum REGISTRATIONTYPE {
   SSO
   DEFAULT
+}
+
+enum STATUSTYPE {
+  COMPLETED
+  ONGOING
+  NOT_STARTED
 }
 
 model User {
@@ -34,11 +40,10 @@ model User {
   phone            String?
   password         String?
   name             String
-  role             ROLE             @default(USER)
+  userType         USERTYPE         @default(FREE)
   isVerified       Boolean          @default(false)
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
-  userType         USERTYPE         @default(DEFAULT)
   registrationType REGISTRATIONTYPE
   otp              OTP[]
 }
@@ -49,21 +54,14 @@ model OTP {
   otp    String
   expiry DateTime
   userId String   @map("user_id") @db.Uuid
-
-  type   OTPTYPE @default(EMAIL_VERIFICATION)
-  isUsed Boolean @default(false)
-  user   User    @relation(fields: [userId], references: [id])
+  type   OTPTYPE  @default(EMAIL_VERIFICATION)
+  isUsed Boolean  @default(false)
+  user   User     @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([userId, type])
-}
-
-enum STATUSTYPE {
-  COMPLETED
-  ONGOING
-  NOT_STARTED
 }
 
 model Admin {
@@ -135,6 +133,8 @@ model Quiz {
   id          String     @id @default(uuid()) @db.Uuid
   title       String
   description String?
+  isPublished Boolean    @default(false)
+  accessCode  String?
   questions   Question[]
 }
 

@@ -16,6 +16,7 @@ const corsMiddleware = cors({
     "Content-Type",
     "Authorization",
     "X-Custom-Header",
+    "Range"
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],

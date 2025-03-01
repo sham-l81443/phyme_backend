@@ -9,13 +9,14 @@ import authRoutes from "./routes/authRoutes";
 import quizRoutes from "./routes/quizRoutes";
 import passport from "passport";
 import googleConfig from "./config/googleConfig";
+import fileRoutes from "./routes/fileUploadRoutes";
 
 const app = express();
 
 // Security middleware
 app.use(helmet());
 app.use(corsMiddleware);
-app.use(rateLimitMiddleware);
+// app.use(rateLimitMiddleware);
 
 // Parsinf Middleware
 app.use(cookieParser('userId'));
@@ -29,6 +30,7 @@ googleConfig();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/quiz", quizRoutes)
+app.use('/api/file', fileRoutes)
 
 // Error handling middleware
 app.use(errorHandler);
