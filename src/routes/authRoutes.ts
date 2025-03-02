@@ -1,8 +1,8 @@
 import passport from "passport";
-import { verifyUser } from "../controllers/authController";
-import loinUser from "../controllers/auth-controller/loginController";
+import { verifyUser } from "@/controllers/auth-controller/verifyUser";
 import { Router } from "express";
 import { registerUser } from "@/controllers/auth-controller/registerController";
+import loginUser from "../controllers/auth-controller/loginController";
 
 
 const router = Router();

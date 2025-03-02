@@ -3,7 +3,6 @@ import { ErrorCode } from "@/errors/errorCodes";
 import { ErrorMessages } from "@/errors/errorMessages";
 import prisma from "@/lib/prisma";
 import OTPService from "@/services/OTPService";
-import { createSuccessResponse } from "@/utils/createResponse";
 import { registerSchema } from "@/validators/authSchema";
 import { PrismaClient } from "@prisma/client";
 import { NextFunction, Response, Request } from "express";
@@ -23,10 +22,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 
         if (user) {
 
-
-            const errorObj = 
-
-            throw new AppError(ErrorMessages.EMAIL_ALREADY_EXISTS, 400, ErrorCode.EMAIL_ALREADY_EXISTS, { data: { email: validatedData.email } })
+            throw new AppError({ errorType: 'Bad Request', message: 'User with this email already exist' })
         }
 
         // send otp
@@ -36,7 +32,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         // handle if sending otp failed
         if (!otpResponse.success) {
 
-            throw new AppError(ErrorMessages.OTP_SEND_FAILURE, 400, ErrorCode.OTP_SEND_FAILURE, { data: null })
+            throw new AppError({ errorType: 'Internal Server Error', message: 'Failed to send OTP' })
 
         }
 
@@ -54,7 +50,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 
             const otp = await tx.oTP.create({
                 data: {
-                    expiry: new Date(new Date().getTime() + 15 * 60 * 1000),
+                    expiry: new Date(new Date().getTime() + 5 * 60 * 1000),
                     otp: otpResponse.otp,
                     userId: user.id,
                     createdAt: new Date(),
@@ -69,7 +65,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         })
 
         if (!transaction) {
-            throw new AppError(ErrorMessages.DATABASE_ERROR, 400, ErrorCode.DATABASE_ERROR, { data: null })
+            throw new AppError({ errorType: 'Internal Server Error', message: 'Failed to create user' })
         }
 
         if (transaction) {
@@ -88,7 +84,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
                 phoneNumber: transaction.user.phone,
                 name: transaction.user.name
             }
-            const responseData = createSuccessResponse({ data: transaction.otp, message: 'OTP sent successfully' })  // create success response
+            const responseData = CreateResponse({ data: data, message: 'User registered successfully' })
 
             res.status(200).json(responseData)  // send success response
 

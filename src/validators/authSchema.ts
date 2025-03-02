@@ -33,7 +33,10 @@ export const verifySchema = z.object({
   password: z
     .string()
     .min(1, { message: "Password required" })
-    .min(8, { message: "Password must be at least 8 charcters" }),
+    .min(8, { message: "Password must be at least 8 charcters" })
+    .regex(/^(?=.*[0-9])(?=.*[^A-Za-z0-9]).*$/, {
+      message: "Password must include at least one number and one special character"
+    }),
 });
 
 export type IVerifySchema = z.infer<typeof verifySchema>;
