@@ -3,12 +3,16 @@ import { verifyUser } from "@/controllers/auth-controller/verifyUser";
 import { Router } from "express";
 import { registerUser } from "@/controllers/auth-controller/registerController";
 import loginUser from "../controllers/auth-controller/loginController";
+import adminLoginController from "@/controllers/auth-controller/adminLoginController";
 
 
 const router = Router();
 
 
 router.post('/register', registerUser)
+
+
+router.post('/admin/login',adminLoginController)
 
 
 router.get('/google', passport.authenticate('google', { scope: ['email', 'profile'] }))

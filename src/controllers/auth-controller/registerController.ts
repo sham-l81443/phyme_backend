@@ -73,7 +73,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
             res.cookie("userId", transaction.user.id, {
                 httpOnly: true,
                 secure: true,
-                sameSite: "none",
+                sameSite: "strict",
                 maxAge: 15 * 60 * 1000,
                 path: '/',
             })

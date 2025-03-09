@@ -5,20 +5,21 @@ import bcrypt from "bcrypt"
 import prisma from "@/lib/prisma";
 import { generateJwt } from "@/utils/generateJwt";
 import { generateRefreshToken } from "@/utils/generateRefreshToken";
-export const authenticateUser: IController = async (req, res, next) => {
+
+export const authenticateAdmin: IController = async (req, res, next) => {
 
     try {
 
-        const token = req.cookies.token;
+        const token = req.cookies.adminToken;
 
         if (!token) {
 
             res.clearCookie('token')
 
-            const bareRefreshToken = req.cookies.refreshToken as string;
+            const bareRefreshToken = req.cookies.adminRefreshToken as string;
 
 
-            if (!bareRefreshToken) throw new AppError({ errorType: "Unauthorized", message: "User is not logged in" })
+            if (!bareRefreshToken) throw new AppError({ errorType: "Unauthorized", message: "Admin is not logged in" })
 
 
 
@@ -35,16 +36,16 @@ export const authenticateUser: IController = async (req, res, next) => {
                         gte: new Date(),
                     }
                 },
-                select: { User: true, tokenSecret: true }
+                select: { Admin: true, tokenSecret: true }
             })
 
-            if (!refreshToken) throw new AppError({ errorType: "Unauthorized", message: "User is not logged in" })
+            if (!refreshToken) throw new AppError({ errorType: "Unauthorized", message: "Admin is not logged in" })
 
 
 
             const isRefreshTokenValid = await bcrypt.compare(userRefreshToken, refreshToken.tokenSecret)
 
-            if (!isRefreshTokenValid) throw new AppError({ errorType: "Unauthorized", message: "User is not logged in" })
+            if (!isRefreshTokenValid) throw new AppError({ errorType: "Unauthorized", message: "Admin is not logged in" })
 
 
             await prisma.refreshToken.update({
@@ -57,28 +58,29 @@ export const authenticateUser: IController = async (req, res, next) => {
             })
 
 
-            const user = refreshToken?.User
+            const admin = refreshToken?.Admin
 
-            if (!user) throw new AppError({ errorType: "Unauthorized", message: "User is not logged in" })
-
-
-            const newRefreshToken = await generateRefreshToken(user.id,'USER')
+            if (!admin) throw new AppError({ errorType: "Unauthorized", message: "Admin is not logged in" })
 
 
-            res.cookie("refreshToken", newRefreshToken.plainToken, {
+            const newRefreshToken = await generateRefreshToken(admin.id,'ADMIN')
+
+
+            res.cookie("adminRefreshToken", newRefreshToken.plainToken, {
                 httpOnly: true,
                 sameSite: "strict",
                 expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
                 secure: process.env.NODE_ENV === "production",
+                path: "/"
 
             })
 
 
-            const accessToken = generateJwt({ email: user?.email, role: user?.userType, userId: user?.id })
+            const accessToken = generateJwt({ email: admin?.email, role: 'admin', userId: admin?.id })
 
 
             // Set JWT token in cookie
-            res.cookie("token", accessToken, {
+            res.cookie("adminToken", accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict",
@@ -87,7 +89,7 @@ export const authenticateUser: IController = async (req, res, next) => {
             });
 
 
-            req.user = user
+            req.user = admin
 
             next();
 

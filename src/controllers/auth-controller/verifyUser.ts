@@ -69,7 +69,7 @@ export const verifyUser = async (req: Request, res: Response, next: Function) =>
         });
 
 
-        const refreshToken = await generateRefreshToken(userId)
+        const refreshToken = await generateRefreshToken(userId,'USER')
 
         const token = generateJwt({ email: updatedUser.email, userId: userId, role: updatedUser.userType })
         console.log(token, 'jwt token fron util fucntion')
@@ -82,6 +82,15 @@ export const verifyUser = async (req: Request, res: Response, next: Function) =>
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000,
             path: "/"
+        })
+
+
+        res.cookie("userId", userId, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 7 * 60 * 60 * 1000,
+            path: '/',
         })
 
 

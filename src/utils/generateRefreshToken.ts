@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import prisma from '@/lib/prisma';
 import { AppError } from '@/errors/AppError';
 
-async function generateRefreshToken(userId: string) {
+async function generateRefreshToken(userId: string,usageType:'ADMIN'|'USER') {
 
     try {
         const refreshToken = crypto.randomBytes(40).toString('hex');
@@ -14,23 +14,39 @@ async function generateRefreshToken(userId: string) {
 
         const plainToken = `${tokenId}.${refreshToken}`
 
-        await prisma.refreshToken.create(
-            {
-                data: {
-                    tokenSecret: hashedRefreshToken,
-                    tokenId: tokenId,
-                    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-                    User: { connect: { id: userId } }
+        if(usageType === 'ADMIN'){
+            
+            await prisma.refreshToken.create(
+                {
+                    data: {
+                        tokenSecret: hashedRefreshToken,
+                        tokenId: tokenId,
+                        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+                        Admin: { connect: { id: userId } }
+                    }
                 }
-            }
-        )
+            )
+        }else{
+            await prisma.refreshToken.create(
+                {
+                    data: {
+                        tokenSecret: hashedRefreshToken,
+                        tokenId: tokenId,
+                        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+                        User: { connect: { id: userId } }
+                    }
+                }
+            )
+        }
+
+        
 
         return { plainToken };
 
 
     } catch (error) {
 
-        throw new AppError({ errorType: "Internal Server Error", message: 'Error generating  token' })
+        throw new AppError({ errorType: "Internal Server Error", message: 'Error generating refresh Token' })
 
     }
 

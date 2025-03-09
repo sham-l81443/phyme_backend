@@ -10,16 +10,17 @@ import quizRoutes from "./routes/quizRoutes";
 import passport from "passport";
 import googleConfig from "./config/googleConfig";
 import fileRoutes from "./routes/fileUploadRoutes";
+import chapterRoutes from "./routes/chapterRoutes";
 
 const app = express();
 
 // Security middleware
 app.use(helmet());
 app.use(corsMiddleware);
-// app.use(rateLimitMiddleware);
+app.use(rateLimitMiddleware);
 
-// Parsinf Middleware
-app.use(cookieParser('userId'));
+// Parsing Middleware
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,6 +32,7 @@ googleConfig();
 app.use("/api/auth", authRoutes);
 app.use("/api/quiz", quizRoutes)
 app.use('/api/file', fileRoutes)
+app.use('/api/chapter', chapterRoutes)
 
 // Error handling middleware
 app.use(errorHandler);
