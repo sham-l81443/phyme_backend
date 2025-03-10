@@ -16,7 +16,7 @@ export const authenticateAdmin: IController = async (req, res, next) => {
 
             res.clearCookie('token')
 
-            const bareRefreshToken = req.cookies.adminRefreshToken as string;
+            const bareRefreshToken = req.cookies.adminRefreshToken;
 
 
             if (!bareRefreshToken) throw new AppError({ errorType: "Unauthorized", message: "Admin is not logged in" })
@@ -24,6 +24,9 @@ export const authenticateAdmin: IController = async (req, res, next) => {
 
 
             const [tokenId, userRefreshToken] = bareRefreshToken.split('.')
+
+
+
 
 
 
@@ -63,7 +66,7 @@ export const authenticateAdmin: IController = async (req, res, next) => {
             if (!admin) throw new AppError({ errorType: "Unauthorized", message: "Admin is not logged in" })
 
 
-            const newRefreshToken = await generateRefreshToken(admin.id,'ADMIN')
+            const newRefreshToken = await generateRefreshToken(admin.id, 'ADMIN')
 
 
             res.cookie("adminRefreshToken", newRefreshToken.plainToken, {
