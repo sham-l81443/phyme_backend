@@ -182,6 +182,7 @@ model Chapter {
   id          Int      @id @default(autoincrement())
   title       String
   description String?
+  term        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   note        Note[]   @relation("chapter_notes")
@@ -193,7 +194,7 @@ model Note {
   id         String     @id @default(uuid()) @db.Uuid
   title      String
   content    String
-  importance IMPORTANCE
+  importance IMPORTANCE?
   chapterId  Int
   chapter    Chapter    @relation("chapter_notes", fields: [chapterId], references: [id])
   createdAt  DateTime   @default(now())
