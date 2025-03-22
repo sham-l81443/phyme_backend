@@ -191,12 +191,33 @@ model Chapter {
 }
 
 model Note {
-  id         String     @id @default(uuid()) @db.Uuid
+  id         String      @id @default(uuid()) @db.Uuid
   title      String
   content    String
   importance IMPORTANCE?
   chapterId  Int
-  chapter    Chapter    @relation("chapter_notes", fields: [chapterId], references: [id])
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  chapter    Chapter     @relation("chapter_notes", fields: [chapterId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  video      Video[]
+}
+
+enum VIDEOTYPE {
+  TUTION
+  NOTE
+}
+
+model Video {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  description String
+  embedLink   String
+  duration    Float
+  date        DateTime
+  thumbnail   String
+  videoType   VIDEOTYPE
+  updatedAt   DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  note        Note?     @relation(fields: [noteId], references: [id])
+  noteId      String?
 }
