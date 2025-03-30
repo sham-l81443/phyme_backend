@@ -210,14 +210,14 @@ enum VIDEOTYPE {
 model Video {
   id          String    @id @default(uuid()) @db.Uuid
   name        String
-  description String
+  description String?
   embedLink   String
-  duration    Float
+  duration    String
   date        DateTime
   thumbnail   String
   videoType   VIDEOTYPE
   updatedAt   DateTime  @default(now())
   createdAt   DateTime  @default(now())
   note        Note?     @relation(fields: [noteId], references: [id])
-  noteId      String?
+  noteId      String?   @db.Uuid()
 }

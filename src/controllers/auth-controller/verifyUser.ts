@@ -69,7 +69,7 @@ export const verifyUser = async (req: Request, res: Response, next: Function) =>
         });
 
 
-        const refreshToken = await generateRefreshToken(userId,'USER')
+        const refreshToken = await generateRefreshToken(userId, 'USER')
 
         const token = generateJwt({ email: updatedUser.email, userId: userId, role: updatedUser.userType })
         console.log(token, 'jwt token fron util fucntion')

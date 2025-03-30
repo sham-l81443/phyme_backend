@@ -5,12 +5,13 @@ import corsMiddleware from "./middleware/cors";
 import rateLimitMiddleware from "./middleware/ratelimit";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middleware/errorHandler";
-import authRoutes from "./routes/authRoutes";
+// import authRoutes from "./routes/authRoutes";
 import quizRoutes from "./routes/quizRoutes";
 import passport from "passport";
 import googleConfig from "./config/googleConfig";
 import fileRoutes from "./routes/fileUploadRoutes";
 import chapterRoutes from "./routes/chapterRoutes";
+import { liveClassRoutes, authRoutes } from "./routes";
 
 const app = express();
 
@@ -33,6 +34,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/quiz", quizRoutes)
 app.use('/api/file', fileRoutes)
 app.use('/api/chapter', chapterRoutes)
+app.use('/api/live-class', liveClassRoutes)
+
 
 // Error handling middleware
 app.use(errorHandler);

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Video" ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "duration" SET DATA TYPE TEXT;
