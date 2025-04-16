@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import createSuccessResponse from "@/utils/responseCreator";
 import { generateJwt } from "@/utils/generateJwt";
 import { generateRefreshToken } from "@/utils/generateRefreshToken";
+import { USERTYPE } from "@prisma/client";
 
 /**
  * Controller function to handle user login
@@ -23,16 +24,22 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
 
         // If user is not found or not verified, throw an error
         if (!user) {
-            throw new AppError({ errorType: "Not Found", message: 'User does not exist' })
+            throw new AppError({ errorType: "Not Found", message: 'Invalid credentials' })
         }
 
-        // Verify the password using bcrypt
-        const isPasswordValid = user?.password ? await bcrypt.compare(validatedData.password, user.password) : false;
+        if (user?.password) {
+            // Verify the password using bcrypt
+            const isPasswordValid = await bcrypt.compare(validatedData.password, user.password);
 
-        // If password is invalid, throw an error
-        if (!isPasswordValid) {
-            throw new AppError({ errorType: "Unauthorized", message: 'Invalid credentials' })
+            // If password is invalid, throw an error 
+            if (!isPasswordValid) {
+                throw new AppError({ errorType: "Unauthorized", message: 'Invalid credentials' })
+            }
         }
+
+
+        console.log(user)
+
 
         // Set a cookie with the user's ID (1 hour expiration)
         res.cookie('userId', user.id, {
@@ -44,7 +51,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
         })
 
         // Generate a refresh token for the user
-        const refreshToken = await generateRefreshToken(user.id,'USER');
+        const refreshToken = await generateRefreshToken(user.id, 'USER');
 
         // Set a cookie with the refresh token (7 days expiration)
         res.cookie('refreshToken', refreshToken.plainToken, {
@@ -58,7 +65,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
         // Generate a JWT containing user information
         const token = await generateJwt({ userId: user.id, email: user.email, role: user.userType });
 
-        // Set a cookie with the JWT (1 hour expiration)
+        // Set a cookie with the JWT (2 hour expiration)
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -67,7 +74,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
         });
 
         // Create a success response object with user details
-        const responseObj = createSuccessResponse({ data: { name: user.name, email: user.email }, message: 'Login successful' });
+        const responseObj = createSuccessResponse({ data: { name: user.name, email: user.email, userType: user.userType }, message: 'Login successful' });
 
         // Send the success response to the client
         res.status(200).json(responseObj);

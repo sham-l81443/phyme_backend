@@ -7,12 +7,13 @@ import { registerSchema } from "@/validators/authSchema";
 import { PrismaClient } from "@prisma/client";
 import { NextFunction, Response, Request } from "express";
 import CreateResponse from "@/utils/responseCreator";
+import { signupSchema } from "@/lib/validitions/authSchema";
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
 
-        const validatedData = registerSchema.parse(req.body);  // Validate request body
+        const validatedData = signupSchema.parse(req.body);  // Validate request body
 
         const user = await prisma.user.findUnique({
             where: { email: validatedData.email }    // check if user already exist with the give email or not
@@ -42,7 +43,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
             const user = await tx.user.create({
                 data: {
                     email: validatedData.email,
-                    phone: validatedData.phone,
+                    phone: validatedData?.phone || null,
                     name: validatedData.name,
                     registrationType: validatedData.registrationType
                 },

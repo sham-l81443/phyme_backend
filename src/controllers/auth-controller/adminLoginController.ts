@@ -13,9 +13,9 @@ const adminLoginController: IController = async (req, res, next) => {
 
         const validatedData = loginSchema.parse(req.body)
 
-        console.log({validatedData})
+        console.log({ validatedData })
 
-        const admin = await prisma.admin.findFirst({
+        const admin = await prisma.admin.findUnique({
             where: {
                 email: validatedData.email,
                 isVerified: true,
@@ -24,11 +24,11 @@ const adminLoginController: IController = async (req, res, next) => {
 
 
 
-        if (!admin) {
-            throw new AppError({ errorType: "Not Found", message: "Admin does not exist" })
+        if (!admin || !admin.isVerified) {
+            throw new AppError({ errorType: "Not Found", message: "Admin does not exist or not verified" })
         }
 
-        console.log({admin})
+        console.log({ admin })
 
 
         const isPasswordValid = validatedData.password === admin.password
@@ -42,16 +42,16 @@ const adminLoginController: IController = async (req, res, next) => {
         const token = generateJwt({ userId: admin.id, role: 'admin', email: admin?.email })
 
 
-        console.log({token})
+        console.log({ token })
 
 
-        const refreshToken = await generateRefreshToken(admin.id,'ADMIN')
+        const refreshToken = await generateRefreshToken(admin.id, 'ADMIN')
 
-        console.log({refreshToken})
+        console.log({ refreshToken })
 
 
 
-        res.cookie('adminRefreshToken', refreshToken, {
+        res.cookie('adminRefreshToken', refreshToken?.plainToken, {
             secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             sameSite: 'strict',
@@ -79,7 +79,7 @@ const adminLoginController: IController = async (req, res, next) => {
         const resObj = createSuccessResponse({
             message: 'Logged in successfully', data: {
                 isAdmin: true,
-               email:admin?.email
+                email: admin?.email
             }
         })
 

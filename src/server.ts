@@ -29,12 +29,11 @@ app.use(express.urlencoded({ extended: true }));
 googleConfig();
 
 
-
+// app.use("/api/quiz", quizRoutes)
+// app.use('/api/file', fileRoutes)
+// app.use('/api/chapter', chapterRoutes)
 app.use("/api/auth", authRoutes);
-app.use("/api/quiz", quizRoutes)
-app.use('/api/file', fileRoutes)
-app.use('/api/chapter', chapterRoutes)
-app.use('/api/live-class', liveClassRoutes)
+app.use('/api', liveClassRoutes)
 
 
 // Error handling middleware

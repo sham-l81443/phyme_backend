@@ -60,6 +60,8 @@ model User {
   email            String           @unique
   phone            String?
   password         String?
+  classId          Int?
+  class            Class?           @relation(fields: [classId], references: [id])
   name             String
   userType         USERTYPE         @default(FREE)
   isVerified       Boolean          @default(false)
@@ -153,16 +155,18 @@ model Syllabus {
 }
 
 model Class {
-  id         Int     @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String
   section    String?
   syllabusId Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  user       User[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   syllabus Syllabus  @relation(fields: [syllabusId], references: [id])
   subjects Subject[]
+
+  videos Video[]
 }
 
 model Subject {
@@ -212,9 +216,12 @@ model Video {
   name        String
   description String?
   embedLink   String
-  duration    String
-  date        DateTime
-  thumbnail   String
+  duration    String?
+  date        DateTime?
+  isFree      Boolean   @default(false)
+  thumbnail   String?
+  classId     Int       @default(0)
+  class       Class     @relation(fields: [classId], references: [id])
   videoType   VIDEOTYPE
   updatedAt   DateTime  @default(now())
   createdAt   DateTime  @default(now())

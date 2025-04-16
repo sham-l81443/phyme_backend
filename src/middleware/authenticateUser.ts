@@ -59,10 +59,12 @@ export const authenticateUser: IController = async (req, res, next) => {
 
             const user = refreshToken?.User
 
+            console.log(user)
+
             if (!user) throw new AppError({ errorType: "Unauthorized", message: "User is not logged in" })
 
 
-            const newRefreshToken = await generateRefreshToken(user.id,'USER')
+            const newRefreshToken = await generateRefreshToken(user.id, 'USER')
 
 
             res.cookie("refreshToken", newRefreshToken.plainToken, {

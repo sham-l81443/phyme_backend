@@ -64,7 +64,7 @@ export default async function addLiveVideoController(req: Request, res: Response
             timestamp: new Date().toISOString()
         })
 
-        return res.status(201).json(resData)
+        res.status(201).json(resData)
 
 
     } catch (error) {
