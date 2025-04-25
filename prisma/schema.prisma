@@ -8,6 +8,47 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum SUBSCRIPTIONTYPE {
+  FREE
+  PREMIUM
+}
+
+model User {
+  id                String           @id @default(uuid()) @db.Uuid
+  email             String           @unique
+  phone             String?
+  password          String?
+  classId           Int?
+  class             Class?           @relation(fields: [classId], references: [id])
+  name              String?
+  subscriptionType  SUBSCRIPTIONTYPE @default(FREE)
+  isVerified        Boolean          @default(false)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  registrationType  REGISTRATIONTYPE
+  syllabusId        Int?
+  syllabus          Syllabus?        @relation(fields: [syllabusId], references: [id])
+  otp               OTP[]
+  refreshToken      RefreshToken[]
+  region            String?
+  parent_email      String?
+  streak            Int?             @default(0)
+  isBlocked         Boolean          @default(false)
+  avatar            String?
+  hasAcceptedTerms  Boolean          @default(false)
+  badges            String[]         @default([])
+  isProfileComplete Boolean          @default(false)
+  googleId          String?          @unique
+  isUnderAged       Boolean          @default(false)
+  isParentConsent   Boolean?         @default(false)
+  parentEmail       String?
+  isParentVerified  Boolean          @default(false)
+
+  @@index([id])
+  @@index([email])
+  @@index([googleId])
+}
+
 enum ROLE {
   USER
   ADMIN
@@ -16,11 +57,6 @@ enum ROLE {
 enum OTPTYPE {
   EMAIL_VERIFICATION
   PASSWORD_RESET
-}
-
-enum USERTYPE {
-  FREE
-  PAID
 }
 
 enum REGISTRATIONTYPE {
@@ -55,23 +91,6 @@ enum STANDARD {
   CLASS_TWELVE
 }
 
-model User {
-  id               String           @id @default(uuid()) @db.Uuid
-  email            String           @unique
-  phone            String?
-  password         String?
-  classId          Int?
-  class            Class?           @relation(fields: [classId], references: [id])
-  name             String
-  userType         USERTYPE         @default(FREE)
-  isVerified       Boolean          @default(false)
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  registrationType REGISTRATIONTYPE
-  otp              OTP[]
-  refreshToken     RefreshToken[]
-}
-
 model OTP {
   id String @id @default(uuid()) @db.Uuid
 
@@ -85,7 +104,7 @@ model OTP {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([userId, type])
+  @@index([userId, expiry])
 }
 
 model Admin {
@@ -144,29 +163,40 @@ model RefreshToken {
 model Syllabus {
   id          Int      @id @default(autoincrement())
   name        String
+  code        String   @unique
   description String?
   year        Int?
   gradeLevels Json?
   language    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  user        User[]
 
-  classes Class[]
+  class Class[]
+
+  @@index([code])
+  @@index([id])
 }
 
 model Class {
-  id         Int      @id @default(autoincrement())
-  name       String
-  section    String?
-  syllabusId Int
-  user       User[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  name        String
+  section     String?
+  description String?
+  code        String   @unique
+  syllabusId  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User[]
 
   syllabus Syllabus  @relation(fields: [syllabusId], references: [id])
   subjects Subject[]
 
   videos Video[]
+
+  @@index([code])
+  @@index([id])
 }
 
 model Subject {

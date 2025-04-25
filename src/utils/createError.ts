@@ -1,4 +1,4 @@
-import { statusCode } from "../errors/statusCode";
+import { statusCode } from "./errors/statusCode";
 
 
 

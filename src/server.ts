@@ -1,73 +1,84 @@
 import express from "express";
 import "dotenv/config";
 import helmet from "helmet";
-import corsMiddleware from "./middleware/cors";
-import rateLimitMiddleware from "./middleware/ratelimit";
+import corsMiddleware from "./api/middleware/cors";
+import rateLimitMiddleware from "./api/middleware/ratelimit";
 import cookieParser from "cookie-parser";
-import errorHandler from "./middleware/errorHandler";
-// import authRoutes from "./routes/authRoutes";
-import quizRoutes from "./routes/quizRoutes";
+import errorHandler from "./api/middleware/errorHandler";
 import passport from "passport";
 import googleConfig from "./config/googleConfig";
-import fileRoutes from "./routes/fileUploadRoutes";
-import chapterRoutes from "./routes/chapterRoutes";
-import { liveClassRoutes, authRoutes } from "./routes";
+import { appRoutes } from "./api/routes";
+import morgan from "morgan";
+import { logger } from "./utils/logger";
+
+
+
+// Validate environment variables
+const requiredEnv = ["PORT", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"];
+requiredEnv.forEach((key) => {
+  if (!process.env[key]) {
+    console.error(`Missing required env variable: ${key}`);
+    process.exit(1);
+  }
+});
 
 const app = express();
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false })); // Customize as needed
+app.use(morgan("combined", { stream: { write: (msg) => logger.info(msg.trim()) } }));
 app.use(corsMiddleware);
 app.use(rateLimitMiddleware);
 
 // Parsing Middleware
 app.use(cookieParser());
 app.use(passport.initialize());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10kb", strict: true }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
 googleConfig();
 
+// Routes
+appRoutes(app);
 
-// app.use("/api/quiz", quizRoutes)
-// app.use('/api/file', fileRoutes)
-// app.use('/api/chapter', chapterRoutes)
-app.use("/api/auth", authRoutes);
-app.use('/api', liveClassRoutes)
 
 
 // Error handling middleware
 app.use(errorHandler);
 
-// initializeSupabase()
-const PORT = process.env.PORT || "3000";
+const PORT = Number(process.env.PORT) || 3000;
+if (isNaN(PORT)) {
+  console.error("Invalid PORT value");
+  process.exit(1);
+}
 
 const server = app.listen(PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
 
-process.on("SIGTERM", () => {
-  console.log("SIGTERM signal received: closing HTTP server");
+// Graceful shutdown
+const shutdown = (signal: string) => {
+  console.log(`${signal} signal received: closing HTTP server`);
   server.close(() => {
     console.log("HTTP server closed");
     process.exit(0);
   });
-});
+  setTimeout(() => {
+    console.error("Shutdown timed out, forcing exit");
+    process.exit(1);
+  }, 10000);
+};
 
-process.on("SIGINT", () => {
-  console.log("SIGINT signal received: closing HTTP server");
-  server.close(() => {
-    console.log("HTTP server closed");
-    process.exit(0);
-  });
-});
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
 
 // Unhandled error and rejection handlers
 process.on("unhandledRejection", (reason, promise) => {
-  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  logger.error("Unhandled Rejection at:", promise, "reason:", reason);
+  process.exit(1);
 });
 
 process.on("uncaughtException", (error) => {
-  console.error("Uncaught Exception:", error);
+  logger.error("Uncaught Exception:", error);
   process.exit(1);
 });

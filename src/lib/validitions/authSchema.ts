@@ -23,10 +23,7 @@ export const loginSchema = z.object({
 
 
 export const signupSchema = z.object({
-    name: z.string().min(1, { message: 'name required' }).min(3, { message: "name must be at least 3 characters" }).max(20, { message: "name must not exceed 20 characters" }),
     email: EMAIL_SCHEMA,
-    phone: PHONE_NUMBER_SCHEMA,
-    // terms: z.boolean().default(false).refine((value) => value === true, { message: 'Please accept the terms and conditions' }),
     registrationType: REGISTRATION_TYPE_SCHEMA_DEFAULT,
 })
 

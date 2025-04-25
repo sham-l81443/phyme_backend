@@ -8,17 +8,17 @@ const googleConfig = () => {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
       callbackURL: process.env.GOOGLE_CALLBACK_URL || '',
       passReqToCallback: true
-    }, 
-      async (request, accessToken, refreshToken, profile, done) => {
-        console.log(profile)
+    },
+    async (request, accessToken, refreshToken, profile, done) => {
+      console.log(profile)
       try {
-        
+
         console.log('Authentication successful', {
           profile: profile.id,
           email: profile.emails?.[0]?.value
         });
 
-        
+
         return done(null, profile);
       } catch (error) {
         return done(error, false);
@@ -26,14 +26,6 @@ const googleConfig = () => {
     }
   ));
 
-  // Add serialization methods
-//   passport.serializeUser((user, done) => {
-//     done(null, user);
-//   });
-
-//   passport.deserializeUser(function(user, done) {
-//     return done(null, user);
-//   });
 };
 
 export default googleConfig;
