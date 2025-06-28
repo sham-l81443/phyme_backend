@@ -1,14 +1,14 @@
-import { AppError } from "@/utils/errors/AppError";
-import prisma from "@/lib/prisma";
-import { loginSchema } from "@/schema/authSchema";
+import { AppError } from "@/core/utils/errors/AppError";
+import prisma from "@/core/lib/prisma";
+import { loginSchema } from "@/core/schema/authSchema";
 import { NextFunction, Response, Request } from "express";
 import bcrypt from "bcrypt";
-import createSuccessResponse from "@/utils/responseCreator";
-import { generateStudentAccessToken } from "@/utils/jwt/generate";
-import { generateRefreshToken } from "@/utils/jwt/generateRefreshToken";
-import { UserRole } from "@/constants/enums/user";
-import { setAccessTokenCookie, setRefreshTokenCookie } from "@/utils/cookies/setRefreshCookie";
-import { logger } from "@/utils/logger";
+import createSuccessResponse from "@/core/utils/responseCreator";
+import { generateStudentAccessToken } from "@/core/utils/jwt/generate";
+import { generateRefreshToken } from "@/core/utils/jwt/generateRefreshToken";
+import { UserRole } from "@/core/constants/ENUMS/user";
+import { setAccessTokenCookie, setRefreshTokenCookie } from "@/core/utils/cookies";
+import { logger } from "@/core/utils/logger";
 import { Prisma } from "@prisma/client";
 
 /**
@@ -22,7 +22,7 @@ const studentLogin = async (req: Request, res: Response, next: NextFunction) => 
 
         // Find the user in the database by email and check if they are verified
         const user = await prisma.user.findUnique({
-            where: { email: validatedData.email, isVerified: true, isBlocked: false },
+            where: { email: validatedData.email, isVerified: true },
             include: { class: true }, // Include related class data
         });
 
@@ -47,7 +47,7 @@ const studentLogin = async (req: Request, res: Response, next: NextFunction) => 
         // Generate a refresh token for the user
         const refreshToken = await generateRefreshToken(user.id, UserRole.STUDENT);
 
-        const accessToken = generateStudentAccessToken({ class: user.class?.name || '', email: user.email, id: user.id, role: UserRole.STUDENT, subscriptionType: user.subscriptionType });
+        const accessToken = generateStudentAccessToken({ class: user.class?.code || '', email: user.email, id: user.id, role: UserRole.STUDENT });
 
         setRefreshTokenCookie({ res, cookieValue: refreshToken.plainToken, usageType: UserRole.STUDENT })
 

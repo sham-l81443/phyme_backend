@@ -1,0 +1,47 @@
+model User {
+  id                String           @id @default(uuid()) @db.Uuid
+  googleId          String?          @unique
+
+  email             String           @unique
+  name              String?
+  phone             String?
+  password          String?
+  otp               OTP[]
+  hasAcceptedTerms  Boolean          @default(false)
+  role              ROLE             @default(STUDENT)
+
+
+  classId           String?
+  class             Class?           @relation(fields: [classId], references: [id])
+  
+  isVerified        Boolean          @default(false)
+  
+  registrationType  REGISTRATIONTYPE
+  
+  syllabusId        String?
+  syllabus          Syllabus?        @relation(fields: [syllabusId], references: [id])
+
+  refreshToken      RefreshToken[]
+
+
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([email])
+  @@index([googleId])
+  @@map("users")
+}
+
+
+enum ROLE {
+  INSTRUCTOR
+  STUDENT
+  ADMIN
+}
+
+
+
+enum REGISTRATIONTYPE {
+  SSO
+  DEFAULT
+}

@@ -1,0 +1,25 @@
+
+
+model Video {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  description String?
+  embedLink   String
+  duration    String?
+  date        DateTime?
+  code        String   @unique
+  isFree      Boolean   @default(false)
+  thumbnail   String?
+  classId     Int       @default(0)
+  videoType   VIDEOTYPE
+  updatedAt   DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  note        Note?     @relation(fields: [noteId], references: [id])
+  noteId      String?   @db.Uuid()
+}
+
+
+enum VIDEOTYPE {
+  TUTION
+  NOTE
+}

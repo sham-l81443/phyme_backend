@@ -1,11 +1,11 @@
-import { COMMON_CONFIG } from "@/config/auth";
-import { UserRole } from "@/constants/enums/user";
-import prisma from "@/lib/prisma";
-import { GoogleProfileSchema, IGoogleProfile } from "@/schema/google.sso.schema";
-import { IController } from "@/types";
-import { setRefreshTokenCookie, setAccessTokenCookie } from "@/utils/cookies/setRefreshCookie";
-import { generateRefreshToken, generateStudentAccessToken } from "@/utils/jwt";
-import { logger } from "@/utils/logger";
+import { COMMON_CONFIG } from "@/core/config/auth";
+import { UserRole } from "@/core/constants/ENUMS/user";
+import prisma from "@/core/lib/prisma";
+import { GoogleProfileSchema, IGoogleProfile } from "@/core/schema/google.sso.schema";
+import { IController } from "@/core/types";
+import { setRefreshTokenCookie, setAccessTokenCookie, setLoggedInCookie } from "@/core/utils/cookies";
+import { generateRefreshToken, generateStudentAccessToken } from "@/core/utils/jwt";
+import { logger } from "@/core/utils/logger";
 import { Prisma } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 
@@ -102,6 +102,8 @@ export const googleAuthController = async (req: Request, res: Response, next: Ne
 
             // Generate tokens
             const refreshToken = await generateRefreshToken(existingUser.id, UserRole.STUDENT);
+
+
             const accessToken = generateStudentAccessToken({
                 class: existingUser.class?.name || 'unknown',
                 email: existingUser.email,
@@ -113,6 +115,7 @@ export const googleAuthController = async (req: Request, res: Response, next: Ne
             // Set cookies
             setRefreshTokenCookie({ res, cookieValue: refreshToken.plainToken, usageType: UserRole.STUDENT });
             setAccessTokenCookie({ res, cookieValue: accessToken, usageType: UserRole.STUDENT });
+            setLoggedInCookie({ res, cookieValue: 'true', usageType: UserRole.STUDENT });
 
             res.cookie('sso-success', 'login successful', { httpOnly: false, sameSite: 'lax', secure: true });
             res.redirect(COMMON_CONFIG.SUCCESS_REDIRECT_URL);

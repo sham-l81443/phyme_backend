@@ -1,6 +1,6 @@
 import { Router } from "express";
-import createSyllabusController from "../controllers/admin-controllers/syllabus-controller/create.syllabus.controller";
-import getSyllabusController from "../controllers/admin-controllers/syllabus-controller/get.syllabus.controller";
+import createSyllabusController from "../controllers/admin-controllers/syllabus/create.syllabus.controller";
+import getSyllabusController from "../controllers/admin-controllers/syllabus/get.syllabus.controller";
 
 const router = Router()
 

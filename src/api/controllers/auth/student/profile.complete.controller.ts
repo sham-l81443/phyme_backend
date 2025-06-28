@@ -1,11 +1,11 @@
-import prisma from "@/lib/prisma";
-import { profileSchema } from "@/schema/authSchema";
-import { IController } from "@/types";
-import { AppError } from "@/utils/errors/AppError";
-import createSuccessResponse from "@/utils/responseCreator";
-import { IStudentAccessToken } from "@/schema";
+import prisma from "@/core/lib/prisma";
+import { profileSchema } from "@/core/schema/authSchema";
+import { IController } from "@/core/types";
+import { AppError } from "@/core/utils/errors/AppError";
+import createSuccessResponse from "@/core/utils/responseCreator";
+import { IStudentAccessToken } from "@/core/schema";
 import { v4 as uuidv4 } from 'uuid';
-import { sendEmail } from "@/utils/sendMail";
+import { sendEmail } from "@/core/utils/sendMail";
 
 const profileCompleteController: IController = async (req, res, next) => {
   try {

@@ -7,7 +7,7 @@ export const STUDENT_ENDPOINTS = {
     googleAuth: '/google/callback',
     profileComplete: '/profile/create',
     details: '/details',
-    tutionVideos: '/videos',
+    tutionVideos: '/list',
 }
 
 
@@ -15,5 +15,9 @@ export const ADMIN_ENDPOINTS = {
     login: '/admin/login',
     createClass: '/create',
     getClass: '/list',
+    createVideo:'/create',
+    getVideo:'/list', 
+    createSubject:'/create',
+  
 
 }

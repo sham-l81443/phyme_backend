@@ -1,16 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from '@/utils/errors/AppError';
-import prisma from '@/lib/prisma';
-import { IController } from '@/types';
-import { generateAdminAccessToken } from '@/utils/jwt/generate';
-import { generateRefreshToken } from '@/utils/jwt/generateRefreshToken';
-import createSuccessResponse from '@/utils/responseCreator';
-import { loginSchema } from '@/schema/authSchema';
-import { UserRole } from '@/constants/enums/user';
-import { setAccessTokenCookie, setRefreshTokenCookie } from '@/utils/cookies/setRefreshCookie';
+import { AppError } from '@/core/utils/errors/AppError';
+import prisma from '@/core/lib/prisma';
+import { IController } from '@/core/types';
+import { generateAdminAccessToken } from '@/core/utils/jwt/generate';
+import { generateRefreshToken } from '@/core/utils/jwt/generateRefreshToken';
+import createSuccessResponse from '@/core/utils/responseCreator';
+import { loginSchema } from '@/core/schema/authSchema';
+import { UserRole } from '@/core/constants/ENUMS/user';
+import { setAccessTokenCookie, setRefreshTokenCookie } from '@/core/utils/cookies';
 import bcrypt from 'bcrypt';
 import { Prisma } from '@prisma/client';
-import { logger } from '@/utils/logger';
+import { logger } from '@/core/utils/logger';
+import { ADMIN_CONFIG } from '@/core/config/auth';
 
 
 /**
@@ -22,7 +23,8 @@ import { logger } from '@/utils/logger';
  */
 const adminLoginController: IController = async (req, res, next) => {
 
-
+    const data = await bcrypt.hash('Sudoski101@',10)
+    console.log('=================',data,'========================')
     try {
         const validatedData = loginSchema.parse(req.body);
         logger.info('Admin login attempt', { email: validatedData.email });
@@ -35,6 +37,9 @@ const adminLoginController: IController = async (req, res, next) => {
                     isVerified: true,
                 },
             });
+            console.log('admin password',admin)
+            console.log('validated password',validatedData.password)
+    
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 throw new AppError({ errorType: 'Internal Server Error', message: 'Database query failed' });
@@ -46,6 +51,7 @@ const adminLoginController: IController = async (req, res, next) => {
             throw new AppError({ errorType: 'Unauthorized', message: 'Invalid email or password' });
         }
 
+      
         const isPasswordValid = await bcrypt.compare(validatedData.password, admin.password);
         if (!isPasswordValid) {
             throw new AppError({ errorType: 'Unauthorized', message: 'Invalid email or password' });
@@ -75,7 +81,7 @@ const adminLoginController: IController = async (req, res, next) => {
             data: {
                 isAdmin: true,
                 email: admin.email,
-                expiresIn: 15 * 60, // Access token expiry in seconds
+                expiresIn: ADMIN_CONFIG.accessTokenExpiry, // Access token expiry in seconds
             },
         });
 

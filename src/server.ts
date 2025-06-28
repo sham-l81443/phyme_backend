@@ -1,15 +1,15 @@
 import express from "express";
 import "dotenv/config";
 import helmet from "helmet";
-import corsMiddleware from "./api/middleware/cors";
-import rateLimitMiddleware from "./api/middleware/ratelimit";
+import corsMiddleware from "./core/middleware/cors";
+import rateLimitMiddleware from "./core/middleware/ratelimit";
 import cookieParser from "cookie-parser";
-import errorHandler from "./api/middleware/errorHandler";
+import errorHandler from "./core/middleware/errorHandler";
 import passport from "passport";
-import googleConfig from "./config/googleConfig";
-import { appRoutes } from "./api/routes";
+import googleConfig from "./core/config/googleConfig";
+import { appRoutes } from "./api";
 import morgan from "morgan";
-import { logger } from "./utils/logger";
+import { logger } from "./core/utils/logger";
 
 
 

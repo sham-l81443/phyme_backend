@@ -22,6 +22,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@controllers":["src/api/controllers/*"],
+      "@core":["src/core/*"],
     },
     "strict": true
   },

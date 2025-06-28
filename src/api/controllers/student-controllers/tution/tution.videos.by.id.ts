@@ -1,15 +1,15 @@
 
-import { AppError } from "@/utils/errors/AppError";
-import prisma from "@/lib/prisma";
-import { IReqUser } from "@/types/req-user";
-import createSuccessResponse from "@/utils/responseCreator";
+import { AppError } from "@/core/utils/errors/AppError";
+import prisma from "@/core/lib/prisma";
+import { IReqUser } from "@/core/types/req-user";
+import createSuccessResponse from "@/core/utils/responseCreator";
 import { Request, Response, NextFunction } from "express";
 
 const getLiveClassByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
         const user = req.user as IReqUser
-
+``
         const video = await prisma.video.findUnique({ where: { id: req.params.videoId }, });
 
         if (!video) {
@@ -21,7 +21,7 @@ const getLiveClassByIdController = async (req: Request, res: Response, next: Nex
         }
 
         video.embedLink = video.embedLink.split('').reverse().join('')
-        const responseBody = createSuccessResponse({ data: video, message: 'success', status: 'success' });
+        const responseBody = createSuccessResponse({ data: video, message: 'success' });
 
         res.status(200).json(responseBody);
 

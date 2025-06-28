@@ -1,8 +1,8 @@
-import prisma from "@/lib/prisma";
-import { IStudentAccessToken } from "@/schema";
-import { IController } from "@/types";
-import { AppError } from "@/utils/errors/AppError";
-import createSuccessResponse from "@/utils/responseCreator";
+import prisma from "@/core/lib/prisma";
+import { IStudentAccessToken } from "@/core/schema";
+import { IController } from "@/core/types";
+import { AppError } from "@/core/utils/errors/AppError";
+import createSuccessResponse from "@/core/utils/responseCreator";
 
 const studentDetailsController: IController= async (req, res, next) => {
 

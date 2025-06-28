@@ -1,17 +1,17 @@
-import { AppError } from "@/utils/errors/AppError";
+import { AppError } from "@/core/utils/errors/AppError";
 
-import prisma from "@/lib/prisma";
-import { verifySchema } from "@/schema/authSchema";
+import prisma from "@/core/lib/prisma";
+import { verifySchema } from "@/core/schema/authSchema";
 import { Request, Response } from "express";
 import bcrypt from 'bcrypt'
-import createSuccessResponse from "@/utils/responseCreator";
-import { generateStudentAccessToken } from "@/utils/jwt/generate";
-import { generateRefreshToken } from "@/utils/jwt/generateRefreshToken";
-import { UserRole } from "@/constants/enums/user";
-import { STUDENT_CONFIG } from "@/config/auth";
-import { setAccessTokenCookie, setRefreshTokenCookie } from "@/utils/cookies/setRefreshCookie";
+import createSuccessResponse from "@/core/utils/responseCreator";
+import { generateStudentAccessToken } from "@/core/utils/jwt/generate";
+import { generateRefreshToken } from "@/core/utils/jwt/generateRefreshToken";
+import { UserRole } from "@/core/constants/ENUMS/user";
+import { STUDENT_CONFIG } from "@/core/config/auth";
+import { setAccessTokenCookie, setRefreshTokenCookie } from "@/core/utils/cookies";
 import { Prisma } from "@prisma/client";
-import { logger } from "@/utils/logger";
+import { logger } from "@/core/utils/logger";
 
 
 export const verifyStudent = async (req: Request, res: Response, next: Function) => {

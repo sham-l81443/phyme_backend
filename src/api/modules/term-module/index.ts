@@ -1,0 +1,5 @@
+export * from './term.controller'
+export * from './term.repository'
+export * from './term.routes'
+export * from './term.service'
+export * from './term.validation'

@@ -1,7 +1,7 @@
 
-import prisma from "@/lib/prisma";
-import { IReqUser } from "@/types/req-user";
-import createSuccessResponse from "@/utils/responseCreator";
+import prisma from "@/core/lib/prisma";
+import { IReqUser } from "@/core/types/req-user";
+import createSuccessResponse from "@/core/utils/responseCreator";
 import { Request, Response, NextFunction } from "express";
 
 const getAllLiveClassUserController = async (req: Request, res: Response, next: NextFunction) => {
@@ -13,12 +13,12 @@ const getAllLiveClassUserController = async (req: Request, res: Response, next: 
 
 
         if (!allVideos) {
-             res.status(404).json(createSuccessResponse({ data: [], message: 'success', status: 'success' }));
+             res.status(404).json(createSuccessResponse({ data: [], message: 'success', success:true}));
         }
 
 
 
-        const responseBody = createSuccessResponse({ data: allVideos, message: 'success', status: 'success', meta: { isLocked: user.role === "FREE" ? true : false } });
+        const responseBody = createSuccessResponse({ data: allVideos, message: 'success', success:true, meta: { isLocked: user.role === "FREE" ? true : false } });
 
         res.status(200).json(responseBody);
 

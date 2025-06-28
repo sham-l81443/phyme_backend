@@ -1,12 +1,12 @@
-import { AppError } from "@/utils/errors/AppError";
-import prisma from "@/lib/prisma";
-import OTPService from "@/services/OTPService";
+import { AppError } from "@/core/utils/errors/AppError";
+import prisma from "@/core/lib/prisma";
+import OTPService from "@/core/services/OTPService";
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextFunction, Response, Request } from "express";
-import CreateResponse from "@/utils/responseCreator";
-import { signupSchema } from "@/lib/validitions/authSchema";
-import { STUDENT_CONFIG } from "@/config/auth";
-import { logger } from "@/utils/logger";
+import CreateResponse from "@/core/utils/responseCreator";
+import { signupSchema } from "@/core/lib/validitions/authSchema";
+import { STUDENT_CONFIG } from "@/core/config/auth";
+import { logger } from "@/core/utils/logger";
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
 

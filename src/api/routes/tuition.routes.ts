@@ -1,9 +1,8 @@
-import addLiveVideoController from '@/api/controllers/admin-controllers/live-class-controller/addLiveVideoController'
-import getLiveVideosController from '@/api/controllers/admin-controllers/live-class-controller/getLiveVideoController'
-import getAllLiveClassUserController from '@/api/controllers/student-controllers/tution/get-tution-videos'
+import addLiveVideoController from '@/api/controllers/admin-controllers/video/add.tution.video.controller'
+import getLiveVideosController from '@/api/controllers/admin-controllers/video/get.tution.videos.ontroller'
 import getLiveClassByIdController from '@/api/controllers/student-controllers/tution/tution.videos.by.id'
-import { authenticateAdmin } from '@/api/middleware/auth/authenticateAdmin'
-import { authenticateStudent } from '@/api/middleware/auth/authenticateStudent'
+import { authenticateAdmin } from '@/core/middleware/auth/authenticateAdmin'
+import { authenticateStudent } from '@/core/middleware/auth/authenticateStudent'
 import { Router } from 'express'
 
 

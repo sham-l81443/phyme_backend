@@ -1,0 +1,5 @@
+export * from './syllabus.controller'
+export * from './syllabus.repository'
+export * from './syllabus.routes'
+export * from './syllabus.service'
+export * from './syllabus.validation'
