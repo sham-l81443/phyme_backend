@@ -32,7 +32,8 @@ export class AuthRepository {
                     name,
                     role: UserRole.STUDENT,
                     syllabusId,
-                    classId
+                    classId,
+                    isTermsAccepted: true
                 }
             })
 

@@ -33,3 +33,8 @@ export const PASSWORD_SCHEMA = z
 export const REGISTRATION_TYPE_SCHEMA_DEFAULT = z.enum(['DEFAULT', 'SSO']).default('DEFAULT')
 
 export const OTP_SCHEMA = z.string().min(1, { message: "OTP required" }).refine((value) => /^\d+$/.test(value), { message: "OTP must contain only numbers" })
+
+export const TERMS_ACCEPTED_SCHEMA = z.boolean().refine((value) => value === true, {
+    message: "You must accept the terms and conditions",
+})
+    

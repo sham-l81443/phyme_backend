@@ -10,6 +10,8 @@ model User {
   hasAcceptedTerms  Boolean          @default(false)
   role              ROLE             @default(STUDENT)
 
+  isTermsAccepted   Boolean          @default(false)
+
 
   classId           String?
   class             Class?           @relation(fields: [classId], references: [id])
