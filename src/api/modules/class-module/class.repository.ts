@@ -29,6 +29,21 @@ export class ClassRepository {
 
 
     static findAll = async () => {
-        return await prisma.class.findMany()
+        return await prisma.class.findMany({
+            include:{
+                syllabus:{
+                    select:{
+                        name:true
+                    }
+                },
+                _count:{
+                    select:{
+                        subjects:true,
+                        users:true,
+                        terms:true
+                    }
+                }
+            }
+        })
     }
 }

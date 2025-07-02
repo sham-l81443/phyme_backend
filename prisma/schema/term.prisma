@@ -7,10 +7,10 @@ model Term {
     description String?
     isActive Boolean @default(true)
 
-    subjects Subject[]
+    chapters Chapter[]
 
-    syllabusId String
-    syllabus   Syllabus  @relation(fields: [syllabusId], references: [id])
+    classId String?
+    class   Class?  @relation(fields: [classId], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

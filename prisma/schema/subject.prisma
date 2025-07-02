@@ -2,16 +2,14 @@ model Subject {
   id       String   @id @default(cuid())
   name     String
 
-  termId   String
-  term     Term     @relation(fields: [termId], references: [id])
+  chapters Chapter[]
 
   classId  String
   class    Class    @relation(fields: [classId], references: [id])
 
-  chapters Chapter[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([name, classId, termId]) // "Math" once per class+term
+  @@unique([name,classId]) // "Math" once per class+term
 }

@@ -1,22 +1,39 @@
+// model Syllabus {
+//   id   String @id @default(cuid())
+//   name String
+
+//   code        String  @unique
+//   description String?
+
+//   academicYear String?
+//   isActive     Boolean @default(true)
+
+//   classes Class[]
+//   users   User[]
+
+  // createdAt DateTime @default(now())
+  // updatedAt DateTime @updatedAt
+// }
 
 
 model Syllabus {
-  id        String   @id @default(cuid())
-  name      String   
 
-  code      String   @unique
-  description String?
-
-  academicYear String?
+  id String @id @default(cuid())
   isActive Boolean @default(true)
 
-  classes   Class[]
-  terms     Term[]
+
+  code String @unique
+  name String
+  description String?
+
+
+  classes Class[]
   users User[]
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  
+
 }
-
-
-

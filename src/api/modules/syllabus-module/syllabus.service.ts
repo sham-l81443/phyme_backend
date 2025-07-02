@@ -10,7 +10,8 @@ export class SyllabusService   {
     
 
     static async createSyllabusService(body:{body:any}) {
-
+        
+console.log(body)
         try {
 
            const validatedData = validateDto(SyllabusValidation.createSyllabusSchema,body)

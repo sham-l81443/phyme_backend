@@ -2,14 +2,23 @@
 model Chapter {
   id         String   @id @default(cuid())
   name       String
-  
+
+  code String @unique
+
   subjectId  String
   subject    Subject  @relation(fields: [subjectId], references: [id])
+
+  termId String
+  term Term @relation(fields: [termId], references: [id])
+
+  isActive Boolean @default(true)
+
+  description String?
 
   notes Note[]
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  @@unique([name, subjectId]) // Chapter names should be unique within subject
+  @@unique([code, subjectId, termId]) 
 }
