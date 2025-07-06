@@ -22,4 +22,14 @@ export class TermController{
         }
     }
 
+
+    static async getAllTermController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const allTerms = await TermService.getAllTermService()
+            const responseData = createSuccessResponse({ data: allTerms, message: 'All terms fetched successfully' })
+            res.status(200).json(responseData)
+        } catch (error) {
+            next(error)
+        }
+    }
 }

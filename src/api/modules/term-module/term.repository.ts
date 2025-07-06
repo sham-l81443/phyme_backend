@@ -1,16 +1,16 @@
 import prisma from "@/core/lib/prisma";
 
 export class TermRepository {
-    
 
 
-    static createTerm = async ({name, code, syllabusId, description, isActive}: {name: string, code: string, syllabusId: string, description?: string, isActive?: boolean}) => {
+
+    static createTerm = async ({ name, code, classId, description }: { name: string, code: string, classId: string, description?: string }) => {
 
         const newTerm = await prisma.term.create({
             data: {
                 name,
                 code,
-                syllabusId,
+                classId,
                 description,
             }
         })
@@ -19,12 +19,26 @@ export class TermRepository {
     }
 
 
-    static findUniqueTermByCode = async ({code}: {code?: string}) => {
+    static findUniqueTermByCode = async ({ code }: { code?: string }) => {
         const findUniqueTerm = await prisma.term.findUnique({
             where: {
                 code,
             }
         })
         return findUniqueTerm
+    }
+
+    static findAll = async () => {
+        const findAllTerms = await prisma.term.findMany({
+            include: {
+                class: true,
+                _count: {
+                    select: {
+                        chapters: true,
+                    }
+                }
+            }
+        })
+        return findAllTerms
     }
 }

@@ -1,6 +1,8 @@
 model Subject {
   id       String   @id @default(cuid())
   name     String
+  code     String   @unique
+  description String?
 
   chapters Chapter[]
 

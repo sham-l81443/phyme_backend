@@ -60,4 +60,15 @@ export class UserController {
 
         }
     }
+
+    static async getAllUserController(req:Request,res:Response,next:NextFunction){
+
+        try{
+            const allUsers = await UserServices.getAllUserService()
+            const responseData = createSuccessResponse({ data: allUsers, message: 'All users fetched successfully' })
+            res.status(200).json(responseData)
+        }catch(error){
+            next(error)
+        }
+    }
 }

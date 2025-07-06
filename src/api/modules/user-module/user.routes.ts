@@ -7,6 +7,6 @@ const userRouter = express.Router();
 
 userRouter.get('/profile',authenticateStudent,UserController.getUserByIdController)
 userRouter.get('/admin/profile',authenticateAdmin,UserController.getUserByIdController)
-
+userRouter.get('/users/all',authenticateAdmin,UserController.getAllUserController)
 
 export default userRouter

@@ -55,4 +55,17 @@ export class UserServices {
             rethrowAppError(error, 'Failed to update user')
         }
     }
+
+    static async getAllUserService() {
+        try {
+            return await prisma.user.findMany({
+                include:{
+                    class:true,
+                    syllabus:true,
+                }
+            })
+        } catch (error) {
+            rethrowAppError(error, 'Failed to get all users')
+        }
+    }
 }

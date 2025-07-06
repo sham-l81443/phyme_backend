@@ -29,5 +29,13 @@ export class TermService {
             
         }
     }
+
+    static async getAllTermService() {
+        try {
+            return await TermRepository.findAll()
+        } catch (error) {
+            rethrowAppError(error,'Failed to get all terms')
+        }
+    }
 }
 
