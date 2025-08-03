@@ -7,10 +7,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/server.ts",
-    "build": "tsc --project tsconfig.json",
+    "build": "tsc",
     "test:register": "artillery run tests/perfomance/register-test.yaml",
     "seed": "ts-node prisma/seed.ts",
-    "serve": "pm2 start dist/server.js --name phyme_BE"
+    "serve": "pm2 start dist/server.js --name phyme_BE",
+    "start": "node ./dist/server.js"
   },
   "prisma": {
     "schema": "./prisma"
