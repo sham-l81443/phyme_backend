@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { VIDEOTYPE } from '@prisma/client';
 
 // Base schema with common fields
 const videoBaseSchema = {
@@ -13,7 +12,7 @@ const videoBaseSchema = {
   isFree: z.boolean(),
   thumbnail: z.string().url('Invalid thumbnail URL').optional().nullable(),
   classId: z.number(),
-  videoType: z.nativeEnum(VIDEOTYPE),
+  videoType:z.string().optional(),
   noteId: z.string().uuid().optional().nullable(),
   code:z.string().min(2,{message:"Code must be at least 2 characters long"})
 };

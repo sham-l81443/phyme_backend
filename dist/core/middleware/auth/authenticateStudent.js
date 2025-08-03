@@ -125,8 +125,8 @@ const authenticateStudent = async (req, res, next) => {
             email: user.email,
             role: user_1.UserRole.STUDENT,
             id: user.id,
-            classId: user.classId || 0,
-            syllabusId: user.syllabusId || 0,
+            classId: user.classId || '',
+            syllabusId: user.syllabusId || '',
         });
         (0, cookies_1.setRefreshTokenCookie)({ res, cookieValue: newRefreshToken.plainToken, usageType: user_1.UserRole.STUDENT });
         (0, cookies_1.setAccessTokenCookie)({ res, cookieValue: newAccessToken, usageType: user_1.UserRole.STUDENT });

@@ -1,5 +1,4 @@
 import { Express } from "express";
-export * from './routes/constants'
 
 import {authRoutes} from "./modules/auth-module"
 import { userRoutes } from "./modules/user-module";

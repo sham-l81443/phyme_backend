@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VideoResponseSchema = exports.UpdateVideoSchema = exports.CreateVideoSchema = void 0;
 const zod_1 = require("zod");
-const client_1 = require("@prisma/client");
 const videoBaseSchema = {
     name: zod_1.z.string().min(1, 'Name is required'),
     description: zod_1.z.string().optional().nullable(),
@@ -14,7 +13,7 @@ const videoBaseSchema = {
     isFree: zod_1.z.boolean(),
     thumbnail: zod_1.z.string().url('Invalid thumbnail URL').optional().nullable(),
     classId: zod_1.z.number(),
-    videoType: zod_1.z.nativeEnum(client_1.VIDEOTYPE),
+    videoType: zod_1.z.string().optional(),
     noteId: zod_1.z.string().uuid().optional().nullable(),
     code: zod_1.z.string().min(2, { message: "Code must be at least 2 characters long" })
 };

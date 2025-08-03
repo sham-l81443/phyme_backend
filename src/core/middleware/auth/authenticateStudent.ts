@@ -159,8 +159,8 @@ export const authenticateStudent: IController = async (req, res, next) => {
             email: user.email,
             role: UserRole.STUDENT,
             id: user.id,
-            classId: user.classId || 0,
-            syllabusId: user.syllabusId || 0,
+            classId: user.classId || '',
+            syllabusId: user.syllabusId || '',
         });
 
         setRefreshTokenCookie({ res, cookieValue: newRefreshToken.plainToken, usageType: UserRole.STUDENT })

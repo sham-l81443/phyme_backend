@@ -111,7 +111,7 @@ export const authenticateAdmin: IController = async (req, res, next) => {
                     expiresAt: { gte: new Date() }
                 },
                 select: {
-                    Admin: { select: { id: true, email: true } },
+                    User: { select: { id: true, email: true } },
                     tokenSecret: true
                 }
             });
@@ -136,7 +136,7 @@ export const authenticateAdmin: IController = async (req, res, next) => {
                 });
             }
 
-            const admin = refreshToken.Admin;
+            const admin = refreshToken.User;
 
             if (!admin) {
                 throw new AppError({

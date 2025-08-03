@@ -1,4 +1,3 @@
-import { VIDEOTYPE } from '@prisma/client';
 
 export interface IVideo {
   id: string;
@@ -10,7 +9,7 @@ export interface IVideo {
   isFree: boolean;
   thumbnail?: string | null;
   classId: number;
-  videoType: VIDEOTYPE;
+  videoType: string;
   updatedAt: Date;
   createdAt: Date;
   noteId?: string | null;

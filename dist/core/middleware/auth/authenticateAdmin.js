@@ -95,7 +95,7 @@ const authenticateAdmin = async (req, res, next) => {
                     expiresAt: { gte: new Date() }
                 },
                 select: {
-                    Admin: { select: { id: true, email: true } },
+                    User: { select: { id: true, email: true } },
                     tokenSecret: true
                 }
             });
@@ -112,7 +112,7 @@ const authenticateAdmin = async (req, res, next) => {
                     message: "Invalid refresh token credentials"
                 });
             }
-            const admin = refreshToken.Admin;
+            const admin = refreshToken.User;
             if (!admin) {
                 throw new AppError_1.AppError({
                     errorType: "Unauthorized",
