@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { SubscriptionService } from "./subscription.service";
-import createSuccessResponse from "@/core/utils/responseCreator";
-import { IStudentAccessToken } from "@/core/schema";
+import createSuccessResponse from "../../../core/utils/responseCreator";
+import { IStudentAccessToken } from "../../../core/schema";
 
 export class SubscriptionController{
 

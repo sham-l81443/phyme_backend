@@ -1,6 +1,6 @@
 import express from "express";
 import { LessonController } from "./lesson.controller";
-import { authenticateStudent } from "@/core/middleware/auth/authenticateStudent";
+import { authenticateStudent } from "../../../core/middleware/auth/authenticateStudent";
 
 const lessonRouter = express.Router();
 

@@ -7,12 +7,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/server.ts",
-    "start": "node dist/server.js",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.json",
     "test:register": "artillery run tests/perfomance/register-test.yaml",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts",
+    "serve": "pm2 start dist/server.js --name phyme_BE"
   },
-  "prisma": { "schema": "./prisma" } ,
+  "prisma": {
+    "schema": "./prisma"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -36,6 +38,7 @@
     "otp-generator": "^4.0.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "pm2": "^6.0.8",
     "uuid": "^11.1.0",
     "winston": "^3.17.0",
     "zod": "^3.23.8"

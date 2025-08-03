@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { TermService } from "./term.service";
-import createSuccessResponse from "@/core/utils/responseCreator";
-import { IStudentAccessToken } from "@/core/schema";
+import createSuccessResponse from "../../../core/utils/responseCreator";
+import { IStudentAccessToken } from "../../../core/schema";
 
 export class TermController{
 

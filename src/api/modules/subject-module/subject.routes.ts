@@ -1,7 +1,7 @@
 import express from "express";
-import { authenticateAdmin } from "@/core/middleware/auth/authenticateAdmin";
+import { authenticateAdmin } from "../../../core/middleware/auth/authenticateAdmin";
 import { SubjectController } from "./subject.controller";
-import { authenticateStudent } from "@/core/middleware/auth/authenticateStudent";
+import { authenticateStudent } from "../../../core/middleware/auth/authenticateStudent";
 
 const subjectRouter = express.Router();
 

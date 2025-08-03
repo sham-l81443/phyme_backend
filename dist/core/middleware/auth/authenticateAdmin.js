@@ -4,16 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authenticateAdmin = void 0;
-const AppError_1 = require("@/core/utils/errors/AppError");
+const AppError_1 = require("../../utils/errors/AppError");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const prisma_1 = __importDefault(require("@/core/lib/prisma"));
-const generate_1 = require("@/core/utils/jwt/generate");
-const generateRefreshToken_1 = require("@/core/utils/jwt/generateRefreshToken");
-const schema_1 = require("@/core/schema");
-const auth_1 = require("@/core/config/auth");
-const user_1 = require("@/core/constants/ENUMS/user");
-const cookies_1 = require("@/core/utils/cookies");
+const prisma_1 = __importDefault(require("../../lib/prisma"));
+const generate_1 = require("../../utils/jwt/generate");
+const generateRefreshToken_1 = require("../../utils/jwt/generateRefreshToken");
+const schema_1 = require("../../schema");
+const auth_1 = require("../../config/auth");
+const user_1 = require("../../constants/ENUMS/user");
+const cookies_1 = require("../../utils/cookies");
 const authenticateAdmin = async (req, res, next) => {
     var _a, _b;
     try {

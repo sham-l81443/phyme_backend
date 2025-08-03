@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { SyllabusService } from "./syllabus.service";
-import createSuccessResponse from "@/core/utils/responseCreator";
+import createSuccessResponse from "../../../core/utils/responseCreator";
 
 export class SyllabusController{
 

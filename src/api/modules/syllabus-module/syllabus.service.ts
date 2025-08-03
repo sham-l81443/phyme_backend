@@ -1,7 +1,7 @@
-import { rethrowAppError } from "@/core/utils/errors/rethrowError";
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 import { SyllabusValidation } from "./syllabus.validation";
-import { AppError } from "@/core/utils/errors/AppError";
-import { validateDto } from "@/core/utils";
+import { AppError } from "../../../core/utils/errors/AppError";
+import { validateDto } from "../../../core/utils";
 import { SyllabusRepository } from "./syllabus.repository";
 
 

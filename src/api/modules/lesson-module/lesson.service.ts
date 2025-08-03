@@ -1,4 +1,4 @@
-import { rethrowAppError } from "@/core/utils/errors/rethrowError";
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 
 
 import { LessonRepository } from "./lesson.repository";

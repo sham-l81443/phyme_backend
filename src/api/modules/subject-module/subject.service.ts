@@ -1,10 +1,8 @@
-import { validateDto } from "@/core/utils/dto/validateData";
-import { rethrowAppError } from "@/core/utils/errors/rethrowError";
+import { validateDto } from "../../../core/utils/dto/validateData";
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 import { SubjectValidation } from "./subject.validation";
 import { SubjectRepository } from "./subject.repository";
-import { ROLE } from "@prisma/client";
-import { UserRole } from "@/core/constants/ENUMS/user";
-import { IAdminAccessToken, IStudentAccessToken } from "@/core/schema";
+
 
 
 export class SubjectService {

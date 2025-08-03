@@ -1,6 +1,6 @@
-import prisma from "@/core/lib/prisma";
-import { AppError } from "@/core/utils/errors/AppError";
-import { rethrowAppError } from "@/core/utils/errors/rethrowError";
+import prisma from "../../../core/lib/prisma";
+import { AppError } from "../../../core/utils/errors/AppError";
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 import { UserValidation } from "./user.validation";
 import { User } from "@prisma/client";
 

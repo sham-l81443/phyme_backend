@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateAdminAccessToken = exports.generateStudentAccessToken = void 0;
-const AppError_1 = require("@/core/utils/errors/AppError");
-const schema_1 = require("@/core/schema");
+const AppError_1 = require("../../utils/errors/AppError");
+const schema_1 = require("../../schema");
 const _1 = require(".");
 const rethrowError_1 = require("../errors/rethrowError");
-const auth_1 = require("@/core/config/auth");
+const auth_1 = require("../../config/auth");
 const generateStudentAccessToken = (params) => {
     try {
         const parsed = schema_1.StudentAccessTokenSchema.safeParse(params);

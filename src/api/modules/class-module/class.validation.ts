@@ -1,4 +1,4 @@
-import { CODE_SCHEMA, OPTIONAL_STRING_SCHEMA, REQUIRED_STRING_SCHEMA } from "@/core/constants/validationSchema";
+import { CODE_SCHEMA, OPTIONAL_STRING_SCHEMA, REQUIRED_STRING_SCHEMA } from "../../../core/constants/validationSchema";
 import { z } from "zod";
 
 export class ClassValidation {

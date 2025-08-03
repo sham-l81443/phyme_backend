@@ -18,11 +18,9 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"],
-      "@controllers":["src/api/controllers/*"],
-      "@core":["src/core/*"],
+    
     },
     "strict": true
   },
@@ -33,7 +31,7 @@
     "node_modules",
     "dist"
   ],
-  //  "ts-node": {
-  //   "require": ["tsconfig-paths/register"]
-  // }
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
 }

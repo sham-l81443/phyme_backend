@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const user_service_1 = require("./user.service");
-const responseCreator_1 = __importDefault(require("@/core/utils/responseCreator"));
-const AppError_1 = require("@/core/utils/errors/AppError");
+const responseCreator_1 = __importDefault(require("../../../core/utils/responseCreator"));
+const AppError_1 = require("../../../core/utils/errors/AppError");
 class UserController {
     static async getUserByIdController(req, res, next) {
         const user = req.user;

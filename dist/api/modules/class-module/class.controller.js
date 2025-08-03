@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClassController = void 0;
-const responseCreator_1 = __importDefault(require("@/core/utils/responseCreator"));
+const responseCreator_1 = __importDefault(require("../../../core/utils/responseCreator"));
 const class_service_1 = require("./class.service");
 class ClassController {
     static async createClassController(req, res, next) {

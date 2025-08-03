@@ -1,8 +1,8 @@
-import { AppError } from "@/core/utils/errors/AppError";
-import { IAdminAccessToken, AdminAccessTokenSchema, StudentAccessTokenSchema, IStudentAccessToken } from "@/core/schema";
+import { AppError } from "../../utils/errors/AppError";
+import { IAdminAccessToken, AdminAccessTokenSchema, StudentAccessTokenSchema, IStudentAccessToken } from "../../schema";
 import { signJwt } from ".";
 import { rethrowAppError } from "../errors/rethrowError";
-import { ADMIN_CONFIG, STUDENT_CONFIG } from "@/core/config/auth";
+import { ADMIN_CONFIG, STUDENT_CONFIG } from "../../config/auth";
 
 export const generateStudentAccessToken = (params: IStudentAccessToken): string => {
 

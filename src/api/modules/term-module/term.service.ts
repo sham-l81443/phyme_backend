@@ -1,8 +1,8 @@
-import { validateDto } from "@/core/utils";
-import { rethrowAppError } from "@/core/utils/errors/rethrowError";
+import { validateDto } from "../../../core/utils";
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 import { TermValidation } from "./term.validation";
 import { TermRepository } from "./term.repository";
-import { AppError } from "@/core/utils/errors/AppError";
+import { AppError } from "../../../core/utils/errors/AppError";
 
 
 

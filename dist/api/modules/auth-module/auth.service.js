@@ -15,13 +15,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
-const user_1 = require("@/core/constants/ENUMS/user");
-const AppError_1 = require("@/core/utils/errors/AppError");
-const rethrowError_1 = require("@/core/utils/errors/rethrowError");
+const user_1 = require("../../../core/constants/ENUMS/user");
+const AppError_1 = require("../../../core/utils/errors/AppError");
+const rethrowError_1 = require("../../../core/utils/errors/rethrowError");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const auth_repository_1 = require("./auth.repository");
-const OTPService_1 = __importDefault(require("@/core/services/OTPService"));
-const jwt_1 = require("@/core/utils/jwt");
+const OTPService_1 = __importDefault(require("../../../core/services/OTPService"));
+const jwt_1 = require("../../../core/utils/jwt");
 const auth_validation_1 = require("./auth.validation");
 class AuthService {
     static async studentLoginService({ email, password }) {

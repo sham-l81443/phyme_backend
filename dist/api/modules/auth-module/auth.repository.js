@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthRepository = void 0;
-const user_1 = require("@/core/constants/ENUMS/user");
-const prisma_1 = __importDefault(require("@/core/lib/prisma"));
+const user_1 = require("../../../core/constants/ENUMS/user");
+const prisma_1 = __importDefault(require("../../../core/lib/prisma"));
 class AuthRepository {
     static async findUserByEmailAndRole({ email, role, isVerified }) {
         const user = await prisma_1.default.user.findFirst({

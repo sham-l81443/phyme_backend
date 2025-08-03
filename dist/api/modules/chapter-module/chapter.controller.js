@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChapterController = void 0;
-const responseCreator_1 = __importDefault(require("@/core/utils/responseCreator"));
+const responseCreator_1 = __importDefault(require("../../../core/utils/responseCreator"));
 const chapter_service_1 = require("./chapter.service");
 class ChapterController {
     static async getAllChapters(req, res, next) {

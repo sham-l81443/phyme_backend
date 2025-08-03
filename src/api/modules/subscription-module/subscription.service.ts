@@ -1,6 +1,6 @@
-import { rethrowAppError } from "@/core/utils/errors/rethrowError";
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 import { SubscriptionRepository } from "./subscription.repository";
-import { validateDto } from "@/core/utils/dto/validateData";
+import { validateDto } from "../../../core/utils/dto/validateData";
 import { SubscriptionValidation } from "./subscription.validation";
 
 

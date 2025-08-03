@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { SubjectService } from "./subject.service";
-import createSuccessResponse from "@/core/utils/responseCreator";
-import { IAdminAccessToken, IStudentAccessToken } from "@/core/schema";
-import { UserRole } from "@/core/constants/ENUMS/user";
+import createSuccessResponse from "../../../core/utils/responseCreator";
+
 
 export class SubjectController {
 

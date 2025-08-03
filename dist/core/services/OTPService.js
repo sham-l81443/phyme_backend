@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const crypto_1 = require("crypto");
-const auth_1 = require("@/core/config/auth");
+const auth_1 = require("../config/auth");
 class OTPService {
     static getTemplate(otp) {
         return `

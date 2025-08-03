@@ -1,7 +1,7 @@
 
 import nodemailer from 'nodemailer'
 import { randomInt } from 'crypto';
-import { COMMON_CONFIG } from '@/core/config/auth';
+import { COMMON_CONFIG } from '../config/auth';
 
 class OTPService {
 

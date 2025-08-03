@@ -1,9 +1,9 @@
-import { rethrowAppError } from "@/core/utils/errors/rethrowError";
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 
 import { VideoValidation } from "./video.validation";
-import { validateDto } from "@/core/utils";
+import { validateDto } from "../../../core/utils";
 import { VideoRepository } from "./video.repository";
-import { AppError } from "@/core/utils/errors/AppError";
+import { AppError } from "../../../core/utils/errors/AppError";
 
 export class VideoService {
 

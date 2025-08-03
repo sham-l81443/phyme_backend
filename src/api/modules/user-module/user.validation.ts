@@ -1,4 +1,4 @@
-import { EMAIL_SCHEMA, REQUIRED_STRING_SCHEMA } from "@/core/constants/validationSchema";
+import { EMAIL_SCHEMA, REQUIRED_STRING_SCHEMA } from "../../../core/constants/validationSchema";
 import { z } from "zod";
 
 

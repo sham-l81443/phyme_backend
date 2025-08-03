@@ -1,7 +1,7 @@
 import express from "express";
 import { TermController } from "./term.controller";
-import { authenticateAdmin } from "@/core/middleware/auth/authenticateAdmin";
-import { authenticateStudent } from "@/core/middleware/auth/authenticateStudent";
+import { authenticateAdmin } from "../../../core/middleware/auth/authenticateAdmin";
+import { authenticateStudent } from "../../../core/middleware/auth/authenticateStudent";
 
 const termRouter = express.Router();
 

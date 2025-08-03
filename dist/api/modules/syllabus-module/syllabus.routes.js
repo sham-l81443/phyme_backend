@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.syllabusRouter = void 0;
-const authenticateAdmin_1 = require("@/core/middleware/auth/authenticateAdmin");
+const authenticateAdmin_1 = require("../../../core/middleware/auth/authenticateAdmin");
 const express_1 = __importDefault(require("express"));
 const syllabus_controller_1 = require("./syllabus.controller");
 const syllabusRouter = express_1.default.Router();

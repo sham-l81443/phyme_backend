@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VideoService = void 0;
-const rethrowError_1 = require("@/core/utils/errors/rethrowError");
+const rethrowError_1 = require("../../../core/utils/errors/rethrowError");
 const video_validation_1 = require("./video.validation");
-const utils_1 = require("@/core/utils");
+const utils_1 = require("../../../core/utils");
 const video_repository_1 = require("./video.repository");
 class VideoService {
     static async createVideoService(data) {

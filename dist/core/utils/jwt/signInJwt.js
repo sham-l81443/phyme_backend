@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signJwt = void 0;
-const AppError_1 = require("@/core/utils/errors/AppError");
+const AppError_1 = require("../../utils/errors/AppError");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const signJwt = (payload, expiry = "1d") => {
     const secret = process.env.JWT_SECRET;

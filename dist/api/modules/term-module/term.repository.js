@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TermRepository = void 0;
-const prisma_1 = __importDefault(require("@/core/lib/prisma"));
+const prisma_1 = __importDefault(require("../../../core/lib/prisma"));
 class TermRepository {
 }
 exports.TermRepository = TermRepository;

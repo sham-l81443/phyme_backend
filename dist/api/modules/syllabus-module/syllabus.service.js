@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SyllabusService = void 0;
-const rethrowError_1 = require("@/core/utils/errors/rethrowError");
+const rethrowError_1 = require("../../../core/utils/errors/rethrowError");
 const syllabus_validation_1 = require("./syllabus.validation");
-const AppError_1 = require("@/core/utils/errors/AppError");
-const utils_1 = require("@/core/utils");
+const AppError_1 = require("../../../core/utils/errors/AppError");
+const utils_1 = require("../../../core/utils");
 const syllabus_repository_1 = require("./syllabus.repository");
 class SyllabusService {
     static async createSyllabusService(body) {

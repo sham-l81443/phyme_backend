@@ -1,12 +1,12 @@
 import { NextFunction, Request, response, Response } from "express";
 import { AuthValidation } from "./auth.validation";
-import { AppError } from "@/core/utils/errors/AppError";
+import { AppError } from "../../../core/utils/errors/AppError";
 import { AuthService } from "./auth.service";
-import { UserRole } from "@/core/constants/ENUMS/user";
-import { setRefreshTokenCookie, setAccessTokenCookie } from "@/core/utils/cookies";
-import { generateRefreshToken, generateStudentAccessToken } from "@/core/utils/jwt";
-import createSuccessResponse from "@/core/utils/responseCreator";
-import { STUDENT_CONFIG } from "@/core/config/auth";
+import { UserRole } from "../../../core/constants/ENUMS/user";
+import { setRefreshTokenCookie, setAccessTokenCookie } from "../../../core/utils/cookies";
+import { generateRefreshToken, generateStudentAccessToken } from "../../../core/utils/jwt";
+import createSuccessResponse from "../../../core/utils/responseCreator";
+import { STUDENT_CONFIG } from "../../../core/config/auth";
 
 export class AuthController {
 

@@ -5,13 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const auth_validation_1 = require("./auth.validation");
-const AppError_1 = require("@/core/utils/errors/AppError");
+const AppError_1 = require("../../../core/utils/errors/AppError");
 const auth_service_1 = require("./auth.service");
-const user_1 = require("@/core/constants/ENUMS/user");
-const cookies_1 = require("@/core/utils/cookies");
-const jwt_1 = require("@/core/utils/jwt");
-const responseCreator_1 = __importDefault(require("@/core/utils/responseCreator"));
-const auth_1 = require("@/core/config/auth");
+const user_1 = require("../../../core/constants/ENUMS/user");
+const cookies_1 = require("../../../core/utils/cookies");
+const jwt_1 = require("../../../core/utils/jwt");
+const responseCreator_1 = __importDefault(require("../../../core/utils/responseCreator"));
+const auth_1 = require("../../../core/config/auth");
 class AuthController {
     static async studentRegisterController(req, res, next) {
         try {

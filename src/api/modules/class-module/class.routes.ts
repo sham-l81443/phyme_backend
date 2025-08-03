@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticateAdmin } from "@/core/middleware/auth/authenticateAdmin";
+import { authenticateAdmin } from "../../../core/middleware/auth/authenticateAdmin";
 import { ClassController } from "./class.controller";
 
 const classRouter = express.Router();

@@ -1,4 +1,4 @@
-import createSuccessResponse from "@/core/utils/responseCreator";
+import createSuccessResponse from "../../../core/utils/responseCreator";
 import { Request, Response, NextFunction } from "express";
 import { ClassService } from "./class.service";
 

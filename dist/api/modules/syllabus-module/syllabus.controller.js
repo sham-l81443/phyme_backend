@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SyllabusController = void 0;
 const syllabus_service_1 = require("./syllabus.service");
-const responseCreator_1 = __importDefault(require("@/core/utils/responseCreator"));
+const responseCreator_1 = __importDefault(require("../../../core/utils/responseCreator"));
 class SyllabusController {
     static async createSyllabus(req, res, next) {
         try {

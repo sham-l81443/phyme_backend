@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VideoController = void 0;
 const video_service_1 = require("./video.service");
-const responseCreator_1 = __importDefault(require("@/core/utils/responseCreator"));
-const AppError_1 = require("@/core/utils/errors/AppError");
+const responseCreator_1 = __importDefault(require("../../../core/utils/responseCreator"));
+const AppError_1 = require("../../../core/utils/errors/AppError");
 class VideoController {
     static async createVideo(req, res, next) {
         try {

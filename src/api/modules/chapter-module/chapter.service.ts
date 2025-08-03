@@ -1,5 +1,5 @@
-import { validateDto } from "@/core/utils";
-import { rethrowAppError } from "@/core/utils/errors/rethrowError";
+import { validateDto } from "../../../core/utils";
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 import { ChapterRepository } from "./chapter.repository";
 import { ChapterValidation } from "./chapter.validation";
 

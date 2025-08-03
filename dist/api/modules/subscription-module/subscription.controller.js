@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubscriptionController = void 0;
 const subscription_service_1 = require("./subscription.service");
-const responseCreator_1 = __importDefault(require("@/core/utils/responseCreator"));
+const responseCreator_1 = __importDefault(require("../../../core/utils/responseCreator"));
 class SubscriptionController {
     static async createSubscriptionController(req, res, next) {
         try {

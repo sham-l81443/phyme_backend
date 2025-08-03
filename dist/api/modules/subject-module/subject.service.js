@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubjectService = void 0;
-const validateData_1 = require("@/core/utils/dto/validateData");
-const rethrowError_1 = require("@/core/utils/errors/rethrowError");
+const validateData_1 = require("../../../core/utils/dto/validateData");
+const rethrowError_1 = require("../../../core/utils/errors/rethrowError");
 const subject_validation_1 = require("./subject.validation");
 const subject_repository_1 = require("./subject.repository");
 class SubjectService {

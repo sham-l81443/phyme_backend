@@ -1,7 +1,7 @@
 import express from "express";
 import { VideoController } from "./video.controller";
-import { authenticateAdmin } from "@/core/middleware/auth/authenticateAdmin";
-import { authenticateStudent } from "@/core/middleware/auth/authenticateStudent";
+import { authenticateAdmin } from "../../../core/middleware/auth/authenticateAdmin";
+import { authenticateStudent } from "../../../core/middleware/auth/authenticateStudent";
 
 const videoRouter = express.Router();
 

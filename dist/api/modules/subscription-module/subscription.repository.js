@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubscriptionRepository = void 0;
-const prisma_1 = __importDefault(require("@/core/lib/prisma"));
-const rethrowError_1 = require("@/core/utils/errors/rethrowError");
+const prisma_1 = __importDefault(require("../../../core/lib/prisma"));
+const rethrowError_1 = require("../../../core/utils/errors/rethrowError");
 class SubscriptionRepository {
     static async createSubscription(data) {
         try {

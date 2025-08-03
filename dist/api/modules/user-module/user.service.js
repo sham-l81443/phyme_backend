@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserServices = void 0;
-const prisma_1 = __importDefault(require("@/core/lib/prisma"));
-const AppError_1 = require("@/core/utils/errors/AppError");
-const rethrowError_1 = require("@/core/utils/errors/rethrowError");
+const prisma_1 = __importDefault(require("../../../core/lib/prisma"));
+const AppError_1 = require("../../../core/utils/errors/AppError");
+const rethrowError_1 = require("../../../core/utils/errors/rethrowError");
 const user_validation_1 = require("./user.validation");
 class UserServices {
     static async getUserById({ id }) {

@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateRefreshToken = generateRefreshToken;
 const crypto_1 = __importDefault(require("crypto"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const prisma_1 = __importDefault(require("@/core/lib/prisma"));
+const prisma_1 = __importDefault(require("../../lib/prisma"));
 const rethrowError_1 = require("../errors/rethrowError");
-const auth_1 = require("@/core/config/auth");
+const auth_1 = require("../../config/auth");
 const client_1 = require("@prisma/client");
-const user_1 = require("@/core/constants/ENUMS/user");
+const user_1 = require("../../constants/ENUMS/user");
 const AppError_1 = require("../errors/AppError");
 async function generateRefreshToken(id, usageType) {
     try {

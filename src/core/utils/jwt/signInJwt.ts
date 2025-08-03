@@ -1,4 +1,4 @@
-import { AppError } from "@/core/utils/errors/AppError";
+import { AppError } from "../../utils/errors/AppError";
 import jwt from "jsonwebtoken";
 
 

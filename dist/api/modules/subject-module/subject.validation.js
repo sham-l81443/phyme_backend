@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubjectValidation = void 0;
-const validationSchema_1 = require("@/core/constants/validationSchema");
+const validationSchema_1 = require("../../../core/constants/validationSchema");
 const zod_1 = require("zod");
 class SubjectValidation {
 }

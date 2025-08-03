@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { UserServices } from "./user.service";
-import createSuccessResponse from "@/core/utils/responseCreator";
-import { AppError } from "@/core/utils/errors/AppError";
-import { IAdminAccessToken, IStudentAccessToken } from "@/core/schema";
+import createSuccessResponse from "../../../core/utils/responseCreator";
+import { AppError } from "../../../core/utils/errors/AppError";
+import { IAdminAccessToken, IStudentAccessToken } from "../../../core/schema";
 
 export class UserController {
  

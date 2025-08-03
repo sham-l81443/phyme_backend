@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TermService = void 0;
-const utils_1 = require("@/core/utils");
-const rethrowError_1 = require("@/core/utils/errors/rethrowError");
+const utils_1 = require("../../../core/utils");
+const rethrowError_1 = require("../../../core/utils/errors/rethrowError");
 const term_validation_1 = require("./term.validation");
 const term_repository_1 = require("./term.repository");
-const AppError_1 = require("@/core/utils/errors/AppError");
+const AppError_1 = require("../../../core/utils/errors/AppError");
 class TermService {
     static async createTermService(body) {
         try {

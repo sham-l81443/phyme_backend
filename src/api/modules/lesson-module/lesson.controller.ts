@@ -1,6 +1,6 @@
 
 import { Request, Response, NextFunction } from "express";
-import createSuccessResponse from "@/core/utils/responseCreator";
+import createSuccessResponse from "../../../core/utils/responseCreator";
 import { LessonService } from "./lesson.service";
 
 export class LessonController {

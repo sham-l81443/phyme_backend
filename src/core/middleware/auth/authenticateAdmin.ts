@@ -1,14 +1,14 @@
-import { AppError } from "@/core/utils/errors/AppError";
-import { IController } from "@/core/types";
+import { AppError } from "../../utils/errors/AppError";
+import { IController } from "../../types";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import prisma from "@/core/lib/prisma";
-import { generateAdminAccessToken } from "@/core/utils/jwt/generate";
-import { generateRefreshToken } from "@/core/utils/jwt/generateRefreshToken";
-import { AdminAccessTokenSchema, IAdminAccessToken } from "@/core/schema";
-import { ADMIN_CONFIG } from "@/core/config/auth";
-import { UserRole } from "@/core/constants/ENUMS/user";
-import { setAccessTokenCookie, setRefreshTokenCookie } from "@/core/utils/cookies";
+import prisma from "../../lib/prisma";
+import { generateAdminAccessToken } from "../../utils/jwt/generate";
+import { generateRefreshToken } from "../../utils/jwt/generateRefreshToken";
+import { AdminAccessTokenSchema, IAdminAccessToken } from "../../schema";
+import { ADMIN_CONFIG } from "../../config/auth";
+import { UserRole } from "../../constants/ENUMS/user";
+import { setAccessTokenCookie, setRefreshTokenCookie } from "../../utils/cookies";
 
 
 export const authenticateAdmin: IController = async (req, res, next) => {

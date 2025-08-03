@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isSubscribed = void 0;
-const AppError_1 = require("@/core/utils/errors/AppError");
+const AppError_1 = require("../utils/errors/AppError");
 const isSubscribed = (req, _, next) => {
     try {
         if (!(req === null || req === void 0 ? void 0 : req.user)) {

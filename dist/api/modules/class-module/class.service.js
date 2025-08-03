@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClassService = void 0;
-const utils_1 = require("@/core/utils");
+const utils_1 = require("../../../core/utils");
 const class_validation_1 = require("./class.validation");
 const class_repository_1 = require("./class.repository");
-const rethrowError_1 = require("@/core/utils/errors/rethrowError");
-const AppError_1 = require("@/core/utils/errors/AppError");
+const rethrowError_1 = require("../../../core/utils/errors/rethrowError");
+const AppError_1 = require("../../../core/utils/errors/AppError");
 class ClassService {
     static async createClassService(body) {
         try {

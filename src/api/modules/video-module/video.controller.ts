@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { VideoService } from "./video.service";
-import createSuccessResponse from "@/core/utils/responseCreator";
-import { AppError } from "@/core/utils/errors/AppError";
+import createSuccessResponse from "../../../core/utils/responseCreator";
+import { AppError } from "../../../core/utils/errors/AppError";
 
 export class VideoController {
 

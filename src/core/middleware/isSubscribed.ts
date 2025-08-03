@@ -1,5 +1,5 @@
-import { AppError } from "@/core/utils/errors/AppError";
-import { IController } from "@/core/types";
+import { AppError } from "../utils/errors/AppError";
+import { IController } from "../types";
 
 export const isSubscribed: IController = (req, _, next) => {
 

@@ -1,4 +1,4 @@
-import { authenticateAdmin } from "@/core/middleware/auth/authenticateAdmin";
+import { authenticateAdmin } from "../../../core/middleware/auth/authenticateAdmin";
 import express from "express";
 import { SyllabusController } from "./syllabus.controller";
 

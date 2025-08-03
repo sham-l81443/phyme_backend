@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import prisma from '@/core/lib/prisma';
+import prisma from '../../lib/prisma';
 import { rethrowAppError } from '../errors/rethrowError';
-import { ADMIN_CONFIG, STUDENT_CONFIG } from '@/core/config/auth';
+import { ADMIN_CONFIG, STUDENT_CONFIG } from '../../config/auth';
 import { Prisma } from '@prisma/client';
-import { UserRole } from '@/core/constants/ENUMS/user';
+import { UserRole } from '../../constants/ENUMS/user';
 import { AppError } from '../errors/AppError';
 
 

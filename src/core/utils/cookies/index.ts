@@ -1,5 +1,5 @@
-import { ADMIN_CONFIG, STUDENT_CONFIG } from "@/core/config/auth";
-import { UserRole } from "@/core/constants/ENUMS/user";
+import { ADMIN_CONFIG, STUDENT_CONFIG } from "../../config/auth";
+import { UserRole } from "../../constants/ENUMS/user";
 import { Response } from "express";
 
 export interface ISetRefreshCookie {

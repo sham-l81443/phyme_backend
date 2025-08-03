@@ -1,14 +1,14 @@
-import { AppError } from "@/core/utils/errors/AppError";
-import { IController } from "@/core/types";
+import { AppError } from "../../utils/errors/AppError";
+import { IController } from "../../types";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import prisma from "@/core/lib/prisma";
-import { generateStudentAccessToken } from "@/core/utils/jwt/generate";
-import { generateRefreshToken } from "@/core/utils/jwt/generateRefreshToken";
-import { IStudentAccessToken, StudentAccessTokenSchema } from "@/core/schema";
-import { UserRole } from "@/core/constants/ENUMS/user";
-import { STUDENT_CONFIG } from "@/core/config/auth";
-import { setAccessTokenCookie, setLoggedInCookie, setRefreshTokenCookie } from "@/core/utils/cookies";
+import prisma from "../../lib/prisma";
+import { generateStudentAccessToken } from "../../utils/jwt/generate";
+import { generateRefreshToken } from "../../utils/jwt/generateRefreshToken";
+import { IStudentAccessToken, StudentAccessTokenSchema } from "../../schema";
+import { UserRole } from "../../constants/ENUMS/user";
+import { STUDENT_CONFIG } from "../../config/auth";
+import { setAccessTokenCookie, setLoggedInCookie, setRefreshTokenCookie } from "../../utils/cookies";
 
 
 

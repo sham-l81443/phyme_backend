@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TermController = void 0;
 const term_service_1 = require("./term.service");
-const responseCreator_1 = __importDefault(require("@/core/utils/responseCreator"));
+const responseCreator_1 = __importDefault(require("../../../core/utils/responseCreator"));
 class TermController {
     static async createTermController(req, res, next) {
         try {

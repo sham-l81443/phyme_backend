@@ -1,12 +1,12 @@
-import { UserRole, } from "@/core/constants/ENUMS/user"
-import { AppError } from "@/core/utils/errors/AppError"
-import { rethrowAppError } from "@/core/utils/errors/rethrowError";
+import { UserRole, } from "../../../core/constants/ENUMS/user"
+import { AppError } from "../../../core/utils/errors/AppError"
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 import bcrypt from "bcrypt";
 import { AuthRepository } from "./auth.repository";
-import OTPService from "@/core/services/OTPService";
-import { generateAdminAccessToken, generateRefreshToken, generateStudentAccessToken } from "@/core/utils/jwt";
+import OTPService from "../../../core/services/OTPService";
+import { generateAdminAccessToken, generateRefreshToken, generateStudentAccessToken } from "../../../core/utils/jwt";
 import { AuthValidation } from "./auth.validation";
-import { setAccessTokenCookie, setRefreshTokenCookie } from "@/core/utils/cookies";
+import { setAccessTokenCookie, setRefreshTokenCookie } from "../../../core/utils/cookies";
 
 
 export class AuthService {

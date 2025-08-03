@@ -1,5 +1,5 @@
-import { UserRole } from "@/core/constants/ENUMS/user";
-import prisma from "@/core/lib/prisma";
+import { UserRole } from "../../../core/constants/ENUMS/user";
+import prisma from "../../../core/lib/prisma";
 import { Prisma } from "@prisma/client";
 
 export class AuthRepository {

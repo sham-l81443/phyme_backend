@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChapterService = void 0;
-const utils_1 = require("@/core/utils");
-const rethrowError_1 = require("@/core/utils/errors/rethrowError");
+const utils_1 = require("../../../core/utils");
+const rethrowError_1 = require("../../../core/utils/errors/rethrowError");
 const chapter_repository_1 = require("./chapter.repository");
 const chapter_validation_1 = require("./chapter.validation");
 class ChapterService {
