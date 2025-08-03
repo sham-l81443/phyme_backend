@@ -1,10 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { SubjectService } from "./subject.service";
 import createSuccessResponse from "@/core/utils/responseCreator";
+import { IAdminAccessToken, IStudentAccessToken } from "@/core/schema";
+import { UserRole } from "@/core/constants/ENUMS/user";
 
 export class SubjectController {
 
     static async createSubjectController(req: Request, res: Response, next: NextFunction) {
+
 
         try {
 
@@ -22,12 +25,32 @@ export class SubjectController {
     }
 
     static async getAllSubjectController(req: Request, res: Response, next: NextFunction) {
+
         try {
             const subjects = await SubjectService.getAllSubjectService()
             const responseData = createSuccessResponse({ data: subjects, message: 'Subjects fetched successfully' })
             res.status(200).json(responseData)
         } catch (error) {
             next(error)
+        }
+    }
+
+    static async getSubjectsByClassIdController(req: Request, res: Response, next: NextFunction) {
+
+        try {
+
+
+
+            const subjects = await SubjectService.getSubjectsByClassIdService(req.user)
+
+            const responseData = createSuccessResponse({ data: subjects, message: 'Subjects fetched successfully' })
+
+            res.status(200).json(responseData)
+
+        } catch (error) {
+
+            next(error)
+
         }
     }
 }

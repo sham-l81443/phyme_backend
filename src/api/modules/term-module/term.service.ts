@@ -30,12 +30,14 @@ export class TermService {
         }
     }
 
-    static async getAllTermService() {
+    static async getAllTermService(classId?:string) {
         try {
-            return await TermRepository.findAll()
+            return await TermRepository.getTermByStudentClassId(classId as string)
         } catch (error) {
             rethrowAppError(error,'Failed to get all terms')
         }
     }
+
+
 }
 

@@ -1,47 +1,36 @@
 model User {
-  id                String           @id @default(uuid()) @db.Uuid
-  googleId          String?          @unique
+  id               String           @id @default(uuid()) @db.Uuid
+  googleId         String?          @unique
+  email            String           @unique
+  name             String?
+  phone            String?
+  password         String?
+  role             ROLE             @default(STUDENT)
+  isTermsAccepted  Boolean          @default(false)
+  classId          String?          @db.Uuid
+  isVerified       Boolean          @default(false)
+  registrationType REGISTRATIONTYPE
+  syllabusId       String?          @db.Uuid
+  isActive         Boolean          @default(true)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  otp              OTP[]
+  refreshToken     RefreshToken[]
+  class            Class?           @relation(fields: [classId], references: [id])
+  syllabus         Syllabus?        @relation(fields: [syllabusId], references: [id])
 
-  email             String           @unique
-  name              String?
-  phone             String?
-  password          String?
-  otp               OTP[]
-  hasAcceptedTerms  Boolean          @default(false)
-  role              ROLE             @default(STUDENT)
-
-  isTermsAccepted   Boolean          @default(false)
-
-
-  classId           String?
-  class             Class?           @relation(fields: [classId], references: [id])
-  
-  isVerified        Boolean          @default(false)
-  
-  registrationType  REGISTRATIONTYPE
-  
-  syllabusId        String?
-  syllabus          Syllabus?        @relation(fields: [syllabusId], references: [id])
-
-  refreshToken      RefreshToken[]
-
-
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  studentSubscription StudentSubscription[]
 
   @@index([email])
   @@index([googleId])
   @@map("users")
 }
 
-
 enum ROLE {
   INSTRUCTOR
   STUDENT
   ADMIN
 }
-
-
 
 enum REGISTRATIONTYPE {
   SSO

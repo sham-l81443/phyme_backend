@@ -1,14 +1,11 @@
 model Note {
-  id         String      @id @default(uuid()) @db.Uuid
-  title      String
-
-  content    String
-  video      Video[]
-
-
-  chapterId  String
-  chapter    Chapter     @relation(fields: [chapterId], references: [id])
-
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  id        String   @id @default(uuid()) @db.Uuid
+  title     String
+  content   String
+  lessonId  String   @db.Uuid
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lesson    Lesson   @relation(fields: [lessonId], references: [id])
+  video     Video[]
 }

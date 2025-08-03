@@ -12,11 +12,11 @@ export const StudentAccessTokenSchema = z.object({
 
     classId: z.string({
         errorMap: () => ({ message: "Invalid or missing class" }),
-    }).cuid({ message: "Invalid or missing class" }),
+    }).uuid({ message: "Invalid or missing class" }),
 
     syllabusId: z.string({
         errorMap: () => ({ message: "Invalid or missing syllabus" }),
-    }).cuid({ message: "Invalid or missing syllabus" }),
+    }).uuid({ message: "Invalid or missing syllabus" }),
 
     role: z.enum(["STUDENT"], {
         errorMap: () => ({ message: "Invalid or missing role" }),

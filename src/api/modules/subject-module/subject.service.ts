@@ -2,6 +2,9 @@ import { validateDto } from "@/core/utils/dto/validateData";
 import { rethrowAppError } from "@/core/utils/errors/rethrowError";
 import { SubjectValidation } from "./subject.validation";
 import { SubjectRepository } from "./subject.repository";
+import { ROLE } from "@prisma/client";
+import { UserRole } from "@/core/constants/ENUMS/user";
+import { IAdminAccessToken, IStudentAccessToken } from "@/core/schema";
 
 
 export class SubjectService {
@@ -28,9 +31,27 @@ export class SubjectService {
 
     static async getAllSubjectService() {
         try {
-            return await SubjectRepository.findAll()
+            return await SubjectRepository.findAll({})
         } catch (error) {
             rethrowAppError(error,'Failed to get all subjects')
+        }
+    }
+
+
+    static async getSubjectsByClassIdService (user:any){
+        try {
+
+            console.log(user)
+
+            const validateData = validateDto(SubjectValidation.getSubjectsByClassIdSchema,{classId:user?.classId})
+
+            const subjects = await SubjectRepository.findAll({classId:validateData.classId})
+
+            return subjects
+
+        } catch (error) {
+
+            rethrowAppError(error,'Failed to get subjects by class')
         }
     }
 

@@ -1,24 +1,16 @@
-
 model Chapter {
-  id         String   @id @default(cuid())
-  name       String
-
-  code String @unique
-
-  subjectId  String
-  subject    Subject  @relation(fields: [subjectId], references: [id])
-
-  termId String
-  term Term @relation(fields: [termId], references: [id])
-
-  isActive Boolean @default(true)
-
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  code        String   @unique
+  subjectId   String   @db.Uuid
+  termId      String   @db.Uuid
+  isActive    Boolean  @default(true)
   description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  subject     Subject  @relation(fields: [subjectId], references: [id])
+  term        Term     @relation(fields: [termId], references: [id])
+  lessons     Lesson[]
 
-  notes Note[]
-
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@unique([code, subjectId, termId]) 
+  @@unique([code, subjectId, termId])
 }

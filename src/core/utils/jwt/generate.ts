@@ -6,6 +6,7 @@ import { ADMIN_CONFIG, STUDENT_CONFIG } from "@/core/config/auth";
 
 export const generateStudentAccessToken = (params: IStudentAccessToken): string => {
 
+
     try {
 
         const parsed = StudentAccessTokenSchema.safeParse(params);

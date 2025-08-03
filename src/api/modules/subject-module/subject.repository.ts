@@ -1,7 +1,7 @@
 import prisma from "@/core/lib/prisma";
 
 export class SubjectRepository {
-    
+
     static createSubject = async ({ name, code, classId, description }: { name: string, code: string, classId: string, description?: string }) => {
 
         const newSubject = await prisma.subject.create({
@@ -26,15 +26,27 @@ export class SubjectRepository {
     }
 
 
-    static findAll = async () => {
+    static findAll = async ({classId}: {classId?: string}) => {
         const findAllSubjects = await prisma.subject.findMany({
-            include:{
-                class:{
-                   include:{
-                    syllabus:true
-                   }
+            ...(classId && {
+                where:{
+                classId
+            }}),
+            include: {
+
+                class: {
+                    include: {
+                        syllabus: true
+                    }
                 },
-            }
+                _count: {
+                    select: {
+                        chapters: true,
+                    }
+                }
+            },
+
+
         })
         return findAllSubjects
     }

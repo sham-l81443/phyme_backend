@@ -12,4 +12,9 @@ export class ChapterValidation {
         description:OPTIONAL_STRING_SCHEMA,
     })
 
+
+    static findByTermIdAndSubjectIdSchema = z.object({
+        subjectId:REQUIRED_STRING_SCHEMA,
+        termId:z.array(REQUIRED_STRING_SCHEMA),
+    })
 }

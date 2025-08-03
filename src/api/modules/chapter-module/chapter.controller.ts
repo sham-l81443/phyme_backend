@@ -36,4 +36,25 @@ export class ChapterController {
 
     }
 
+    // get chapter by term id and subject id
+    static async getChapterByTermIdAndSubjectId(req: Request, res: Response, next: NextFunction) {
+
+        try {
+            console.log(req.query)
+
+            
+            const chapter = await ChapterService.findByTermIdAndSubjectId(req.query)
+
+            const responseData = createSuccessResponse({ data: chapter, message: 'Chapter fetched successfully' })
+
+            res.status(200).json(responseData)
+
+        } catch (error) {
+
+            next(error)
+
+        }
+
+    }
+
 }

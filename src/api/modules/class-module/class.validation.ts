@@ -10,4 +10,8 @@ export class ClassValidation {
         syllabusId:REQUIRED_STRING_SCHEMA
     })
 
+    static getClassBySyllabusSchema = z.object({
+        syllabusId:REQUIRED_STRING_SCHEMA
+    })
+
 }

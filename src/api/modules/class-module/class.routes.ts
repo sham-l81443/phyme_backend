@@ -8,4 +8,6 @@ classRouter.post('/class/create',authenticateAdmin,ClassController.createClassCo
 
 classRouter.get('/class/all',ClassController.getAllClassController)
 
+classRouter.get('/class/syllabus/:syllabusId',ClassController.getClassBySyllabusController)
+
 export default classRouter

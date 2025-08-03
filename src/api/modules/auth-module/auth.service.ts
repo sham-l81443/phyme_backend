@@ -54,7 +54,6 @@ export class AuthService {
             }
 
 
-
             // send otp
 
             const otpResponse = await OTPService.sendOTPEmail(email)

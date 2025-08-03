@@ -1,0 +1,5 @@
+export * from './video.controller'
+export * from './video.repository'
+export * from './video.routes'
+export * from './video.service'
+export * from './video.validation'

@@ -1,0 +1,24 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.statusCode = void 0;
+var statusCode;
+(function (statusCode) {
+    statusCode[statusCode["BAD_REQUEST"] = 400] = "BAD_REQUEST";
+    statusCode[statusCode["UNAUTHORIZED"] = 401] = "UNAUTHORIZED";
+    statusCode[statusCode["PAYMENT_REQUIRED"] = 402] = "PAYMENT_REQUIRED";
+    statusCode[statusCode["FORBIDDEN"] = 403] = "FORBIDDEN";
+    statusCode[statusCode["NOT_FOUND"] = 404] = "NOT_FOUND";
+    statusCode[statusCode["METHOD_NOT_ALLOWED"] = 405] = "METHOD_NOT_ALLOWED";
+    statusCode[statusCode["CONFLICT"] = 409] = "CONFLICT";
+    statusCode[statusCode["EMAIL_ALREADY_EXISTS"] = 409] = "EMAIL_ALREADY_EXISTS";
+    statusCode[statusCode["INVALID_CREDENTIALS"] = 401] = "INVALID_CREDENTIALS";
+    statusCode[statusCode["OTP_SEND_FAILURE"] = 500] = "OTP_SEND_FAILURE";
+    statusCode[statusCode["OTP_VERIFICATION_FAILED"] = 400] = "OTP_VERIFICATION_FAILED";
+    statusCode[statusCode["VALIDATION_ERROR"] = 400] = "VALIDATION_ERROR";
+    statusCode[statusCode["REQUIRED_FIELD_MISSING"] = 400] = "REQUIRED_FIELD_MISSING";
+    statusCode[statusCode["INTERNAL_SERVER_ERROR"] = 500] = "INTERNAL_SERVER_ERROR";
+    statusCode[statusCode["NOT_IMPLEMENTED"] = 501] = "NOT_IMPLEMENTED";
+    statusCode[statusCode["BAD_GATEWAY"] = 502] = "BAD_GATEWAY";
+    statusCode[statusCode["SERVICE_UNAVAILABLE"] = 503] = "SERVICE_UNAVAILABLE";
+    statusCode[statusCode["UNKNOWN_ERROR"] = 500] = "UNKNOWN_ERROR";
+})(statusCode || (exports.statusCode = statusCode = {}));

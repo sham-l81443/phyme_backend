@@ -41,5 +41,17 @@ export class ClassService {
         }
 
     }
+
+
+    static async getClassBySyllabusService(body:{body:any}) {
+        try {
+
+            const validatedData = validateDto(ClassValidation.getClassBySyllabusSchema,body.body)
+
+            return await ClassRepository.getClassesBySyllabusId({syllabusId:validatedData.syllabusId})
+        } catch (error) {
+            rethrowAppError(error,'Failed to get classes by syllabus')
+        }
+    }
 }
 

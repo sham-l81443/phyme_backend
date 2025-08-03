@@ -11,4 +11,9 @@ export class SubjectValidation {
         description: OPTIONAL_STRING_SCHEMA,
     })
     
-}
+
+    static getSubjectsByClassIdSchema = z.object({
+        classId: REQUIRED_STRING_SCHEMA,
+    })
+}   
+    

@@ -46,4 +46,13 @@ export class ClassRepository {
             }
         })
     }
+
+
+    static getClassesBySyllabusId = async ({syllabusId}: {syllabusId: string}) => {
+        return await prisma.class.findMany({
+            where:{
+                syllabusId
+            }
+        })
+    }
 }

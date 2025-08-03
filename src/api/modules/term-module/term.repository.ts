@@ -28,8 +28,11 @@ export class TermRepository {
         return findUniqueTerm
     }
 
-    static findAll = async () => {
+    static findAll = async (classId?:string) => {
         const findAllTerms = await prisma.term.findMany({
+            where:{
+                ...(classId && { classId })
+            },
             include: {
                 class: true,
                 _count: {
@@ -40,5 +43,19 @@ export class TermRepository {
             }
         })
         return findAllTerms
+    }
+
+
+    static getTermByStudentClassId = async (classId:string) => {
+        const getTermByClassId = await prisma.term.findMany({
+            where:{
+                classId
+            },
+            select:{
+                id:true,
+                name:true,
+            }
+        })
+        return getTermByClassId
     }
 }

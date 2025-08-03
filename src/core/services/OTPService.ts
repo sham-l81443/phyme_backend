@@ -30,19 +30,22 @@ class OTPService {
   static createTransporter() {
 
     return nodemailer.createTransport({
+      service: 'gmail',
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587'),
       secure: process.env.SMTP_SECURE === 'true',
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD,
-      }
+      },
 
-
+      debug: true,
+      logger: true
     })
   }
 
   static async sendOTPEmail(email: string): Promise<{ otp: string, success: boolean }> {
+    console.log(email,'email')
     try {
       // Generate OTP
       const otp = this.generateOTP();
@@ -52,7 +55,7 @@ class OTPService {
 
       // Email configuration
       const mailOptions = {
-        from: process.env.SMTP_FROM || '"Your Company" <noreply@yourcompany.com>',
+        from: process.env.SMTP_FROM,
         to: email,
         subject: 'Your One-Time Password (OTP)',
         html: this.getTemplate(otp),

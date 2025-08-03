@@ -1,5 +1,3 @@
-
-
 model Video {
   id          String    @id @default(uuid()) @db.Uuid
   name        String
@@ -7,19 +5,16 @@ model Video {
   embedLink   String
   duration    String?
   date        DateTime?
-  code        String   @unique
-  isFree      Boolean   @default(false)
+  code        String    @unique
+  isFree      Boolean   @default(true)
   thumbnail   String?
-  classId     Int       @default(0)
-  videoType   VIDEOTYPE
+  noteId      String?   @db.Uuid
+  isActive    Boolean   @default(true)
+  lessonId    String    @db.Uuid
   updatedAt   DateTime  @default(now())
   createdAt   DateTime  @default(now())
+  lesson      Lesson    @relation(fields: [lessonId], references: [id])
   note        Note?     @relation(fields: [noteId], references: [id])
-  noteId      String?   @db.Uuid()
-}
 
-
-enum VIDEOTYPE {
-  TUTION
-  NOTE
+  @@unique([code, lessonId])
 }

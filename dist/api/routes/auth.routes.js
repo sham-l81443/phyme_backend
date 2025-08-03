@@ -1,0 +1,23 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const register_controller_1 = require("@/api/controllers/auth/student/register.controller");
+const constants_1 = require("./constants");
+const verify_student_controller_1 = require("../controllers/auth/student/verify.student.controller");
+const student_login_controller_1 = __importDefault(require("../controllers/auth/student/student.login.controller"));
+const google_auth_1 = require("../../core/middleware/auth/google.auth");
+const google_auth_controller_1 = __importDefault(require("../controllers/auth/student/google.auth.controller"));
+const admin_login_controller_1 = __importDefault(require("../controllers/auth/admin/admin.login.controller"));
+const profile_complete_controller_1 = __importDefault(require("../controllers/auth/student/profile.complete.controller"));
+const authenticateStudent_1 = require("../../core/middleware/auth/authenticateStudent");
+const router = (0, express_1.Router)();
+router.post(constants_1.STUDENT_ENDPOINTS.register, register_controller_1.registerUser);
+router.post(constants_1.STUDENT_ENDPOINTS.verifyEmail, verify_student_controller_1.verifyStudent);
+router.post(constants_1.STUDENT_ENDPOINTS.login, student_login_controller_1.default);
+router.get(constants_1.STUDENT_ENDPOINTS.googleAuth, google_auth_1.googlePassportAuth, google_auth_controller_1.default);
+router.post(constants_1.STUDENT_ENDPOINTS.profileComplete, authenticateStudent_1.authenticateStudent, profile_complete_controller_1.default);
+router.post(constants_1.ADMIN_ENDPOINTS.login, admin_login_controller_1.default);
+exports.default = router;

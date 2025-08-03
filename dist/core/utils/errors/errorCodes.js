@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ErrorCode = void 0;
+var ErrorCode;
+(function (ErrorCode) {
+    ErrorCode["EMAIL_ALREADY_EXISTS"] = "EMAIL_ALREADY_EXISTS";
+    ErrorCode["INVALID_CREDENTIALS"] = "INVALID_CREDENTIALS";
+    ErrorCode["OTP_SEND_FAILURE"] = "OTP_SEND_FAILURE";
+    ErrorCode["OTP_VERIFICATION_FAILED"] = "OTP_VERIFICATION_FAILED";
+    ErrorCode["UNAUTHORIZED"] = "UNAUTHORIZED";
+    ErrorCode["FORBIDDEN"] = "FORBIDDEN";
+    ErrorCode["BAD_REQUEST"] = "BAD_REQUEST";
+    ErrorCode["NOT_FOUND"] = "NOT_FOUND";
+    ErrorCode["VALIDATION_ERROR"] = "VALIDATION_ERROR";
+    ErrorCode["REQUIRED_FIELD_MISSING"] = "REQUIRED_FIELD_MISSING";
+    ErrorCode["INVALID_TOKEN"] = "TOKEN_ERROR";
+    ErrorCode["TOKEN_EXPIRED"] = "TOKEN_ERROR";
+    ErrorCode["DATABASE_ERROR"] = "DATABASE_ERROR";
+    ErrorCode["DUPLICATE_RECORD"] = "DUPLICATE_RECORD";
+    ErrorCode["INTERNAL_SERVER_ERROR"] = "INTERNAL_SERVER_ERROR";
+    ErrorCode["UNKNOWN_ERROR"] = "UNKNOWN_ERROR";
+})(ErrorCode || (exports.ErrorCode = ErrorCode = {}));

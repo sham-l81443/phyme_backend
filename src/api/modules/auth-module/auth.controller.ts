@@ -7,11 +7,11 @@ import { setRefreshTokenCookie, setAccessTokenCookie } from "@/core/utils/cookie
 import { generateRefreshToken, generateStudentAccessToken } from "@/core/utils/jwt";
 import createSuccessResponse from "@/core/utils/responseCreator";
 import { STUDENT_CONFIG } from "@/core/config/auth";
-import bcrypt from "bcrypt";
 
 export class AuthController {
 
     static async studentRegisterController(req: Request, res: Response, next: NextFunction) {
+
 
         try {
 
