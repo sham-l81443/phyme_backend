@@ -68,4 +68,5 @@ export class UserServices {
             rethrowAppError(error, 'Failed to get all users')
         }
     }
+
 }

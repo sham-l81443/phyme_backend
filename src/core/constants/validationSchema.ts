@@ -38,3 +38,4 @@ export const TERMS_ACCEPTED_SCHEMA = z.boolean().refine((value) => value === tru
     message: "You must accept the terms and conditions",
 })
     
+export const EMBED_LINK_SCHEMA = z.string().url({ message: "Please enter a valid YouTube embed link" })
