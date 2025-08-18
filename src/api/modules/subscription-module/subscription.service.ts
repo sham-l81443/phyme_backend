@@ -37,5 +37,16 @@ export class SubscriptionService {
         }
     }
 
+    // remove subscription
+    static async removeSubscriptionService(subscriptionId:string){
+        try {
+            const subscription = await SubscriptionRepository.removeSubscription(subscriptionId)
+            return subscription
+        }
+        catch(error){
+            rethrowAppError(error,'Failed to remove subscription')
+        }
+    }
+
 }
 

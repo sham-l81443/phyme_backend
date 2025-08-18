@@ -97,4 +97,28 @@ export class UserController {
 
     }
 
+
+    static async getStudentDetailsByIdController(req:Request,res:Response,next:NextFunction){
+        const {userId} = req.query
+
+        console.log(userId)
+        try{
+            const user = await UserServices.getStudentDetailsById(userId as string)
+        
+
+        res.status(200).json(
+            createSuccessResponse({
+                data: user,
+                message: "User fetched successfully",
+            })
+        );
+
+        }catch(error){
+
+            next(error)
+
+        }   
+        
+    }
+
 }

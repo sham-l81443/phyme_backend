@@ -58,4 +58,23 @@ export class TermRepository {
         })
         return getTermByClassId
     }
+
+    static getAllTermService = async () => {
+        const getAllTerm = await prisma.term.findMany({
+            select:{
+                id:true,
+                name:true,
+                code:true,
+                createdAt:true,
+                isActive:true,
+                class:{
+                    select:{
+                        name:true,
+                        id:true,
+                    }
+                }
+            }
+        })
+        return getAllTerm
+    }
 }

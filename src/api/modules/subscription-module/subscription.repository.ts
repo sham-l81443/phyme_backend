@@ -31,4 +31,14 @@ export class SubscriptionRepository {
             rethrowAppError(error,'Failed to get user subscription')
         }
     }
+
+    // remove subscription
+    static async removeSubscription(subscriptionId:string){
+        try {
+            const subscription = await prisma.studentSubscription.delete({where:{id:subscriptionId}})
+            return subscription
+        } catch (error) {
+            rethrowAppError(error,'Failed to remove subscription')
+        }
+    }
 }

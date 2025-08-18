@@ -1,6 +1,7 @@
 import prisma from "../../../core/lib/prisma";
 import { AppError } from "../../../core/utils/errors/AppError";
 import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
+import { UserRepository } from "./user.repository";
 import { UserValidation } from "./user.validation";
 import { User } from "@prisma/client";
 
@@ -69,4 +70,12 @@ export class UserServices {
         }
     }
 
+
+    static async getStudentDetailsById(id:string){
+        try{
+            return await UserRepository.getStudentById(id)
+        }catch(error){
+            rethrowAppError(error,'Failed to get user by email')
+        }
+    }
 }

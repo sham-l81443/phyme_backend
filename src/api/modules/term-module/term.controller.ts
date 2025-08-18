@@ -41,7 +41,7 @@ export class TermController{
         try {
             const {classId} = req.user as IStudentAccessToken
 
-            const allTerms = await TermService.getAllTermService(classId)
+            const allTerms = await TermService.getAllTermServiceByClassId(classId)
 
             const responseData = createSuccessResponse({ data: allTerms, message: 'All terms fetched successfully' })
 
