@@ -13,7 +13,7 @@ userRouter.get('/users/all',authenticateAdmin,UserController.getAllUserControlle
 userRouter.post('/logout',authenticateStudent,UserController.logoutController)
 
 // logout for admin
-userRouter.post('/logout/admin',authenticateAdmin,UserController.logoutController)
+userRouter.post('/admin/logout',authenticateAdmin,UserController.logoutController)
 
 // student details by id for admin dashboard
 userRouter.get('/student/details',authenticateAdmin,UserController.getStudentDetailsByIdController)

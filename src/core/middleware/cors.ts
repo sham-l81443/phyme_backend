@@ -1,7 +1,7 @@
 import cors from "cors";
 
 
-const allowedOrigins = ["https://phymelearning.com"];
+const allowedOrigins = ["https://phymelearning.com","http://localhost:3000"];
 
 const corsMiddleware = cors({
   origin: function (origin, callback) {

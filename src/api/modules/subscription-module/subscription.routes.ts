@@ -1,6 +1,6 @@
 import express from "express";
 import { SubscriptionController } from "./subscription.controller";
-import { authenticateAdmin } from "src/core/middleware/auth/authenticateAdmin";
+import { authenticateAdmin } from "../../../core/middleware/auth/authenticateAdmin";
 
 const subscriptionRouter = express.Router();
 

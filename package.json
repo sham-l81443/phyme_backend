@@ -14,7 +14,8 @@
     "start": "node ./dist/server.js"
   },
   "prisma": {
-    "schema": "./prisma"
+    "schema": "./prisma",
+    "seed": "ts-node prisma/seed.ts"
   },
   "author": "",
   "license": "ISC",
