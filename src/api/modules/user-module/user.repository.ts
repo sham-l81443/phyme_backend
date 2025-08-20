@@ -1,5 +1,5 @@
-import prisma from "src/core/lib/prisma";
-import { rethrowAppError } from "src/core/utils/errors/rethrowError";
+import prisma from "../../../core/lib/prisma";
+import { rethrowAppError } from "../../../core/utils/errors/rethrowError";
 
 export class UserRepository {
     static async getStudentByEmail(email: string) {
