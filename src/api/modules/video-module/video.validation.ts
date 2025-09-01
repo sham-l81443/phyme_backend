@@ -11,7 +11,7 @@ export class VideoValidation {
         embedLink: EMBED_LINK_SCHEMA,
         duration: OPTIONAL_STRING_SCHEMA,
         code: REQUIRED_STRING_SCHEMA,
-        thumbnail: OPTIONAL_STRING_SCHEMA,
+        thumbnail:REQUIRED_STRING_SCHEMA,
         lessonId: REQUIRED_STRING_SCHEMA,
     })
     
