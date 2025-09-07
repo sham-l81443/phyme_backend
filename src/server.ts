@@ -23,6 +23,8 @@ requiredEnv.forEach((key) => {
 });
 
 const app = express();
+app.set('trust proxy', true);
+
 
 // Security middleware
 app.use(helmet({ contentSecurityPolicy: false })); // Customize as needed
