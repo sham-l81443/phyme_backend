@@ -10,6 +10,7 @@ import chapterRouter from "./modules/chapter-module/chapter.routes";
 import lessonRouter from "./modules/lesson-module/lesson.routes";
 import videoRouter from "./modules/video-module/video.routes";
 import subscriptionRouter from "./modules/subscription-module/subscription.routes";
+import { pdfRoutes } from "./modules/pdf-module";
 
 export const appRoutes = (app: Express) => {
     
@@ -23,5 +24,6 @@ export const appRoutes = (app: Express) => {
     app.use("/api", lessonRouter)
     app.use("/api", videoRouter)
     app.use("/api", subscriptionRouter)
+    app.use("/api", pdfRoutes)
 
 }

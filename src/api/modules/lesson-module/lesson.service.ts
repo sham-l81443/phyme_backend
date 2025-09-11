@@ -21,4 +21,8 @@ export class LessonService {
   static async getLessonByChapterId(chapterId: string) {
     return await LessonRepository.getLessonByChapterId(chapterId);
   }
+
+  static async getLessonById(id: string) {
+    return await LessonRepository.getLessonById(id);
+  }
 }

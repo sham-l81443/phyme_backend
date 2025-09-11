@@ -35,4 +35,15 @@ export class LessonController {
       next(error);
     }
   }
+
+  static async getLessonById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const lesson = await LessonService.getLessonById(id);
+      const responseData = createSuccessResponse({ data: lesson, message: "Lesson fetched successfully" });
+      res.status(200).json(responseData);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

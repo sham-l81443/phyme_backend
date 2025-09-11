@@ -27,6 +27,14 @@ export class LessonRepository {
             term: true,
           },
         },
+        pdfs: {
+          where: {
+            isActive: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     });
   }
@@ -38,12 +46,44 @@ export class LessonRepository {
         chapterId: chapterId,
       },
       include: {
-        _count: true
+        _count: true,
+        pdfs: {
+          where: {
+            isActive: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
       orderBy: {
         createdAt: 'asc'
       }
     });
 
+  }
+
+  static async getLessonById(id: string) {
+    return await prisma.lesson.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        chapter: {
+          include: {
+            subject: true,
+            term: true,
+          },
+        },
+        pdfs: {
+          where: {
+            isActive: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    });
   }
 }
