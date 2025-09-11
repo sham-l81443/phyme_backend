@@ -121,4 +121,58 @@ export class UserController {
         
     }
 
+    static async verifyUserController(req: Request, res: Response, next: NextFunction) {
+        const { userId } = req.body;
+
+        try {
+            const verifiedUser = await UserServices.verifyUserService({ userId });
+
+            res.status(200).json(
+                createSuccessResponse({
+                    data: verifiedUser,
+                    message: "User verified successfully",
+                })
+            );
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async addPasswordForUserController(req: Request, res: Response, next: NextFunction) {
+        const { userId, password } = req.body;
+
+        try {
+            const updatedUser = await UserServices.addPasswordForUserService({ userId, password });
+
+            res.status(200).json(
+                createSuccessResponse({
+                    data: updatedUser,
+                    message: "Password added successfully",
+                })
+            );
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async getUnverifiedUsersController(req: Request, res: Response, next: NextFunction) {
+        const { page, limit } = req.query;
+
+        try {
+            const result = await UserServices.getUnverifiedUsersService({ 
+                page: page ? parseInt(page as string) : 1, 
+                limit: limit ? parseInt(limit as string) : 10 
+            });
+
+            res.status(200).json(
+                createSuccessResponse({
+                    data: result,
+                    message: "Unverified users fetched successfully",
+                })
+            );
+        } catch (error) {
+            next(error);
+        }
+    }
+
 }

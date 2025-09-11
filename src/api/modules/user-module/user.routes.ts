@@ -18,4 +18,9 @@ userRouter.post('/admin/logout',authenticateAdmin,UserController.logoutControlle
 // student details by id for admin dashboard
 userRouter.get('/student/details',authenticateAdmin,UserController.getStudentDetailsByIdController)
 
+// Admin verification endpoints
+userRouter.post('/admin/verify-user',authenticateAdmin,UserController.verifyUserController)
+userRouter.post('/admin/add-password',authenticateAdmin,UserController.addPasswordForUserController)
+userRouter.get('/admin/unverified-users',authenticateAdmin,UserController.getUnverifiedUsersController)
+
 export default userRouter
