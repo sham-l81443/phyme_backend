@@ -1,0 +1,238 @@
+// Quiz Schema
+model Quiz {
+  id          String   @id @default(uuid()) @db.Uuid
+  title       String
+  description String?
+  lessonId    String   @db.Uuid
+  createdBy   String   // Admin user ID
+  
+  // Quiz Settings
+  isTimed     Boolean  @default(false)
+  timeLimit   Int?     // Time limit in minutes
+  isActive    Boolean  @default(true)
+  allowRetake Boolean  @default(true)
+  maxAttempts Int      @default(2)
+  
+  // Scoring Settings
+  hasNegativeMarking Boolean @default(false)
+  negativeMarkRatio  Float?  // e.g., 0.25 for -0.25 per wrong answer
+  
+  // Pace Settings
+  paceType    PaceType @default(NORMAL)
+  
+  // Difficulty
+  difficulty  Difficulty @default(MEDIUM)
+  
+  // Scheduling
+  startDate   DateTime?
+  endDate     DateTime?
+  
+  // Metadata
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  questions   QuizQuestion[]
+  attempts    QuizAttempt[]
+  performances QuizPerformance[]
+  
+  @@map("quizzes")
+}
+
+model Question {
+  id          String   @id @default(uuid()) @db.Uuid
+  content     String
+  type        QuestionType
+  difficulty  Difficulty @default(MEDIUM)
+  
+  // Media Support
+  imageUrl    String?
+  videoUrl    String?
+  audioUrl    String?
+  
+  // Question Settings
+  points      Float    @default(1.0)
+  explanation String?  // Explanation for the answer
+  
+  // Metadata
+  tags        String[] // Array of tags for categorization
+  createdBy   String   // Admin user ID
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  quizQuestions QuizQuestion[]
+  answers      QuestionAnswer[]
+  quizAnswers  QuizAnswer[]
+  
+  @@map("questions")
+}
+
+model QuestionAnswer {
+  id         String   @id @default(cuid())
+  questionId String   @db.Uuid
+  content    String
+  isCorrect  Boolean  @default(false)
+  order      Int      @default(0)
+  
+  // Media Support
+  imageUrl   String?
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  // Relations
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  @@map("question_answers")
+}
+
+model QuizQuestion {
+  id         String @id @default(cuid())
+  quizId     String   @db.Uuid
+  questionId String   @db.Uuid
+  order      Int    @default(0)
+  
+  // Question-specific settings for this quiz
+  points     Float? // Override default points for this quiz
+  
+  createdAt  DateTime @default(now())
+  
+  // Relations
+  quiz       Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  @@unique([quizId, questionId])
+  @@map("quiz_questions")
+}
+
+model QuizAttempt {
+  id          String   @id @default(uuid()) @db.Uuid
+  quizId      String   @db.Uuid
+  studentId   String   @db.Uuid
+  attemptNumber Int    // 1 for trial, 2 for main
+  
+  // Attempt Status
+  status      AttemptStatus @default(IN_PROGRESS)
+  startedAt   DateTime @default(now())
+  submittedAt DateTime?
+  
+  // Scoring
+  totalScore      Float @default(0)
+  maxScore        Float
+  percentage      Float @default(0)
+  correctAnswers  Int   @default(0)
+  wrongAnswers    Int   @default(0)
+  skippedAnswers  Int   @default(0)
+  
+  // Time Tracking
+  timeSpent       Int?  // Time spent in seconds
+  timeRemaining   Int?  // Time remaining in seconds
+  
+  // Metadata
+  ipAddress       String?
+  userAgent       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  quiz            Quiz           @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  student         User           @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  answers         QuizAnswer[]
+  
+  @@unique([quizId, studentId, attemptNumber])
+  @@map("quiz_attempts")
+}
+
+model QuizAnswer {
+  id         String @id @default(cuid())
+  attemptId  String   @db.Uuid
+  questionId String   @db.Uuid
+  answerId   String? // Selected answer ID (for multiple choice)
+  textAnswer String? // Text answer (for fill-in-the-blank, short answer)
+  
+  // Answer Status
+  isCorrect    Boolean @default(false)
+  pointsEarned Float   @default(0)
+  
+  // Time Tracking
+  timeSpent    Int?    // Time spent on this question in seconds
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Relations
+  attempt      QuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question     Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  
+  @@unique([attemptId, questionId])
+  @@map("quiz_answers")
+}
+
+model QuizPerformance {
+  id          String   @id @default(uuid()) @db.Uuid
+  quizId      String   @db.Uuid
+  studentId   String   @db.Uuid
+  
+  // Performance Metrics
+  bestScore       Float
+  bestPercentage  Float
+  totalAttempts   Int     @default(0)
+  averageScore    Float   @default(0)
+  averageTime     Float?  // Average time spent in seconds
+  
+  // Rankings
+  rankInQuiz      Int?    // Rank among all students who took this quiz
+  rankInClass     Int?    // Rank within the student's class
+  
+  // Improvement Tracking
+  scoreImprovement Float? // Improvement from first to last attempt
+  
+  // Metadata
+  lastAttemptAt   DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  quiz            Quiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  student         User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  @@unique([quizId, studentId])
+  @@map("quiz_performances")
+}
+
+// Enums
+enum QuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  FILL_IN_BLANK
+  SHORT_ANSWER
+  LONG_ANSWER
+  MATCHING
+  ORDERING
+  DRAG_DROP
+  AUDIO_QUESTION
+  VIDEO_QUESTION
+  IMAGE_QUESTION
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+enum PaceType {
+  FAST
+  NORMAL
+  SLOW
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+  TIMED_OUT
+}

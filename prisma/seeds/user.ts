@@ -1,5 +1,15 @@
 const createAdmin = async (prisma: any) => {
     
+    // Check if admin already exists
+    const existingAdmin = await prisma.user.findUnique({
+        where: { email: 'shamz81443@gmail.com' }
+    });
+    
+    if (existingAdmin) {
+        console.log('Admin user already exists, using existing admin');
+        return existingAdmin;
+    }
+    
     const newAdmin = await prisma.user.create({
         data: {
             name: 'Admin',
@@ -22,6 +32,16 @@ const createAdmin = async (prisma: any) => {
 
 
 const createStudent = async ({prisma,name,email,phone,syllabusId,classId,isTermsAccepted=true,isVerified=true,registrationType="DEFAULT",createdAt=new Date(),updatedAt=new Date()}:any) => {
+    
+    // Check if student already exists
+    const existingStudent = await prisma.user.findUnique({
+        where: { email: email }
+    });
+    
+    if (existingStudent) {
+        console.log(`Student with email ${email} already exists, using existing student`);
+        return existingStudent;
+    }
     
     const newStudent = await prisma.user.create({
         data: {

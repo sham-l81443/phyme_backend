@@ -9,13 +9,13 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "test:register": "artillery run tests/perfomance/register-test.yaml",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "ts-node prisma/seed-comprehensive.ts",
     "serve": "pm2 start dist/server.js --name phyme_BE",
     "start": "node ./dist/server.js"
   },
   "prisma": {
     "schema": "./prisma",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed-comprehensive.ts"
   },
   "author": "",
   "license": "ISC",

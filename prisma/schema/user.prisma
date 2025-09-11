@@ -20,6 +20,10 @@ model User {
   syllabus         Syllabus?        @relation(fields: [syllabusId], references: [id])
 
   studentSubscription StudentSubscription[]
+  
+  // Quiz Relations
+  quizAttempts     QuizAttempt[]
+  quizPerformances QuizPerformance[]
 
   @@index([email])
   @@index([googleId])

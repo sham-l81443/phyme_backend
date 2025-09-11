@@ -35,6 +35,14 @@ export class LessonRepository {
             createdAt: 'desc',
           },
         },
+        quizzes: {
+          where: {
+            isActive: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
       },
     });
   }
@@ -48,6 +56,14 @@ export class LessonRepository {
       include: {
         _count: true,
         pdfs: {
+          where: {
+            isActive: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+        quizzes: {
           where: {
             isActive: true,
           },
@@ -76,6 +92,14 @@ export class LessonRepository {
           },
         },
         pdfs: {
+          where: {
+            isActive: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+        quizzes: {
           where: {
             isActive: true,
           },

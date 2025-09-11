@@ -11,6 +11,7 @@ model Lesson {
   notes       Note[]
   videos      Video[]
   pdfs        Pdf[]
+  quizzes     Quiz[]
 
   @@unique([code, chapterId])
 }
