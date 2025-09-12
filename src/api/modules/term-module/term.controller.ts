@@ -39,16 +39,15 @@ export class TermController{
 
     static async getTermByClassId(req: Request, res: Response, next: NextFunction) {
         try {
-            const {classId} = req.user as IStudentAccessToken
+            const {classId, id: studentId} = req.user as IStudentAccessToken
 
-            const allTerms = await TermService.getAllTermServiceByClassId(classId)
+            const allTerms = await TermService.getAllTermServiceByClassId(classId, studentId)
 
             const responseData = createSuccessResponse({ data: allTerms, message: 'All terms fetched successfully' })
 
             res.status(200).json(responseData)
 
         } catch (error) {
-            
             next(error)
         }
     }

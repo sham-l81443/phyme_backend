@@ -2,13 +2,16 @@ import express from "express";
 import { LessonController } from "./lesson.controller";
 import { authenticateStudent } from "../../../core/middleware/auth/authenticateStudent";
 import { authenticateAdmin } from "../../../core/middleware/auth/authenticateAdmin";
+import { isSubscribed } from "../../../core/middleware/isSubscribed";
 
 const lessonRouter = express.Router();
 
-lessonRouter.post("/lesson/create", LessonController.createLesson);
-lessonRouter.get("/lesson/all", LessonController.getAllLessons);
-lessonRouter.get("/lesson/:id", LessonController.getLessonById);
-lessonRouter.get("/student/chapter/lessons",authenticateStudent, LessonController.getLessonByChapterId);
+// Admin routes
+lessonRouter.post("/lesson/create", authenticateAdmin, LessonController.createLesson);
+lessonRouter.get("/lesson/all", authenticateAdmin, LessonController.getAllLessons);
+lessonRouter.get("/lesson/:id", authenticateAdmin, LessonController.getLessonById);
 
+// Student routes - protected by subscription
+lessonRouter.get("/student/chapter/lessons", authenticateStudent, isSubscribed, LessonController.getLessonByChapterId);
 
 export default lessonRouter
