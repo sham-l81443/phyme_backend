@@ -11,7 +11,7 @@ import lessonRouter from "./modules/lesson-module/lesson.routes";
 import videoRouter from "./modules/video-module/video.routes";
 import subscriptionRouter from "./modules/subscription-module/subscription.routes";
 import { pdfRoutes } from "./modules/pdf-module";
-import { quizRoutes } from "./modules/quiz-module";
+// import { quizRoutes } from "./modules/quiz-module";
 
 export const appRoutes = (app: Express) => {
     
@@ -26,6 +26,6 @@ export const appRoutes = (app: Express) => {
     app.use("/api", videoRouter)
     app.use("/api", subscriptionRouter)
     app.use("/api", pdfRoutes)
-    app.use("/api", quizRoutes)
+    // app.use("/api", quizRoutes)
 
 }

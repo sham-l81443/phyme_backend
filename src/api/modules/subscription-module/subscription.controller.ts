@@ -39,6 +39,7 @@ static async getUserSubscriptionController(req: Request, res: Response, next: Ne
 static async removeSubscriptionController(req: Request, res: Response, next: NextFunction) {
     try {
         const {subscriptionId} = req.body
+        console.log(subscriptionId)
         const subscription = await SubscriptionService.removeSubscriptionService(subscriptionId)
         const responseData = createSuccessResponse({ data: subscription, message: 'Subscription removed successfully' })
         res.status(200).json(responseData)
