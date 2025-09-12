@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { QuizService } from './quiz.service';
 import createSuccessResponse from '../../../core/utils/responseCreator';
 import { AppError } from '../../../core/utils/errors/AppError';
+import { IAdminAccessToken, IStudentAccessToken } from '../../../core/schema';
 import { 
   CreateQuizRequest, 
   UpdateQuizRequest, 
@@ -21,7 +22,8 @@ export class QuizController {
   static async createQuiz(req: Request, res: Response, next: NextFunction) {
     try {
       const data: CreateQuizRequest = req.body;
-      const createdBy = req.user?.userId;
+      const user = req.user as IAdminAccessToken;
+      const createdBy = user?.id;
 
       if (!createdBy) {
         throw new AppError({
@@ -168,7 +170,8 @@ export class QuizController {
   static async createQuestion(req: Request, res: Response, next: NextFunction) {
     try {
       const data: CreateQuestionRequest = req.body;
-      const createdBy = req.user?.userId;
+      const user = req.user as IAdminAccessToken;
+      const createdBy = user?.id;
 
       if (!createdBy) {
         throw new AppError({
@@ -318,7 +321,8 @@ export class QuizController {
   static async startQuizAttempt(req: Request, res: Response, next: NextFunction) {
     try {
       const data: StartQuizAttemptRequest = req.body;
-      const studentId = req.user?.userId;
+      const user = req.user as IStudentAccessToken;
+      const studentId = user?.id;
 
       if (!studentId) {
         throw new AppError({
@@ -376,7 +380,8 @@ export class QuizController {
   static async getQuizPerformance(req: Request, res: Response, next: NextFunction) {
     try {
       const { quizId } = req.params;
-      const studentId = req.user?.userId;
+      const user = req.user as IStudentAccessToken;
+      const studentId = user?.id;
 
       if (!studentId) {
         throw new AppError({
@@ -434,7 +439,8 @@ export class QuizController {
   static async getStudentQuizAttempts(req: Request, res: Response, next: NextFunction) {
     try {
       const { quizId } = req.params;
-      const studentId = req.user?.userId;
+      const user = req.user as IStudentAccessToken;
+      const studentId = user?.id;
 
       if (!studentId) {
         throw new AppError({

@@ -11,7 +11,20 @@
     "test:register": "artillery run tests/perfomance/register-test.yaml",
     "seed": "ts-node prisma/seed-comprehensive.ts",
     "serve": "pm2 start dist/server.js --name phyme_BE",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/server.js",
+    "setup-pgbouncer": "bash scripts/setup-pgbouncer.sh",
+    "setup-pgbouncer-native": "bash scripts/install-pgbouncer-native.sh",
+    "pgbouncer:start": "docker-compose -f docker-compose.pgbouncer.yml up -d",
+    "pgbouncer:stop": "docker-compose -f docker-compose.pgbouncer.yml down",
+    "pgbouncer:logs": "docker-compose -f docker-compose.pgbouncer.yml logs -f",
+    "pgbouncer:start-native": "launchctl start com.pgbouncer",
+    "pgbouncer:stop-native": "launchctl stop com.pgbouncer",
+    "pgbouncer:restart-native": "launchctl unload ~/Library/LaunchAgents/com.pgbouncer.plist && launchctl load ~/Library/LaunchAgents/com.pgbouncer.plist",
+    "pgbouncer:logs-native": "tail -f /usr/local/var/log/pgbouncer/pgbouncer.log",
+    "pgbouncer:monitor": "node scripts/monitor-pgbouncer.js",
+    "pgbouncer:test": "node scripts/test-pgbouncer.js",
+    "health": "curl http://localhost:3001/api/health",
+    "pgbouncer:stats": "curl http://localhost:3001/api/health/pgbouncer"
   },
   "prisma": {
     "schema": "./prisma",

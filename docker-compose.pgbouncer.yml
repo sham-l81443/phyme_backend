@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  pgbouncer:
+    image: pgbouncer/pgbouncer:latest
+    container_name: phyme_pgbouncer
+    restart: unless-stopped
+    ports:
+      - "6432:6432"  # PgBouncer port
+    environment:
+      - DATABASES_HOST=localhost  # Change to your PostgreSQL host
+      - DATABASES_PORT=5432       # Change to your PostgreSQL port
+      - DATABASES_USER=postgres   # Change to your PostgreSQL user
+      - DATABASES_PASSWORD=your_password  # Change to your PostgreSQL password
+      - DATABASES_DBNAME=phyme_db  # Change to your database name
+      - POOL_MODE=transaction
+      - MAX_CLIENT_CONN=100
+      - DEFAULT_POOL_SIZE=20
+      - MIN_POOL_SIZE=5
+      - RESERVE_POOL_SIZE=5
+      - RESERVE_POOL_TIMEOUT=5
+      - MAX_DB_CONNECTIONS=50
+      - MAX_USER_CONNECTIONS=50
+      - SERVER_RESET_QUERY=DISCARD ALL
+      - IGNORE_STARTUP_PARAMETERS=extra_float_digits
+      - APPLICATION_NAME_ADD_HOST=1
+    volumes:
+      - ./pgbouncer/pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ./pgbouncer/userlist.txt:/etc/pgbouncer/userlist.txt:ro
+    networks:
+      - phyme_network
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "pgbouncer", "-u", "postgres", "-h", "localhost", "-p", "6432", "-d", "phyme_db", "-c", "SHOW VERSION;"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: phyme_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=phyme_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=your_password
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+    networks:
+      - phyme_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d phyme_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  phyme_network:
+    driver: bridge
