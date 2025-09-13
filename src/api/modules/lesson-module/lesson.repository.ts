@@ -110,4 +110,53 @@ export class LessonRepository {
       },
     });
   }
+
+  static async findById(id: string) {
+    return await prisma.lesson.findUnique({
+      where: { id },
+      include: {
+        chapter: {
+          select: {
+            name: true,
+            id: true
+          }
+        },
+        _count: {
+          select: {
+            videos: true,
+            pdfs: true,
+            quizzes: true
+          }
+        }
+      }
+    });
+  }
+
+  static async update(id: string, data: any) {
+    return await prisma.lesson.update({
+      where: { id },
+      data,
+      include: {
+        chapter: {
+          select: {
+            name: true,
+            id: true
+          }
+        },
+        _count: {
+          select: {
+            videos: true,
+            pdfs: true,
+            quizzes: true
+          }
+        }
+      }
+    });
+  }
+
+  static async delete(id: string) {
+    return await prisma.lesson.delete({
+      where: { id }
+    });
+  }
 }

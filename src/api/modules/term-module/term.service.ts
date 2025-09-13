@@ -47,5 +47,61 @@ export class TermService {
         }
     }
 
+    static async updateTermService(id: string, body: any) {
+        try {
+            // Check if term exists
+            const existingTerm = await TermRepository.findById(id);
+            if (!existingTerm) {
+                throw new AppError({ errorType: "Not Found", message: "Term not found" });
+            }
+
+            // Validate the update data
+            const validatedData = validateDto(TermValidation.createTermSchema, body);
+
+            // Check if code is being changed and if new code already exists
+            if (validatedData.code !== existingTerm.code) {
+                const codeExists = await TermRepository.findUniqueTermByCode({ code: validatedData.code });
+                if (codeExists) {
+                    throw new AppError({ errorType: "Conflict", message: "Term with this code already exists" });
+                }
+            }
+
+            return await TermRepository.update(id, validatedData);
+
+        } catch (error) {
+            rethrowAppError(error, 'Failed to update term');
+        }
+    }
+
+    static async deleteTermService(id: string) {
+        try {
+            // Check if term exists
+            const existingTerm = await TermRepository.findById(id);
+            if (!existingTerm) {
+                throw new AppError({ errorType: "Not Found", message: "Term not found" });
+            }
+
+            // Check if term has associated chapters or subscriptions
+            if (existingTerm._count.chapters > 0) {
+                throw new AppError({ 
+                    errorType: "Conflict", 
+                    message: "Cannot delete term with associated chapters" 
+                });
+            }
+
+            if (existingTerm._count.studentSubscription > 0) {
+                throw new AppError({ 
+                    errorType: "Conflict", 
+                    message: "Cannot delete term with active student subscriptions" 
+                });
+            }
+
+            return await TermRepository.delete(id);
+
+        } catch (error) {
+            rethrowAppError(error, 'Failed to delete term');
+        }
+    }
+
 }
 

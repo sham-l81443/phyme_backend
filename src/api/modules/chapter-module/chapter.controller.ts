@@ -57,4 +57,38 @@ export class ChapterController {
 
     }
 
+    static async updateChapterController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const updatedChapter = await ChapterService.updateChapterService(id, req.body);
+
+            const responseData = createSuccessResponse({ 
+                data: updatedChapter, 
+                message: 'Chapter updated successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async deleteChapterController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            await ChapterService.deleteChapterService(id);
+
+            const responseData = createSuccessResponse({ 
+                data: null, 
+                message: 'Chapter deleted successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
 }

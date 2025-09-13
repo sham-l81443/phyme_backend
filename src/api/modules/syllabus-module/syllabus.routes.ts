@@ -7,6 +7,8 @@ const syllabusRouter = express.Router();
 // admin
 
 syllabusRouter.post('/admin/syllabus/create',authenticateAdmin,SyllabusController.createSyllabus)
+syllabusRouter.put('/admin/syllabus/:id',authenticateAdmin,SyllabusController.updateSyllabus)
+syllabusRouter.delete('/admin/syllabus/:id',authenticateAdmin,SyllabusController.deleteSyllabus)
 
 
 // global

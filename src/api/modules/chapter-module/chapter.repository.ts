@@ -45,4 +45,61 @@ export class ChapterRepository {
         })
         return findChapterBySubjectId
     }
+
+    static findById = async (id: string) => {
+        return await prisma.chapter.findUnique({
+            where: { id },
+            include: {
+                subject: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                },
+                term: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                },
+                _count: {
+                    select: {
+                        lessons: true
+                    }
+                }
+            }
+        });
+    }
+
+    static update = async (id: string, data: any) => {
+        return await prisma.chapter.update({
+            where: { id },
+            data,
+            include: {
+                subject: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                },
+                term: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                },
+                _count: {
+                    select: {
+                        lessons: true
+                    }
+                }
+            }
+        });
+    }
+
+    static delete = async (id: string) => {
+        return await prisma.chapter.delete({
+            where: { id }
+        });
+    }
 }

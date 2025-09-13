@@ -16,7 +16,7 @@ export class SyllabusRepository {
         });
       }
 
-      static async findByCode(code:string, excludeId = null) {
+      static async findByCode(code:string, excludeId: string | null = null) {
         const whereClause:{[key:string]:any} = { 
           code,
         };
@@ -40,6 +40,41 @@ export class SyllabusRepository {
               }
             }
           }
+        });
+      }
+
+      static async findById(id: string) {
+        return await prisma.syllabus.findUnique({
+          where: { id },
+          include: {
+            _count: {
+              select: {
+                classes: true,
+                users: true,
+              }
+            }
+          }
+        });
+      }
+
+      static async update(id: string, data: any) {
+        return await prisma.syllabus.update({
+          where: { id },
+          data,
+          include: {
+            _count: {
+              select: {
+                classes: true,
+                users: true,
+              }
+            }
+          }
+        });
+      }
+
+      static async delete(id: string) {
+        return await prisma.syllabus.delete({
+          where: { id }
         });
       }
     

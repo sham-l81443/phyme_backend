@@ -79,4 +79,38 @@ export class VideoController {
 
     }
 
+    static async updateVideoController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const updatedVideo = await VideoService.updateVideoService(id, req.body);
+
+            const responseData = createSuccessResponse({ 
+                data: updatedVideo, 
+                message: 'Video updated successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async deleteVideoController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            await VideoService.deleteVideoService(id);
+
+            const responseData = createSuccessResponse({ 
+                data: null, 
+                message: 'Video deleted successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
 }

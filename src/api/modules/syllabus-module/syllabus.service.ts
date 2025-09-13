@@ -51,5 +51,61 @@ console.log(body)
 
     }
 
+    static async updateSyllabusService(id: string, body: any) {
+        try {
+            // Check if syllabus exists
+            const existingSyllabus = await SyllabusRepository.findById(id);
+            if (!existingSyllabus) {
+                throw new AppError({ errorType: "Not Found", message: "Syllabus not found" });
+            }
+
+            // Validate the update data
+            const validatedData = validateDto(SyllabusValidation.createSyllabusSchema, body);
+
+            // Check if code is being changed and if new code already exists
+            if (validatedData.code !== existingSyllabus.code) {
+                const codeExists = await SyllabusRepository.findByCode(validatedData.code, id);
+                if (codeExists) {
+                    throw new AppError({ errorType: "Conflict", message: "Syllabus with this code already exists" });
+                }
+            }
+
+            return await SyllabusRepository.update(id, validatedData);
+
+        } catch (error) {
+            rethrowAppError(error, 'Failed to update syllabus');
+        }
+    }
+
+    static async deleteSyllabusService(id: string) {
+        try {
+            // Check if syllabus exists
+            const existingSyllabus = await SyllabusRepository.findById(id);
+            if (!existingSyllabus) {
+                throw new AppError({ errorType: "Not Found", message: "Syllabus not found" });
+            }
+
+            // Check if syllabus has associated classes or users
+            if (existingSyllabus._count.classes > 0) {
+                throw new AppError({ 
+                    errorType: "Conflict", 
+                    message: "Cannot delete syllabus with associated classes" 
+                });
+            }
+
+            if (existingSyllabus._count.users > 0) {
+                throw new AppError({ 
+                    errorType: "Conflict", 
+                    message: "Cannot delete syllabus with associated users" 
+                });
+            }
+
+            return await SyllabusRepository.delete(id);
+
+        } catch (error) {
+            rethrowAppError(error, 'Failed to delete syllabus');
+        }
+    }
+
 }
 

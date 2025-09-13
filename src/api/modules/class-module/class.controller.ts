@@ -53,5 +53,39 @@ export class ClassController {
 
         }
     }
+
+    static async updateClassController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const updatedClass = await ClassService.updateClassService(id, req.body);
+
+            const responseData = createSuccessResponse({ 
+                data: updatedClass, 
+                message: 'Class updated successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async deleteClassController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            await ClassService.deleteClassService(id);
+
+            const responseData = createSuccessResponse({ 
+                data: null, 
+                message: 'Class deleted successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 

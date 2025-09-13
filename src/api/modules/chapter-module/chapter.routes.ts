@@ -9,6 +9,8 @@ const ChapterRouter = express.Router();
 // Admin routes
 ChapterRouter.get('/chapter/all', authenticateAdmin, ChapterController.getAllChapters)
 ChapterRouter.post('/chapter/create', authenticateAdmin, ChapterController.createChapterController)
+ChapterRouter.put('/chapter/:id', authenticateAdmin, ChapterController.updateChapterController)
+ChapterRouter.delete('/chapter/:id', authenticateAdmin, ChapterController.deleteChapterController)
 
 // Student routes - protected by subscription
 ChapterRouter.get('/student/chapters', authenticateStudent, isSubscribed, ChapterController.getChapterByTermIdAndSubjectId)

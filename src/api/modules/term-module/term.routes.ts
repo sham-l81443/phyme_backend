@@ -7,6 +7,8 @@ const termRouter = express.Router();
 
 
 termRouter.post('/term/create',authenticateAdmin,TermController.createTermController)
+termRouter.put('/term/:id',authenticateAdmin,TermController.updateTermController)
+termRouter.delete('/term/:id',authenticateAdmin,TermController.deleteTermController)
 termRouter.get('/term/all',authenticateAdmin,TermController.getAllTermController)
 termRouter.get('/student/get-all-terms-by-class',authenticateStudent,TermController.getTermByClassId)
 

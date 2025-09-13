@@ -46,4 +46,38 @@ export class LessonController {
       next(error);
     }
   }
+
+  static async updateLessonController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const updatedLesson = await LessonService.updateLessonService(id, req.body);
+
+      const responseData = createSuccessResponse({ 
+        data: updatedLesson, 
+        message: 'Lesson updated successfully' 
+      });
+
+      res.status(200).json(responseData);
+
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async deleteLessonController(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await LessonService.deleteLessonService(id);
+
+      const responseData = createSuccessResponse({ 
+        data: null, 
+        message: 'Lesson deleted successfully' 
+      });
+
+      res.status(200).json(responseData);
+
+    } catch (error) {
+      next(error);
+    }
+  }
 }

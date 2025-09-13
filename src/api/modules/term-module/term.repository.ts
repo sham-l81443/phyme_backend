@@ -120,4 +120,51 @@ export class TermRepository {
         })
         return getAllTerm
     }
+
+    static findById = async (id: string) => {
+        return await prisma.term.findUnique({
+            where: { id },
+            include: {
+                class: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                },
+                _count: {
+                    select: {
+                        chapters: true,
+                        studentSubscription: true
+                    }
+                }
+            }
+        });
+    }
+
+    static update = async (id: string, data: any) => {
+        return await prisma.term.update({
+            where: { id },
+            data,
+            include: {
+                class: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                },
+                _count: {
+                    select: {
+                        chapters: true,
+                        studentSubscription: true
+                    }
+                }
+            }
+        });
+    }
+
+    static delete = async (id: string) => {
+        return await prisma.term.delete({
+            where: { id }
+        });
+    }
 }

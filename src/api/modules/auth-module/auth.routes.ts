@@ -9,6 +9,7 @@ authRouter.post('/register', AuthController.studentRegisterController);
 authRouter.post('/verify', AuthController.verifyStudentController);
 authRouter.post('/reset', AuthController.resetStudentPassword)
 authRouter.post('/getResetPasswordOtp', AuthController.getRestPasswordOtp)
+authRouter.post('/forget-password', AuthController.forgetPassword)
 
 
 //admin

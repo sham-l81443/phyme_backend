@@ -151,6 +151,22 @@ export class AuthController {
 
     }
 
+    static async forgetPassword(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data = await AuthService.getOtp({ body: req.body })
+
+            res.status(200).json(
+                createSuccessResponse({
+                    data: { email: data?.user?.email },
+                    message: "OTP sent to your email for password reset",
+                })
+            );
+
+        } catch (error) {
+            next(error)
+        }
+    }
+
 
     //admin
     static async adminLoginController(req: Request, res: Response, next: NextFunction) {

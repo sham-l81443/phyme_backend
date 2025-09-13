@@ -52,6 +52,40 @@ export class TermController{
         }
     }
 
+    static async updateTermController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const updatedTerm = await TermService.updateTermService(id, req.body);
+
+            const responseData = createSuccessResponse({ 
+                data: updatedTerm, 
+                message: 'Term updated successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async deleteTermController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            await TermService.deleteTermService(id);
+
+            const responseData = createSuccessResponse({ 
+                data: null, 
+                message: 'Term deleted successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
 
     
 }

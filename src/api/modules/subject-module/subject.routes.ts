@@ -6,6 +6,8 @@ import { authenticateStudent } from "../../../core/middleware/auth/authenticateS
 const subjectRouter = express.Router();
 
 subjectRouter.post('/subject/create',authenticateAdmin,SubjectController.createSubjectController)
+subjectRouter.put('/subject/:id',authenticateAdmin,SubjectController.updateSubjectController)
+subjectRouter.delete('/subject/:id',authenticateAdmin,SubjectController.deleteSubjectController)
 subjectRouter.get('/subject/all',authenticateAdmin,SubjectController.getAllSubjectController)
 
 //student

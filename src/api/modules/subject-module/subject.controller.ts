@@ -52,4 +52,38 @@ export class SubjectController {
 
         }
     }
+
+    static async updateSubjectController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const updatedSubject = await SubjectService.updateSubjectService(id, req.body);
+
+            const responseData = createSuccessResponse({ 
+                data: updatedSubject, 
+                message: 'Subject updated successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async deleteSubjectController(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            await SubjectService.deleteSubjectService(id);
+
+            const responseData = createSuccessResponse({ 
+                data: null, 
+                message: 'Subject deleted successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
 }

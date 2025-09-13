@@ -8,6 +8,8 @@ const lessonRouter = express.Router();
 
 // Admin routes
 lessonRouter.post("/lesson/create", authenticateAdmin, LessonController.createLesson);
+lessonRouter.put("/lesson/:id", authenticateAdmin, LessonController.updateLessonController);
+lessonRouter.delete("/lesson/:id", authenticateAdmin, LessonController.deleteLessonController);
 lessonRouter.get("/lesson/all", authenticateAdmin, LessonController.getAllLessons);
 lessonRouter.get("/lesson/:id", authenticateAdmin, LessonController.getLessonById);
 

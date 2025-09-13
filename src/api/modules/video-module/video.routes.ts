@@ -8,6 +8,8 @@ const videoRouter = express.Router();
 
 // Admin routes
 videoRouter.post("/video/create", authenticateAdmin, VideoController.createVideo);
+videoRouter.put("/video/:id", authenticateAdmin, VideoController.updateVideoController);
+videoRouter.delete("/video/:id", authenticateAdmin, VideoController.deleteVideoController);
 videoRouter.get("/video/all", authenticateAdmin, VideoController.getAllVideos);
 
 // Student routes - protected by subscription

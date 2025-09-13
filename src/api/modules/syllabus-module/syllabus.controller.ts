@@ -40,5 +40,39 @@ export class SyllabusController{
 
     }
 
+    static async updateSyllabus(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            const updatedSyllabus = await SyllabusService.updateSyllabusService(id, req.body);
+
+            const responseData = createSuccessResponse({ 
+                data: updatedSyllabus, 
+                message: 'Syllabus updated successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async deleteSyllabus(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params;
+            await SyllabusService.deleteSyllabusService(id);
+
+            const responseData = createSuccessResponse({ 
+                data: null, 
+                message: 'Syllabus deleted successfully' 
+            });
+
+            res.status(200).json(responseData);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
 
 }

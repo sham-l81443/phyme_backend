@@ -53,5 +53,68 @@ export class ClassService {
             rethrowAppError(error,'Failed to get classes by syllabus')
         }
     }
+
+    static async updateClassService(id: string, body: any) {
+        try {
+            // Check if class exists
+            const existingClass = await ClassRepository.findById(id);
+            if (!existingClass) {
+                throw new AppError({ errorType: "Not Found", message: "Class not found" });
+            }
+
+            // Validate the update data
+            const validatedData = validateDto(ClassValidation.createClassSchema, body);
+
+            // Check if code is being changed and if new code already exists
+            if (validatedData.code !== existingClass.code) {
+                const codeExists = await ClassRepository.findUniqueClassByCode({ code: validatedData.code });
+                if (codeExists) {
+                    throw new AppError({ errorType: "Conflict", message: "Class with this code already exists" });
+                }
+            }
+
+            return await ClassRepository.update(id, validatedData);
+
+        } catch (error) {
+            rethrowAppError(error, 'Failed to update class');
+        }
+    }
+
+    static async deleteClassService(id: string) {
+        try {
+            // Check if class exists
+            const existingClass = await ClassRepository.findById(id);
+            if (!existingClass) {
+                throw new AppError({ errorType: "Not Found", message: "Class not found" });
+            }
+
+            // Check if class has associated subjects, users, or terms
+            if (existingClass._count.subjects > 0) {
+                throw new AppError({ 
+                    errorType: "Conflict", 
+                    message: "Cannot delete class with associated subjects" 
+                });
+            }
+
+            if (existingClass._count.users > 0) {
+                throw new AppError({ 
+                    errorType: "Conflict", 
+                    message: "Cannot delete class with associated users" 
+                });
+            }
+
+            if (existingClass._count.terms > 0) {
+                throw new AppError({ 
+                    errorType: "Conflict", 
+                    message: "Cannot delete class with associated terms" 
+                });
+            }
+
+            return await ClassRepository.delete(id);
+
+        } catch (error) {
+            rethrowAppError(error, 'Failed to delete class');
+        }
+    }
 }
 

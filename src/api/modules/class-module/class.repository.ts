@@ -55,4 +55,51 @@ export class ClassRepository {
             }
         })
     }
+
+    static findById = async (id: string) => {
+        return await prisma.class.findUnique({
+            where: { id },
+            include: {
+                syllabus: {
+                    select: {
+                        name: true
+                    }
+                },
+                _count: {
+                    select: {
+                        subjects: true,
+                        users: true,
+                        terms: true
+                    }
+                }
+            }
+        });
+    }
+
+    static update = async (id: string, data: any) => {
+        return await prisma.class.update({
+            where: { id },
+            data,
+            include: {
+                syllabus: {
+                    select: {
+                        name: true
+                    }
+                },
+                _count: {
+                    select: {
+                        subjects: true,
+                        users: true,
+                        terms: true
+                    }
+                }
+            }
+        });
+    }
+
+    static delete = async (id: string) => {
+        return await prisma.class.delete({
+            where: { id }
+        });
+    }
 }

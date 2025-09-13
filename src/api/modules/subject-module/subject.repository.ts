@@ -50,4 +50,49 @@ export class SubjectRepository {
         })
         return findAllSubjects
     }
+
+    static findById = async (id: string) => {
+        return await prisma.subject.findUnique({
+            where: { id },
+            include: {
+                class: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                },
+                _count: {
+                    select: {
+                        chapters: true,
+                    }
+                }
+            }
+        });
+    }
+
+    static update = async (id: string, data: any) => {
+        return await prisma.subject.update({
+            where: { id },
+            data,
+            include: {
+                class: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                },
+                _count: {
+                    select: {
+                        chapters: true,
+                    }
+                }
+            }
+        });
+    }
+
+    static delete = async (id: string) => {
+        return await prisma.subject.delete({
+            where: { id }
+        });
+    }
 }

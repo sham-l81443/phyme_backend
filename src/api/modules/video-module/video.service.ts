@@ -82,5 +82,40 @@ export class VideoService {
         }
 
     }
+
+    static async updateVideoService(id: string, body: any) {
+        try {
+            // Check if video exists
+            const existingVideo = await VideoRepository.findById(id);
+            if (!existingVideo) {
+                throw new AppError({ errorType: "Not Found", message: "Video not found" });
+            }
+
+            // Validate the update data
+            const validatedData = validateDto(VideoValidation.createVideo, body);
+
+            return await VideoRepository.update(id, validatedData);
+
+        } catch (error) {
+            rethrowAppError(error, 'Failed to update video');
+        }
+    }
+
+    static async deleteVideoService(id: string) {
+        try {
+            // Check if video exists
+            const existingVideo = await VideoRepository.findById(id);
+            if (!existingVideo) {
+                throw new AppError({ errorType: "Not Found", message: "Video not found" });
+            }
+
+            // Videos can generally be deleted without dependency checks
+            // unless there are specific business rules
+            return await VideoRepository.delete(id);
+
+        } catch (error) {
+            rethrowAppError(error, 'Failed to delete video');
+        }
+    }
 }
 

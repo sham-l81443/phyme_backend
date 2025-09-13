@@ -65,4 +65,39 @@ export class VideoRepository {
             }
         })
     }
+
+    static findById = async (id: string) => {
+        return await prisma.video.findUnique({
+            where: { id },
+            include: {
+                lesson: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                }
+            }
+        });
+    }
+
+    static update = async (id: string, data: any) => {
+        return await prisma.video.update({
+            where: { id },
+            data,
+            include: {
+                lesson: {
+                    select: {
+                        name: true,
+                        id: true
+                    }
+                }
+            }
+        });
+    }
+
+    static delete = async (id: string) => {
+        return await prisma.video.delete({
+            where: { id }
+        });
+    }
 }
