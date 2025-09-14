@@ -3,6 +3,7 @@ import { config } from "../config";
 
 const allowedOrigins = ["https://phymelearning.com","http://localhost:3000","http://localhost:4000","http://156.67.219.108:4000"];
 
+console.log(allowedOrigins);
 // Check if CORS is enabled via environment variable
 const isCorsEnabled = config.cors.enabled;
 
