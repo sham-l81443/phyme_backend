@@ -1,7 +1,7 @@
 import cors from "cors";
 import { config } from "../config";
 
-const allowedOrigins = ["https://phymelearning.com","http://localhost:3000","http://localhost:4000","http://156.67.219.108:4000"];
+const allowedOrigins = ["https://phymelearning.com","http://localhost:3000","http://localhost:4000","http://156.67.219.108:4000","http://dev.phymelearning.com","https://dev.phymelearning.com"];
 
 console.log(allowedOrigins);
 // Check if CORS is enabled via environment variable
