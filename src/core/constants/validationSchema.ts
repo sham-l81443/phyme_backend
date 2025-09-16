@@ -39,3 +39,12 @@ export const TERMS_ACCEPTED_SCHEMA = z.boolean().refine((value) => value === tru
 })
     
 export const EMBED_LINK_SCHEMA = z.string().url({ message: "Please enter a valid YouTube embed link" })
+
+
+export const UUID_OPTIONAL = z.string().uuid().optional();
+
+export const BOOLEAN_SCHEMA_TRUE = z.boolean().default(true);
+export const BOOLEAN_SCHEMA_FALSE = z.boolean().default(false);   
+
+
+export const OPTIONAL_DATE_TIME_SCHEMA = z.string().datetime().optional();

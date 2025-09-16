@@ -1,16 +1,16 @@
 model Pdf {
-  id          String   @id @default(uuid()) @db.Uuid
-  name        String
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String
   originalName String
-  fileName    String   @unique
-  filePath    String
-  fileSize    Int
-  mimeType    String
-  lessonId    String   @db.Uuid
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  fileName     String   @unique
+  filePath     String
+  fileSize     Int
+  mimeType     String
+  lessonId     String   @db.Uuid
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  lesson       Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   @@map("pdfs")
 }

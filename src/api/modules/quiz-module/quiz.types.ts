@@ -4,7 +4,10 @@ import { QuestionType, Difficulty, PaceType, AttemptStatus } from '@prisma/clien
 export interface CreateQuizRequest {
   title: string;
   description?: string;
-  lessonId: string;
+  lessonId?: string;
+  chapterId?: string;
+  subjectId?: string;
+  termId?: string;
   isTimed: boolean;
   timeLimit?: number; // in minutes
   isActive: boolean;
@@ -39,7 +42,7 @@ export interface CreateQuestionRequest {
 export interface CreateAnswerRequest {
   content: string;
   isCorrect: boolean;
-  order: number;
+  position: number;
   imageUrl?: string;
 }
 
@@ -51,7 +54,7 @@ export interface UpdateQuestionRequest extends Partial<CreateQuestionRequest> {
 export interface AssignQuestionToQuizRequest {
   quizId: string;
   questionId: string;
-  order?: number;
+  position?: number;
   points?: number;
 }
 
@@ -78,19 +81,21 @@ export interface QuizResponse {
   id: string;
   title: string;
   description?: string;
-  lessonId: string;
-  lesson: {
+  quizLevel: 'standalone' | 'subject' | 'chapter' | 'lesson' | 'video' | 'term';
+  associatedContent?: {
+    type: 'subject' | 'chapter' | 'lesson' | 'video' | 'term';
     id: string;
     name: string;
-    chapter: {
-      id: string;
-      name: string;
-      subject: {
-        id: string;
-        name: string;
-      };
-    };
+    code?: string;
+    duration?: number; // For video
+    subject?: { id: string; name: string; code: string; };
+    chapter?: { id: string; name: string; code: string; subject: { id: string; name: string; code: string; }; };
   };
+  // Legacy fields for backward compatibility
+  lessonId?: string;
+  chapterId?: string;
+  subjectId?: string;
+  termId?: string;
   isTimed: boolean;
   timeLimit?: number;
   isActive: boolean;
@@ -120,7 +125,7 @@ export interface QuestionResponse {
   explanation?: string;
   tags: string[];
   answers: AnswerResponse[];
-  order?: number; // Order in quiz
+  position?: number; // Order in quiz
   quizPoints?: number; // Points for this question in this quiz
 }
 
@@ -128,7 +133,7 @@ export interface AnswerResponse {
   id: string;
   content: string;
   isCorrect: boolean;
-  order: number;
+  position: number;
   imageUrl?: string;
 }
 

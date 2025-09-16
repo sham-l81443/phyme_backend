@@ -16,14 +16,20 @@ import {
   SubmitQuizAnswerRequest,
   SubmitQuizAttemptRequest
 } from './quiz.types';
+import { createQuizSchema } from './quiz.validation';
 
 export class QuizController {
   // Quiz Management (Admin)
   static async createQuiz(req: Request, res: Response, next: NextFunction) {
     try {
-      const data: CreateQuizRequest = req.body;
+      // Validate request data
+      const validatedData = createQuizSchema.parse(req.body);
+      console.log(validatedData);
+      
       const user = req.user as IAdminAccessToken;
+      console.log('User object:', user);
       const createdBy = user?.id;
+      console.log('CreatedBy:', createdBy);
 
       if (!createdBy) {
         throw new AppError({
@@ -32,14 +38,28 @@ export class QuizController {
         });
       }
 
-      const quiz = await QuizService.createQuiz(data, createdBy);
+      const quiz = await QuizService.createQuiz(validatedData, createdBy);
 
       res.status(201).json(
         createSuccessResponse({
           data: quiz,
           message: 'Quiz created successfully'
-        })
+        })  
       );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getAllQuizzes(req: Request, res: Response, next: NextFunction) {
+    try {
+      const quizzes = await QuizService.getAllQuizzes();
+      res.status(200).json(
+      createSuccessResponse({
+        data: quizzes,
+        message: 'Quizzes retrieved successfully'
+      })
+     );
     } catch (error) {
       next(error);
     }

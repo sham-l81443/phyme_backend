@@ -30,6 +30,13 @@ export class QuizRepository {
             }
           }
         },
+        chapter: {
+          include: {
+            subject: true
+          }
+        },
+        subject: true,
+        term: true,
         questions: {
           include: {
             question: {
@@ -38,10 +45,14 @@ export class QuizRepository {
               }
             }
           },
-          orderBy: { order: 'asc' }
+          orderBy: { position: 'asc' }
         }
       }
     });
+  }
+
+  static async getAllQuizzes() {
+    return await prisma.quiz.findMany();
   }
 
   static async getQuizById(id: string) {
@@ -57,6 +68,13 @@ export class QuizRepository {
             }
           }
         },
+        chapter: {
+          include: {
+            subject: true
+          }
+        },
+        subject: true,
+        term: true,
         questions: {
           include: {
             question: {
@@ -65,7 +83,7 @@ export class QuizRepository {
               }
             }
           },
-          orderBy: { order: 'asc' }
+          orderBy: { position: 'asc' }
         },
         attempts: {
           include: {
@@ -191,6 +209,13 @@ export class QuizRepository {
             }
           }
         },
+        chapter: {
+          include: {
+            subject: true
+          }
+        },
+        subject: true,
+        term: true,
         questions: {
           include: {
             question: {
@@ -199,7 +224,7 @@ export class QuizRepository {
               }
             }
           },
-          orderBy: { order: 'asc' }
+          orderBy: { position: 'asc' }
         }
       }
     });
@@ -229,14 +254,14 @@ export class QuizRepository {
           create: data.answers.map(answer => ({
             content: answer.content,
             isCorrect: answer.isCorrect,
-            order: answer.order,
+            position: answer.position,
             imageUrl: answer.imageUrl
           }))
         }
       },
       include: {
         answers: {
-          orderBy: { order: 'asc' }
+          orderBy: { position: 'asc' }
         }
       }
     });
@@ -247,7 +272,7 @@ export class QuizRepository {
       where: { id },
       include: {
         answers: {
-          orderBy: { order: 'asc' }
+          orderBy: { position: 'asc' }
         },
         quizQuestions: {
           include: {
@@ -303,7 +328,7 @@ export class QuizRepository {
         where,
         include: {
           answers: {
-            orderBy: { order: 'asc' }
+            orderBy: { position: 'asc' }
           },
           _count: {
             select: {
@@ -339,14 +364,14 @@ export class QuizRepository {
           create: data.answers.map(answer => ({
             content: answer.content,
             isCorrect: answer.isCorrect,
-            order: answer.order,
+            position: answer.position,
             imageUrl: answer.imageUrl
           }))
         } : undefined
       },
       include: {
         answers: {
-          orderBy: { order: 'asc' }
+          orderBy: { position: 'asc' }
         }
       }
     });
@@ -364,7 +389,7 @@ export class QuizRepository {
       data: {
         quizId: data.quizId,
         questionId: data.questionId,
-        order: data.order || 0,
+        position: data.position || 0,
         points: data.points
       },
       include: {
@@ -381,7 +406,7 @@ export class QuizRepository {
     const assignments = data.questionIds.map((questionId, index) => ({
       quizId: data.quizId,
       questionId,
-      order: index,
+      position: index,
       points: data.points
     }));
 
@@ -402,8 +427,8 @@ export class QuizRepository {
     });
   }
 
-  static async reorderQuizQuestions(quizId: string, questionOrders: { questionId: string; order: number }[]) {
-    const updates = questionOrders.map(({ questionId, order }) =>
+  static async reorderQuizQuestions(quizId: string, questionOrders: { questionId: string; position: number }[]) {
+    const updates = questionOrders.map(({ questionId, position }) =>
       prisma.quizQuestion.update({
         where: {
           quizId_questionId: {
@@ -411,7 +436,7 @@ export class QuizRepository {
             questionId
           }
         },
-        data: { order }
+        data: { position }
       })
     );
 
@@ -475,7 +500,7 @@ export class QuizRepository {
                   }
                 }
               },
-              orderBy: { order: 'asc' }
+              orderBy: { position: 'asc' }
             }
           }
         },

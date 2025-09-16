@@ -2,38 +2,91 @@ import { z } from 'zod';
 import { QuestionType, Difficulty, PaceType } from '@prisma/client';
 
 // Quiz Validation Schemas
+import { REQUIRED_STRING_SCHEMA, OPTIONAL_STRING_SCHEMA, UUID_OPTIONAL, BOOLEAN_SCHEMA_TRUE, BOOLEAN_SCHEMA_FALSE, OPTIONAL_DATE_TIME_SCHEMA } from "../../../core/constants/validationSchema";
+
+// Enum definitions for quiz
+export const PACE_TYPE = z.enum(["SLOW", "NORMAL", "FAST"]);
+export const DIFFICULTY = z.enum(["EASY", "MEDIUM", "HARD"]);
+
+// Validation constants
+const QUIZ_VALIDATION = {
+  TIME_LIMIT_MIN: 1,
+  MAX_ATTEMPTS_MIN: 1,
+  NEGATIVE_MARK_MIN: 0,
+  NEGATIVE_MARK_MAX: 1,
+} as const;
+
+// Common validation schemas
+
+// Quiz creation schema
 export const createQuizSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(200, 'Title must be less than 200 characters'),
-  description: z.string().max(1000, 'Description must be less than 1000 characters').optional(),
-  lessonId: z.string().uuid('Invalid lesson ID'),
-  isTimed: z.boolean().default(false),
-  timeLimit: z.number().min(1, 'Time limit must be at least 1 minute').max(300, 'Time limit must be less than 300 minutes').optional(),
-  isActive: z.boolean().default(true),
-  allowRetake: z.boolean().default(true),
-  maxAttempts: z.number().min(1, 'Max attempts must be at least 1').max(10, 'Max attempts must be less than 10').default(2),
-  hasNegativeMarking: z.boolean().default(false),
-  negativeMarkRatio: z.number().min(0, 'Negative mark ratio must be positive').max(1, 'Negative mark ratio must be less than or equal to 1').optional(),
-  paceType: z.nativeEnum(PaceType).default('NORMAL'),
-  difficulty: z.nativeEnum(Difficulty).default('MEDIUM'),
-  startDate: z.string().datetime().optional(),
-  endDate: z.string().datetime().optional()
+  // Basic Information
+  title: REQUIRED_STRING_SCHEMA,
+  description: OPTIONAL_STRING_SCHEMA,
+  
+  // Relations (at least one must be provided)
+  lessonId: UUID_OPTIONAL,
+  chapterId: UUID_OPTIONAL,
+  subjectId: UUID_OPTIONAL,
+  termId: UUID_OPTIONAL,
+  
+  // Quiz Settings
+  isTimed: BOOLEAN_SCHEMA_FALSE,
+  timeLimit: z.number().min(QUIZ_VALIDATION.TIME_LIMIT_MIN, { message: "Time limit must be at least 1 minute" }).optional(),
+  isActive: BOOLEAN_SCHEMA_TRUE,
+  allowRetake: BOOLEAN_SCHEMA_TRUE,
+  maxAttempts: z.number().min(QUIZ_VALIDATION.MAX_ATTEMPTS_MIN, { message: "Max attempts must be at least 1" }).default(2),
+  
+  // Scoring Settings
+  hasNegativeMarking: BOOLEAN_SCHEMA_FALSE,
+  negativeMarkRatio: z.number().min(QUIZ_VALIDATION.NEGATIVE_MARK_MIN, { message: "Negative mark ratio must be positive" }).max(QUIZ_VALIDATION.NEGATIVE_MARK_MAX, { message: "Negative mark ratio cannot exceed 1" }).optional(),
+  
+  // Pace Settings
+  paceType: PACE_TYPE.default("NORMAL"),
+  
+  // Difficulty
+  difficulty: DIFFICULTY.default("MEDIUM"),
+
+  // Scheduling
+  startDate: OPTIONAL_DATE_TIME_SCHEMA,
+  endDate: OPTIONAL_DATE_TIME_SCHEMA,
 }).refine((data) => {
+  // At least one relation must be provided
+  return data.lessonId || data.chapterId || data.subjectId || data.termId;
+}, {
+  message: "At least one relation (lesson, chapter, subject, or term) must be selected",
+  path: ["lessonId"]
+}).refine((data) => {
+  // If timed is true, timeLimit must be provided
   if (data.isTimed && !data.timeLimit) {
     return false;
   }
   return true;
 }, {
-  message: 'Time limit is required for timed quizzes',
-  path: ['timeLimit']
+  message: "Time limit is required when quiz is timed",
+  path: ["timeLimit"]
 }).refine((data) => {
-  if (data.startDate && data.endDate && new Date(data.startDate) >= new Date(data.endDate)) {
+  // If hasNegativeMarking is true, negativeMarkRatio must be provided
+  if (data.hasNegativeMarking && !data.negativeMarkRatio) {
     return false;
   }
   return true;
 }, {
-  message: 'Start date must be before end date',
-  path: ['endDate']
+  message: "Negative mark ratio is required when negative marking is enabled",
+  path: ["negativeMarkRatio"]
+}).refine((data) => {
+  // End date must be after start date
+  if (data.startDate && data.endDate && data.endDate <= data.startDate) {
+    return false;
+  }
+  return true;
+}, {
+  message: "End date must be after start date",
+  path: ["endDate"]
 });
+
+export type ICreateQuiz = z.infer<typeof createQuizSchema>;
+
 
 export const updateQuizSchema = z.object({
   id: z.string().uuid('Invalid quiz ID'),
@@ -73,7 +126,7 @@ export const updateQuizSchema = z.object({
 export const createAnswerSchema = z.object({
   content: z.string().min(1, 'Answer content is required').max(500, 'Answer content must be less than 500 characters'),
   isCorrect: z.boolean().default(false),
-  order: z.number().min(0, 'Order must be non-negative').default(0),
+  position: z.number().min(0, 'Position must be non-negative').default(0),
   imageUrl: z.string().url('Invalid image URL').optional()
 });
 
@@ -126,7 +179,7 @@ export const updateQuestionSchema = z.object({
 export const assignQuestionToQuizSchema = z.object({
   quizId: z.string().uuid('Invalid quiz ID'),
   questionId: z.string().uuid('Invalid question ID'),
-  order: z.number().min(0, 'Order must be non-negative').default(0),
+  position: z.number().min(0, 'Position must be non-negative').default(0),
   points: z.number().min(0.1, 'Points must be at least 0.1').max(100, 'Points must be less than 100').optional()
 });
 
@@ -141,7 +194,7 @@ export const startQuizAttemptSchema = z.object({
   quizId: z.string().uuid('Invalid quiz ID')
 });
 
-export const submitQuizAnswerSchema = z.object({
+export const submitQuizAnswerSchema = z.object({  
   attemptId: z.string().uuid('Invalid attempt ID'),
   questionId: z.string().uuid('Invalid question ID'),
   answerId: z.string().uuid('Invalid answer ID').optional(),

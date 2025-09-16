@@ -2,14 +2,20 @@ import { Router } from 'express';
 import { QuizController } from './quiz.controller';
 import { authenticateAdmin } from '../../../core/middleware/auth/authenticateAdmin';
 import { authenticateStudent } from '../../../core/middleware/auth/authenticateStudent';
+import { allColors } from 'winston/lib/winston/config';
 // Validation is handled in the service layer
 
 const router = Router();
 
 // Quiz Management Routes (Admin Only)
-router.post('/quizzes', 
+router.post('/quiz/create', 
   authenticateAdmin, 
   QuizController.createQuiz
+);
+
+router.get('/quiz/all', 
+  authenticateAdmin, 
+  QuizController.getAllQuizzes
 );
 
 router.get('/quizzes/:id', 

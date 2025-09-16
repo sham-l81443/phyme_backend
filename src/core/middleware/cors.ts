@@ -1,7 +1,7 @@
 import cors from "cors";
 import { config } from "../config";
 
-const allowedOrigins = ["https://phymelearning.com","http://localhost:3000"];
+const allowedOrigins = ["https://phymelearning.com","http://localhost:3000","http://localhost:4000","http://156.67.219.108:4000","http://dev.phymelearning.com","https://dev.phymelearning.com"];
 
 // Check if CORS is enabled via environment variable
 const isCorsEnabled = config.cors.enabled;
@@ -24,7 +24,6 @@ const corsMiddleware = isCorsEnabled ? cors({
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
 }) : (req: any, res: any, next: any) => {
-  // If CORS is disabled, just pass through to next middleware
   next();
 };
 

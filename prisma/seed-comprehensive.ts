@@ -148,8 +148,13 @@ async function main() {
         ];
 
         for (const videoData of videos) {
-            await prisma.video.create({
-                data: {
+            await prisma.video.upsert({
+                where: { code: videoData.code },
+                update: {
+                    ...videoData,
+                    updatedAt: new Date(),
+                },
+                create: {
                     ...videoData,
                     createdAt: new Date(),
                     updatedAt: new Date(),
@@ -184,8 +189,13 @@ async function main() {
         ];
 
         for (const pdfData of pdfs) {
-            await prisma.pdf.create({
-                data: {
+            await prisma.pdf.upsert({
+                where: { fileName: pdfData.fileName },
+                update: {
+                    ...pdfData,
+                    updatedAt: new Date(),
+                },
+                create: {
                     ...pdfData,
                     createdAt: new Date(),
                     updatedAt: new Date(),
@@ -235,10 +245,10 @@ async function main() {
                 tags: ['physics', 'motion', 'units'],
                 createdBy: admin.id,
                 answers: [
-                    { content: 'm/s', isCorrect: true, order: 0 },
-                    { content: 'm/s²', isCorrect: false, order: 1 },
-                    { content: 'N', isCorrect: false, order: 2 },
-                    { content: 'J', isCorrect: false, order: 3 }
+                    { content: 'm/s', isCorrect: true, position: 0 },
+                    { content: 'm/s²', isCorrect: false, position: 1 },
+                    { content: 'N', isCorrect: false, position: 2 },
+                    { content: 'J', isCorrect: false, position: 3 }
                 ]
             },
             {
@@ -250,8 +260,8 @@ async function main() {
                 tags: ['physics', 'newtons-laws', 'motion'],
                 createdBy: admin.id,
                 answers: [
-                    { content: 'True', isCorrect: true, order: 0 },
-                    { content: 'False', isCorrect: false, order: 1 }
+                    { content: 'True', isCorrect: true, position: 0 },
+                    { content: 'False', isCorrect: false, position: 1 }
                 ]
             },
             {
@@ -263,9 +273,9 @@ async function main() {
                 tags: ['physics', 'energy', 'calculation'],
                 createdBy: admin.id,
                 answers: [
-                    { content: '25 J', isCorrect: true, order: 0 },
-                    { content: '25 joules', isCorrect: true, order: 1 },
-                    { content: '25J', isCorrect: true, order: 2 }
+                    { content: '25 J', isCorrect: true, position: 0 },
+                    { content: '25 joules', isCorrect: true, position: 1 },
+                    { content: '25J', isCorrect: true, position: 2 }
                 ]
             },
             {
@@ -288,10 +298,10 @@ async function main() {
                 tags: ['chemistry', 'atomic-structure', 'electrons'],
                 createdBy: admin.id,
                 answers: [
-                    { content: '2', isCorrect: true, order: 0 },
-                    { content: '8', isCorrect: false, order: 1 },
-                    { content: '18', isCorrect: false, order: 2 },
-                    { content: '32', isCorrect: false, order: 3 }
+                    { content: '2', isCorrect: true, position: 0 },
+                    { content: '8', isCorrect: false, position: 1 },
+                    { content: '18', isCorrect: false, position: 2 },
+                    { content: '32', isCorrect: false, position: 3 }
                 ]
             },
             // Mathematics Questions
@@ -304,8 +314,8 @@ async function main() {
                 tags: ['mathematics', 'algebra', 'linear-equations'],
                 createdBy: admin.id,
                 answers: [
-                    { content: '4', isCorrect: true, order: 0 },
-                    { content: 'x = 4', isCorrect: true, order: 1 }
+                    { content: '4', isCorrect: true, position: 0 },
+                    { content: 'x = 4', isCorrect: true, position: 1 }
                 ]
             }
         ];
@@ -408,7 +418,7 @@ async function main() {
                     data: {
                         quizId: physicsQuiz.id,
                         questionId: physicsQuestions[i].id,
-                        order: i,
+                        position: i,
                         points: physicsQuestions[i].points,
                     }
                 });
@@ -425,7 +435,7 @@ async function main() {
                     data: {
                         quizId: energyQuiz.id,
                         questionId: energyQuestions[i].id,
-                        order: i,
+                        position: i,
                         points: energyQuestions[i].points,
                     }
                 });
@@ -442,7 +452,7 @@ async function main() {
                     data: {
                         quizId: chemistryQuiz.id,
                         questionId: chemistryQuestions[i].id,
-                        order: i,
+                        position: i,
                         points: chemistryQuestions[i].points,
                     }
                 });

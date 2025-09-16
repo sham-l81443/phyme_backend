@@ -1,4 +1,5 @@
 import { QuizRepository } from './quiz.repository';
+import { LessonRepository } from '../lesson-module/lesson.repository';
 import { 
   CreateQuizRequest, 
   UpdateQuizRequest, 
@@ -29,12 +30,12 @@ export class QuizService {
   // Quiz Management
   static async createQuiz(data: CreateQuizRequest, createdBy: string) {
     try {
-      // Validate lesson exists
-      const lesson = await QuizRepository.getQuizById(data.lessonId);
-      if (!lesson) {
+      // Validate content association (only one should be set)
+      const associations = [data.subjectId, data.chapterId, data.lessonId, data.termId].filter(Boolean);
+      if (associations.length > 1) {
         throw new AppError({
-          errorType: 'Not Found',
-          message: 'Lesson not found'
+          errorType: 'Bad Request',
+          message: 'Quiz can only be associated with one content type (subject, chapter, lesson, or term)'
         });
       }
 
@@ -54,8 +55,61 @@ export class QuizService {
         });
       }
 
+      // Validate term exists if specified
+      if (data.termId) {
+        const term = await prisma.term.findUnique({ where: { id: data.termId } });
+        if (!term) {
+          throw new AppError({
+            errorType: 'Not Found',
+            message: 'Term not found'
+          });
+        }
+      }
+
+      // Validate subject exists if specified
+      if (data.subjectId) {
+        const subject = await prisma.subject.findUnique({ where: { id: data.subjectId } });
+        if (!subject) {
+          throw new AppError({
+            errorType: 'Not Found',
+            message: 'Subject not found'
+          });
+        }
+      }
+
+      // Validate chapter exists if specified
+      if (data.chapterId) {
+        const chapter = await prisma.chapter.findUnique({ where: { id: data.chapterId } });
+        if (!chapter) {
+          throw new AppError({
+            errorType: 'Not Found',
+            message: 'Chapter not found'
+          });
+        }
+      }
+
+      // Validate lesson exists if specified
+      if (data.lessonId) {
+        const lesson = await prisma.lesson.findUnique({ where: { id: data.lessonId } });
+        if (!lesson) {
+          throw new AppError({
+            errorType: 'Not Found',
+            message: 'Lesson not found'
+          });
+        }
+      }
+
       const quiz = await QuizRepository.createQuiz({ ...data, createdBy });
       return this.formatQuizResponse(quiz);
+    } catch (error) {
+      rethrowAppError(error, 'Operation failed');
+    }
+  }
+
+  static async getAllQuizzes() {
+    try {
+      const quizzes = await QuizRepository.getAllQuizzes();
+      return quizzes
     } catch (error) {
       rethrowAppError(error, 'Operation failed');
     }
@@ -297,7 +351,7 @@ export class QuizService {
       const attempt = await QuizRepository.createQuizAttempt(data.quizId, studentId, attemptNumber);
       
       // Get quiz questions for the session
-      const questions = quiz.questions.map(qq => this.formatQuestionResponse(qq.question, qq.order, qq.points || undefined));
+      const questions = quiz.questions.map(qq => this.formatQuestionResponse(qq.question, qq.position, qq.points || undefined));
       
       return {
         attemptId: attempt.id,
@@ -553,12 +607,14 @@ export class QuizService {
 
   // Format Response Methods
   private static formatQuizResponse(quiz: any): QuizResponse {
-    return {
-      id: quiz.id,
-      title: quiz.title,
-      description: quiz.description,
-      lessonId: quiz.lessonId,
-      lesson: {
+    // Determine quiz level and associated content
+    let quizLevel: 'standalone' | 'subject' | 'chapter' | 'lesson' | 'video' | 'term' = 'standalone';
+    let associatedContent: any = null;
+
+    if (quiz.lessonId && quiz.lesson) {
+      quizLevel = 'lesson';
+      associatedContent = {
+        type: 'lesson' as const,
         id: quiz.lesson.id,
         name: quiz.lesson.name,
         chapter: {
@@ -566,10 +622,53 @@ export class QuizService {
           name: quiz.lesson.chapter.name,
           subject: {
             id: quiz.lesson.chapter.subject.id,
-            name: quiz.lesson.chapter.subject.name
+            name: quiz.lesson.chapter.subject.name,
+            code: quiz.lesson.chapter.subject.code
           }
         }
-      },
+      };
+    } else if (quiz.chapterId && quiz.chapter) {
+      quizLevel = 'chapter';
+      associatedContent = {
+        type: 'chapter' as const,
+        id: quiz.chapter.id,
+        name: quiz.chapter.name,
+        code: quiz.chapter.code,
+        subject: {
+          id: quiz.chapter.subject.id,
+          name: quiz.chapter.subject.name,
+          code: quiz.chapter.subject.code
+        }
+      };
+    } else if (quiz.subjectId && quiz.subject) {
+      quizLevel = 'subject';
+      associatedContent = {
+        type: 'subject' as const,
+        id: quiz.subject.id,
+        name: quiz.subject.name,
+        code: quiz.subject.code
+      };
+    } else if (quiz.termId && quiz.term) {
+      quizLevel = 'term';
+      associatedContent = {
+        type: 'term' as const,
+        id: quiz.term.id,
+        name: quiz.term.name,
+        code: quiz.term.code
+      };
+    }
+
+    return {
+      id: quiz.id,
+      title: quiz.title,
+      description: quiz.description,
+      quizLevel,
+      associatedContent,
+      // Legacy fields for backward compatibility
+      lessonId: quiz.lessonId,
+      chapterId: quiz.chapterId,
+      subjectId: quiz.subjectId,
+      termId: quiz.termId,
       isTimed: quiz.isTimed,
       timeLimit: quiz.timeLimit,
       isActive: quiz.isActive,
@@ -605,10 +704,10 @@ export class QuizService {
         id: answer.id,
         content: answer.content,
         isCorrect: answer.isCorrect,
-        order: answer.order,
+        position: answer.position,
         imageUrl: answer.imageUrl
       })) || [],
-      order,
+      position: order,
       quizPoints
     };
   }

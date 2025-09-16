@@ -11,6 +11,7 @@ model Chapter {
   subject     Subject  @relation(fields: [subjectId], references: [id])
   term        Term     @relation(fields: [termId], references: [id])
   lessons     Lesson[]
+  quizzes     Quiz[]
 
   @@unique([code, subjectId, termId])
 }
