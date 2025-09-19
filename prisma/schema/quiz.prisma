@@ -75,6 +75,7 @@ model Question {
   @@map("questions")
 }
 
+// Question Option model eg option to a question
 model QuestionOption {
   id         String  @id @default(cuid())
   questionId String  @db.Uuid
@@ -94,6 +95,7 @@ model QuestionOption {
   @@map("question_answers")
 }
 
+// Bridge model for Quiz and Question
 model QuizQuestion {
   id         String @id @default(cuid())
   quizId     String @db.Uuid
@@ -113,6 +115,7 @@ model QuizQuestion {
   @@map("quiz_questions")
 }
 
+// Quiz Attempt model eg attempt to a quiz by a student
 model QuizAttempt {
   id            String @id @default(uuid()) @db.Uuid
   quizId        String @db.Uuid
@@ -151,6 +154,7 @@ model QuizAttempt {
   @@map("quiz_attempts")
 }
 
+// Quiz Answer model eg answer to a question given by a student
 model QuizAnswer {
   id         String  @id @default(cuid())
   attemptId  String  @db.Uuid
@@ -176,6 +180,7 @@ model QuizAnswer {
   @@map("quiz_answers")
 }
 
+// Quiz Performance model eg performance of a student in a quiz
 model QuizPerformance {
   id        String @id @default(uuid()) @db.Uuid
   quizId    String @db.Uuid
@@ -209,6 +214,8 @@ model QuizPerformance {
 }
 
 // Enums
+
+// Question Type enum eg multiple choice, true false, fill in the blank, short answer, long answer, matching, ordering, drag drop, audio question, video question, image question
 enum QuestionType {
   MULTIPLE_CHOICE
   TRUE_FALSE
@@ -223,6 +230,7 @@ enum QuestionType {
   IMAGE_QUESTION
 }
 
+// Difficulty enum
 enum Difficulty {
   EASY
   MEDIUM
@@ -230,12 +238,14 @@ enum Difficulty {
   EXPERT
 }
 
+// Pace Type enum
 enum PaceType {
   FAST
   NORMAL
   SLOW
 }
 
+// Attempt Status enum
 enum AttemptStatus {
   IN_PROGRESS
   COMPLETED

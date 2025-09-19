@@ -1,6 +1,16 @@
 import { z } from "zod";
 
 export const EMAIL_SCHEMA = z.string().email({ message: "please enter a valid email" })
+
+// Function to create required string schema with specific field name
+export const createRequiredStringSchema = (fieldName: string) => 
+  z.string().min(1, { message: `${fieldName} is required` });
+
+// Function to create required number schema with specific field name  
+export const createRequiredNumberSchema = (fieldName: string) => 
+  z.number({ message: `${fieldName} must be a number` }).min(1, { message: `${fieldName} is required` });
+
+// Legacy constants for backward compatibility
 export const REQUIRED_STRING_SCHEMA = z.string().min(1, { message: "Field required" })
 export const REQUIRED_NUMBER_SCHEMA = z.number().min(1, { message: "Field required" })
 export const OPTIONAL_STRING_SCHEMA = z.string().optional()

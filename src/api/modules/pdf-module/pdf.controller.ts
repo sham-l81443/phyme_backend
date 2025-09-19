@@ -4,12 +4,12 @@ import createSuccessResponse from "../../../core/utils/responseCreator";
 import { AppError } from "../../../core/utils/errors/AppError";
 import path from 'path';
 import fs from 'fs';
+import { PdfRepository } from "./pdf.repository";
+import { rethrowAppError } from "src/core/utils/errors/rethrowError";
 
 export class PdfController {
   static async uploadPdf(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log('Upload request body:', req.body);
-      console.log('Upload request file:', req.file);
 
       if (!req.file) {
         throw new AppError({

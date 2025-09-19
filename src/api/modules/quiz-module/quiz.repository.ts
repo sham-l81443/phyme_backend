@@ -52,7 +52,16 @@ export class QuizRepository {
   }
 
   static async getAllQuizzes() {
-    return await prisma.quiz.findMany();
+    return await prisma.quiz.findMany({
+      include: {
+        _count: {
+          select: {
+            attempts: true,
+            questions: true,
+          }
+        }
+      }
+    });
   }
 
   static async getQuizById(id: string) {
@@ -114,10 +123,22 @@ export class QuizRepository {
             }
           }
         },
+        chapter: {
+          include: {
+            subject: true
+          }
+        },
+        subject: true,
+        term: true,
         questions: {
           include: {
-            question: true
-          }
+            question: {
+              include: {
+                answers: true
+              }
+            }
+          },
+          orderBy: { position: 'asc' }
         },
         _count: {
           select: {

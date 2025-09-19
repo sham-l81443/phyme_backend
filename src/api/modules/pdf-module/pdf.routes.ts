@@ -8,7 +8,7 @@ const pdfRouter = express.Router();
 
 // Admin routes
 pdfRouter.post("/admin/pdf/upload", authenticateAdmin, uploadSinglePdf, PdfController.uploadPdf);
-pdfRouter.delete("/admin/pdf/:pdfId", authenticateAdmin, PdfController.deletePdf);
+pdfRouter.delete("/admin/pdf/deleteById/:pdfId", authenticateAdmin, PdfController.deletePdf);
 pdfRouter.get("/admin/pdfs", authenticateAdmin, PdfController.getAllPdfs);
 pdfRouter.get("/admin/pdf/:pdfId/download", authenticateAdmin, PdfController.downloadPdf);
 

@@ -16,9 +16,8 @@ const validateDto = <T>(schema: Schema<T>, data: unknown): T => {
 
 
         if (!result.success) {
-
+            console.log('Validation errors:', result.error.issues);
             throw new AppError({ errorType: 'Bad Request', data: result.error.issues.map((issue) => issue.message).join(', '), message: 'Invalid request body' })
-
         }
 
         return result.data as T;

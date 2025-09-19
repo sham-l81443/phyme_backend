@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { QuestionType, Difficulty, PaceType } from '@prisma/client';
 
 // Quiz Validation Schemas
-import { REQUIRED_STRING_SCHEMA, OPTIONAL_STRING_SCHEMA, UUID_OPTIONAL, BOOLEAN_SCHEMA_TRUE, BOOLEAN_SCHEMA_FALSE, OPTIONAL_DATE_TIME_SCHEMA } from "../../../core/constants/validationSchema";
+import { REQUIRED_STRING_SCHEMA, OPTIONAL_STRING_SCHEMA, UUID_OPTIONAL, BOOLEAN_SCHEMA_TRUE, BOOLEAN_SCHEMA_FALSE, OPTIONAL_DATE_TIME_SCHEMA, createRequiredStringSchema, createRequiredNumberSchema } from "../../../core/constants/validationSchema";
 
 // Enum definitions for quiz
 export const PACE_TYPE = z.enum(["SLOW", "NORMAL", "FAST"]);
@@ -21,7 +21,7 @@ const QUIZ_VALIDATION = {
 // Quiz creation schema
 export const createQuizSchema = z.object({
   // Basic Information
-  title: REQUIRED_STRING_SCHEMA,
+  title: createRequiredStringSchema('Title'),
   description: OPTIONAL_STRING_SCHEMA,
   
   // Relations (at least one must be provided)
@@ -31,21 +31,21 @@ export const createQuizSchema = z.object({
   termId: UUID_OPTIONAL,
   
   // Quiz Settings
-  isTimed: BOOLEAN_SCHEMA_FALSE,
+  isTimed: z.boolean({ message: "isTimed is required" }),
   timeLimit: z.number().min(QUIZ_VALIDATION.TIME_LIMIT_MIN, { message: "Time limit must be at least 1 minute" }).optional(),
-  isActive: BOOLEAN_SCHEMA_TRUE,
-  allowRetake: BOOLEAN_SCHEMA_TRUE,
-  maxAttempts: z.number().min(QUIZ_VALIDATION.MAX_ATTEMPTS_MIN, { message: "Max attempts must be at least 1" }).default(2),
+  isActive: z.boolean({ message: "isActive is required" }),
+  allowRetake: z.boolean({ message: "allowRetake is required" }),
+  maxAttempts: createRequiredNumberSchema('Max attempts').min(QUIZ_VALIDATION.MAX_ATTEMPTS_MIN, { message: "Max attempts must be at least 1" }),
   
   // Scoring Settings
-  hasNegativeMarking: BOOLEAN_SCHEMA_FALSE,
+  hasNegativeMarking: z.boolean({ message: "hasNegativeMarking is required" }),
   negativeMarkRatio: z.number().min(QUIZ_VALIDATION.NEGATIVE_MARK_MIN, { message: "Negative mark ratio must be positive" }).max(QUIZ_VALIDATION.NEGATIVE_MARK_MAX, { message: "Negative mark ratio cannot exceed 1" }).optional(),
   
   // Pace Settings
-  paceType: PACE_TYPE.default("NORMAL"),
+  paceType: PACE_TYPE.refine((val) => val !== undefined, { message: "Pace type is required" }),
   
   // Difficulty
-  difficulty: DIFFICULTY.default("MEDIUM"),
+  difficulty: DIFFICULTY.refine((val) => val !== undefined, { message: "Difficulty is required" }),
 
   // Scheduling
   startDate: OPTIONAL_DATE_TIME_SCHEMA,
@@ -90,7 +90,7 @@ export type ICreateQuiz = z.infer<typeof createQuizSchema>;
 
 export const updateQuizSchema = z.object({
   id: z.string().uuid('Invalid quiz ID'),
-  title: z.string().min(1, 'Title is required').max(200, 'Title must be less than 200 characters').optional(),
+  title: createRequiredStringSchema('Title').max(200, 'Title must be less than 200 characters').optional(),
   description: z.string().max(1000, 'Description must be less than 1000 characters').optional(),
   lessonId: z.string().uuid('Invalid lesson ID').optional(),
   isTimed: z.boolean().optional(),
@@ -124,25 +124,27 @@ export const updateQuizSchema = z.object({
 
 // Question Validation Schemas
 export const createAnswerSchema = z.object({
-  content: z.string().min(1, 'Answer content is required').max(500, 'Answer content must be less than 500 characters'),
-  isCorrect: z.boolean().default(false),
-  position: z.number().min(0, 'Position must be non-negative').default(0),
-  imageUrl: z.string().url('Invalid image URL').optional()
+  content: createRequiredStringSchema('Answer content').max(500, 'Answer content must be less than 500 characters'),
+  isCorrect: z.boolean({ message: 'isCorrect field is required' }),
+  position: createRequiredNumberSchema('Position').min(0, 'Position must be non-negative'),
+  imageUrl: z.string().optional().refine((val) => !val || /^https?:\/\/.+/.test(val), {
+    message: 'Invalid image URL'
+  })
 });
 
 export const createQuestionSchema = z.object({
-  content: z.string().min(1, 'Question content is required').max(2000, 'Question content must be less than 2000 characters'),
-  type: z.nativeEnum(QuestionType),
-  difficulty: z.nativeEnum(Difficulty).default('MEDIUM'),
-  imageUrl: z.string().url('Invalid image URL').optional(),
-  videoUrl: z.string().url('Invalid video URL').optional(),
-  audioUrl: z.string().url('Invalid audio URL').optional(),
-  points: z.number().min(0.1, 'Points must be at least 0.1').max(100, 'Points must be less than 100').default(1),
+  content: createRequiredStringSchema('Question content').max(2000, 'Question content must be less than 2000 characters'),
+  type: z.enum(['MULTIPLE_CHOICE', 'TRUE_FALSE', 'FILL_IN_BLANK', 'SHORT_ANSWER', 'LONG_ANSWER', 'MATCHING', 'ORDERING', 'DRAG_DROP', 'AUDIO_QUESTION', 'VIDEO_QUESTION', 'IMAGE_QUESTION'], { message: 'Question type is required' }),
+  difficulty: z.enum(['EASY', 'MEDIUM', 'HARD', 'EXPERT'], { message: 'Difficulty is required' }),
+  imageUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
+  audioUrl: z.string().optional(),
+  points: createRequiredNumberSchema('Points').min(0.1, 'Points must be at least 0.1').max(100, 'Points must be less than 100'),
   explanation: z.string().max(1000, 'Explanation must be less than 1000 characters').optional(),
   tags: z.array(z.string().min(1, 'Tag cannot be empty')).max(10, 'Maximum 10 tags allowed').default([]),
-  answers: z.array(createAnswerSchema).min(1, 'At least one answer is required').max(10, 'Maximum 10 answers allowed')
+  answers: z.array(createAnswerSchema).min(2, 'At least two answers are required').max(10, 'Maximum 10 answers allowed')
 }).refine((data) => {
-  if (data.type === QuestionType.MULTIPLE_CHOICE || data.type === QuestionType.TRUE_FALSE) {
+  if (data.type === 'MULTIPLE_CHOICE' || data.type === 'TRUE_FALSE') {
     const correctAnswers = data.answers.filter(a => a.isCorrect);
     return correctAnswers.length > 0;
   }
@@ -154,13 +156,13 @@ export const createQuestionSchema = z.object({
 
 export const updateQuestionSchema = z.object({
   id: z.string().uuid('Invalid question ID'),
-  content: z.string().min(1, 'Question content is required').max(2000, 'Question content must be less than 2000 characters').optional(),
+  content: createRequiredStringSchema('Question content').max(2000, 'Question content must be less than 2000 characters').optional(),
   type: z.nativeEnum(QuestionType).optional(),
   difficulty: z.nativeEnum(Difficulty).optional(),
   imageUrl: z.string().url('Invalid image URL').optional(),
   videoUrl: z.string().url('Invalid video URL').optional(),
   audioUrl: z.string().url('Invalid audio URL').optional(),
-  points: z.number().min(0.1, 'Points must be at least 0.1').max(100, 'Points must be less than 100').optional(),
+  points: createRequiredNumberSchema('Points').min(0.1, 'Points must be at least 0.1').max(100, 'Points must be less than 100').optional(),
   explanation: z.string().max(1000, 'Explanation must be less than 1000 characters').optional(),
   tags: z.array(z.string().min(1, 'Tag cannot be empty')).max(10, 'Maximum 10 tags allowed').optional(),
   answers: z.array(createAnswerSchema).min(1, 'At least one answer is required').max(10, 'Maximum 10 answers allowed').optional()
@@ -179,14 +181,14 @@ export const updateQuestionSchema = z.object({
 export const assignQuestionToQuizSchema = z.object({
   quizId: z.string().uuid('Invalid quiz ID'),
   questionId: z.string().uuid('Invalid question ID'),
-  position: z.number().min(0, 'Position must be non-negative').default(0),
-  points: z.number().min(0.1, 'Points must be at least 0.1').max(100, 'Points must be less than 100').optional()
+  position: createRequiredNumberSchema('Position').min(0, 'Position must be non-negative').default(0),
+  points: createRequiredNumberSchema('Points').min(0.1, 'Points must be at least 0.1').max(100, 'Points must be less than 100').optional()
 });
 
 export const bulkAssignQuestionsSchema = z.object({
   quizId: z.string().uuid('Invalid quiz ID'),
   questionIds: z.array(z.string().uuid('Invalid question ID')).min(1, 'At least one question ID is required').max(100, 'Maximum 100 questions allowed'),
-  points: z.number().min(0.1, 'Points must be at least 0.1').max(100, 'Points must be less than 100').optional()
+  points: createRequiredNumberSchema('Points').min(0.1, 'Points must be at least 0.1').max(100, 'Points must be less than 100').optional()
 });
 
 // Quiz Taking Schemas
@@ -199,7 +201,7 @@ export const submitQuizAnswerSchema = z.object({
   questionId: z.string().uuid('Invalid question ID'),
   answerId: z.string().uuid('Invalid answer ID').optional(),
   textAnswer: z.string().max(1000, 'Text answer must be less than 1000 characters').optional(),
-  timeSpent: z.number().min(0, 'Time spent must be non-negative').optional()
+  timeSpent: createRequiredNumberSchema('Time spent').min(0, 'Time spent must be non-negative').optional()
 }).refine((data) => {
   return data.answerId || data.textAnswer;
 }, {
@@ -256,3 +258,5 @@ export const quizLeaderboardQuerySchema = z.object({
   quizId: z.string().uuid('Invalid quiz ID'),
   limit: z.string().regex(/^\d+$/).transform(Number).pipe(z.number().min(1, 'Limit must be at least 1').max(100, 'Limit must be less than 100')).optional()
 });
+
+
